@@ -3,25 +3,39 @@ name: Code Quality Check
 on:
   pull_request:
     branches: [main, develop]
+  push:
+    branches: [main, develop]
 
 jobs:
-  lint:
+  code-quality:
+    name: Code Quality
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: "npm"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Check Code Formatting
+        run: npm run format:check
 
       - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+        run: npm run lint
 
-      - name: Run Prettier
-        run: npx prettier --check .
+      - name: Report Status
+        if: always()
+        run: |
+          echo "✨ Workflow Summary:"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Status: ${{ job.status }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Triggered by: ${{ github.actor }}"
