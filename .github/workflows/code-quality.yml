@@ -24,16 +24,16 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Fix Code Formatting
+      - name: Run Prettier to Fix Formatting
         run: npm run format
 
-      - name: Fix ESLint Issues
+      - name: Run ESLint to Fix Issues
         run: npm run lint:fix
 
-      - name: Check Code Formatting
+      - name: Check Code Formatting with Prettier
         run: npm run format:check
 
-      - name: Run ESLint
+      - name: Run ESLint to Check Code
         run: npm run lint
 
       - name: Report Status
