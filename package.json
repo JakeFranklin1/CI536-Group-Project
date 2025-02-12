@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schemastore.azurewebsites.net/schemas/json/package.json",
+    "name": "ci536-group-project",
+    "version": "1.0.0",
+    "description": "A marketplace for games",
+    "workspaces": [
+        "backend"
+    ],
+    "scripts": {
+        "start": "node backend/server.js",
+        "dev": "nodemon backend/server.js",
+        "test": "jest"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.x.x",
+        "axios": "^1.x.x",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "jest": "^29.x.x",
+        "nodemon": "^3.1.9"
+    }
+}

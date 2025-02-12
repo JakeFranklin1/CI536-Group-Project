@@ -1,0 +1,15 @@
+# Node.js dependencies
+node_modules/
+
+# Environment files
+# .env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store       # macOS
+Thumbs.db       # Windows
+
+# Vercel
+.vercel/

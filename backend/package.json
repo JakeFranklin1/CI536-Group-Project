@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemastore.azurewebsites.net/schemas/json/package.json",
+    "name": "ci536-group-project-backend",
+    "version": "1.0.0",
+    "type": "commonjs",
+    "private": true,
+    "main": "server.js",
+    "dependencies": {
+        "@supabase/supabase-js": "^2.x.x",
+        "axios": "^1.x.x",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2"
+    }
+}

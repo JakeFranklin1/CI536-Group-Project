@@ -1,13 +1,15 @@
 :root {
     --grid-column-count: 12;
-    --grid-gap: 10px;
+    --grid-gap: 16px;
+    --grid-margin: 24px;
 }
 
 body {
     display: grid;
     grid-template-columns: repeat(var(--grid-column-count), 1fr);
     gap: var(--grid-gap);
-    margin: 0 auto; /* Center the content */
+    margin-left: var(--grid-margin);
+    margin-right: var(--grid-margin);
     padding: 0;
 }
 
@@ -15,6 +17,8 @@ body {
     grid-column: 1 / span 12;
     width: 100%;
 }
+
+/* COMMENT/UNCOMMENT THIS TO MANAGE GRID OVERLAY */
 
 .grid-overlay {
     position: fixed;
@@ -31,7 +35,8 @@ body {
         transparent calc((100% - (var(--grid-column-count) - 1) * var(--grid-gap)) / var(--grid-column-count)),
         transparent calc((100% - (var(--grid-column-count) - 1) * var(--grid-gap)) / var(--grid-column-count) + var(--grid-gap))
     );
-    margin: 0 auto;
+    margin-left: var(--grid-margin);
+    margin-right: var(--grid-margin);
     max-width: 100%;
     padding: 0 var(--grid-gap);
 }
