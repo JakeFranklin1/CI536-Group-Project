@@ -39,6 +39,8 @@ app.use("/api/auth", authRouter); // Use authRouter for routes starting with /ap
  * @param {Response} res - The Express response object
  * @param {Function} next - The next middleware function
  */
+
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   // Log the error details to the console
   console.error("Server Error:", {
@@ -49,9 +51,9 @@ app.use((err, req, res, next) => {
 
   // Send a 500 Internal Server Error response with error details
   res.status(500).json({
-    error: "Something went wrong!",
-    requestId: req.id,
-    path: req.path,
+        error: "Something went wrong!",
+            requestId: req.id,
+     path: req.path,
   });
 });
 
