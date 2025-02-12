@@ -1,10 +1,10 @@
 // Load environment variables from .env file into process.env
-require('dotenv').config();
+require("dotenv").config();
 
 // Import required Node.js modules and frameworks
-const express = require('express'); // Web application framework
-const cors = require('cors'); // Cross-Origin Resource Sharing middleware
-const path = require('path'); // Node.js path utility
+const express = require("express"); // Web application framework
+const cors = require("cors"); // Cross-Origin Resource Sharing middleware
+const path = require("path"); // Node.js path utility
 
 // Initialize Express application
 const app = express();
@@ -25,18 +25,18 @@ app.use(express.json());
 
 // Serve static files from the frontend directory
 // This makes frontend assets (HTML, CSS, JS) accessible via HTTP
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 // Route Configuration
 // ------------------
 
 // Import route handlers
-const gamesRouter = require('./routes/games'); // Handles game-related endpoints
-const authRouter = require('./routes/auth'); // Handles authentication endpoints
+const gamesRouter = require("./routes/games"); // Handles game-related endpoints
+const authRouter = require("./routes/auth"); // Handles authentication endpoints
 
 // Register routes with their base paths
-app.use('/api/games', gamesRouter); // All game routes will be prefixed with /api/games
-app.use('/api/auth', authRouter); // All auth routes will be prefixed with /api/auth
+app.use("/api/games", gamesRouter); // All game routes will be prefixed with /api/games
+app.use("/api/auth", authRouter); // All auth routes will be prefixed with /api/auth
 
 // Error Handling
 // -------------
@@ -44,10 +44,10 @@ app.use('/api/auth', authRouter); // All auth routes will be prefixed with /api/
 // Global error handling middleware
 // This catches any errors thrown in route handlers
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
-    next(err); // Pass error to Express's default error handler
-  });
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
+  next(err); // Pass error to Express's default error handler
+});
 
 // Start Server
 // -----------
