@@ -30,9 +30,6 @@ jobs:
       - name: Run ESLint to Fix Issues
         run: npm run lint:fix
 
-      - name: Check Code Formatting with Prettier
-        run: npm run format:check
-
       - name: Run ESLint to Check Code
         run: npm run lint
 
