@@ -1,0 +1,41 @@
+// Use this to test API requests (requires REST Client extension)
+
+### Test server is running
+GET http://localhost:3000
+
+### Get popular games
+GET http://localhost:3000/api/games
+Content-Type: application/json
+
+### Search for games by name
+GET http://localhost:3000/api/games/search/zelda
+Content-Type: application/json
+
+### Search for games with spaces in name
+GET http://localhost:3000/api/games/search/god of war
+Content-Type: application/json
+
+### Test authentication endpoint
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+### Test error handling with invalid endpoint
+GET http://localhost:3000/api/invalid-endpoint
+
+### Test CORS with different origin
+GET http://localhost:3000/api/games
+Origin: http://localhost:5500
+Content-Type: application/json
+
+### Test search with special characters
+GET http://localhost:3000/api/games/search/assassin's creed
+Content-Type: application/json
+
+### Test search with limit parameter
+GET http://localhost:3000/api/games/search/mario?limit=3
+Content-Type: application/json

@@ -2,9 +2,9 @@
 require('dotenv').config();
 
 // Import required Node.js modules and frameworks
-const express = require('express');     // Web application framework
-const cors = require('cors');           // Cross-Origin Resource Sharing middleware
-const path = require('path');           // Node.js path utility
+const express = require('express'); // Web application framework
+const cors = require('cors'); // Cross-Origin Resource Sharing middleware
+const path = require('path'); // Node.js path utility
 
 // Initialize Express application
 const app = express();
@@ -31,12 +31,12 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // ------------------
 
 // Import route handlers
-const gamesRouter = require('./routes/games');    // Handles game-related endpoints
-const authRouter = require('./routes/auth');      // Handles authentication endpoints
+const gamesRouter = require('./routes/games'); // Handles game-related endpoints
+const authRouter = require('./routes/auth'); // Handles authentication endpoints
 
 // Register routes with their base paths
-app.use('/api/games', gamesRouter);  // All game routes will be prefixed with /api/games
-app.use('/api/auth', authRouter);    // All auth routes will be prefixed with /api/auth
+app.use('/api/games', gamesRouter); // All game routes will be prefixed with /api/games
+app.use('/api/auth', authRouter); // All auth routes will be prefixed with /api/auth
 
 // Error Handling
 // -------------
@@ -44,16 +44,15 @@ app.use('/api/auth', authRouter);    // All auth routes will be prefixed with /a
 // Global error handling middleware
 // This catches any errors thrown in route handlers
 app.use((err, req, res, next) => {
-    // Log the error stack trace to the console
     console.error(err.stack);
-    // Send a generic error response to the client
     res.status(500).json({ error: 'Something went wrong!' });
-});
+    next(err); // Pass error to Express's default error handler
+  });
 
 // Start Server
 // -----------
 
 // Start listening for HTTP requests on the specified port
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

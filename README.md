@@ -3,9 +3,10 @@
 ## 1. Install Required Software
 
 For both Windows & macOS, install:
-- [Node.js (v18 or later)](https://nodejs.org/)  
-- [Visual Studio Code](https://code.visualstudio.com/)  
-- [Git (Windows)](https://git-scm.com/download/win) | [Git (macOS)](https://git-scm.com/download/mac)  
+
+- [Node.js (v18 or later)](https://nodejs.org/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Git (Windows)](https://git-scm.com/download/win) | [Git (macOS)](https://git-scm.com/download/mac)
 - [Supabase CLI](https://supabase.com/docs/guides/cli)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -13,14 +14,14 @@ For both Windows & macOS, install:
 
 Inside VS Code, install the following extensions:
 
-| Extension | Purpose |
-|-----------|---------|
-| ESLint | Enforces coding style and highlights issues |
-| Prettier - Code formatter | Automatically formats code |
-| DotENV | Syntax highlighting for `.env` files |
-| REST Client | Allows testing API routes inside VS Code |
-| GitLens | Enhances Git functionality in VS Code |
-| PostgreSQL (if using Supabase) | Helps manage and query local PostgreSQL DB |
+| Extension                      | Purpose                                     |
+| ------------------------------ | ------------------------------------------- |
+| ESLint                         | Enforces coding style and highlights issues |
+| Prettier - Code formatter      | Automatically formats code                  |
+| DotENV                         | Syntax highlighting for `.env` files        |
+| REST Client                    | Allows testing API routes inside VS Code    |
+| GitLens                        | Enhances Git functionality in VS Code       |
+| PostgreSQL (if using Supabase) | Helps manage and query local PostgreSQL DB  |
 
 ## 2. Clone the GitHub Repository
 
@@ -51,6 +52,7 @@ npm run dev
 ```
 
 # Additional Notes
+
 ## Git Workflow for Collaboration
 
 Since multiple people are coding, **we need a clear Git workflow** to prevent conflicts.
@@ -58,16 +60,19 @@ Since multiple people are coding, **we need a clear Git workflow** to prevent co
 ## Branching Strategy
 
 ### Main Branches
+
 - **Main branch** (`main`)
   - Contains stable code
   - No direct commits allowed
 
 ### Development Branches
+
 - **Feature branches** (`feature-xyz`)
   - Each member works on a separate branch
   - Named according to feature being developed
 
 ### Maintenance Branches
+
 - **Bug fix branches** (`bugfix-xyz`)
   - Used specifically for fixing issues
   - Named according to bug being fixed
@@ -90,6 +95,7 @@ git checkout main
 git pull origin main
 git merge feature-login
 ```
+
 # Project Structure
 
 ## 1. `backend/` (Node.js & Express)
