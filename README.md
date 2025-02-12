@@ -40,7 +40,7 @@ npm install
 
 Create a `.env` file in the project root and add API keys and secrets:
 
-TODO: ADD EXAMPLE FILE
+**_TODO: ADD EXAMPLE FILE_**
 
 ## 5. Run the Development Server
 
