@@ -39,6 +39,8 @@ app.use("/api/auth", authRouter); // Use authRouter for routes starting with /ap
  * @param {Response} res - The Express response object
  * @param {Function} next - The next middleware function
  */
+
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   // Log the error details to the console
   console.error("Server Error:", {
