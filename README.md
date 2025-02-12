@@ -90,3 +90,52 @@ git checkout main
 git pull origin main
 git merge feature-login
 ```
+# Project Structure
+
+## 1. `backend/` (Node.js & Express)
+
+Contains all your **server-side** logic, including routes, controllers, database models, and any middleware.
+
+- **controllers/**: Handles requests and responses for different routes
+- **routes/**: Define the API endpoints
+- **models/**: Contains the database models, schemas, and logic to interact with the database (this can include Supabase tables and queries)
+- **services/**: Integrates with third-party APIs (e.g., IGDB API for game data)
+- **middleware/**: Express middleware functions for authentication, validation, etc.
+- **utils/**: Helper functions (e.g., for generating tokens, formatting data, etc.)
+- **server.js**: Main entry point for the Express server
+- **.env**: Environment variables (e.g., Supabase credentials)
+
+## 2. `frontend/` (HTML, CSS, JS)
+
+Contains all the **client-side** code, from UI components to handling the interaction with the backend.
+
+- **assets/**: Static files like images, icons, and fonts
+- **pages/**: The various pages in the app (e.g., `LoginPage.html`, `MarketplacePage.html`)
+- **services/**: Functions that handle the communication with the backend API
+- **styles/**: Global CSS files that provide styles for the application
+- **.env**: Environment variables specific to frontend
+
+## 3. `database/` (Supabase)
+
+Contains files related to **database configuration** and **schema management**.
+
+- **migrations/**: For managing database migrations if you use the Supabase CLI to apply schema changes
+- **seeders/**: Initial seed data for populating the database
+- **supabase_config.json**: Configuration for the Supabase instance
+
+## 4. `tests/` (Testing)
+
+Contains all your **automated tests**, including unit, integration, and end-to-end tests.
+
+- **unit/**: Unit tests using Jest to test individual functions or small units of functionality
+- **integration/**: Integration tests using Supertest to test API endpoints and their behavior
+- **e2e/**: End-to-end tests using Cypress for UI and user flow testing
+- **jest.config.js**: Jest configuration file for unit tests
+- **cypress.json**: Cypress configuration for setting up E2E tests
+
+## 5. `.github/` (GitHub Actions & CI/CD)
+
+This folder holds your **CI/CD workflows** (e.g., for running tests on pull requests, deployments, etc.).
+
+- **workflows/**: YAML files for setting up GitHub actions (e.g., for testing or deployment)
+- **.gitignore**: Files and directories that Git should ignore (e.g., `node_modules/`, `.env`, etc.)
