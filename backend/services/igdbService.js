@@ -1,6 +1,10 @@
 const axios = require("axios");
 require("dotenv").config();
 
+/**
+ * IGDBService class to interact with the IGDB API.
+ * This class handles authentication, token management, and API requests.
+ */
 class IGDBService {
   constructor() {
     // Initialize axios instance, access token, and token expiry
@@ -11,6 +15,10 @@ class IGDBService {
     this.initializeAxios();
   }
 
+  /**
+   * Initialize the axios instance with the necessary headers.
+   * Refresh the access token if it is missing or expired.
+   */
   async initializeAxios() {
     // Check if access token is missing or expired, then refresh it
     if (!this.accessToken || this.isTokenExpired()) {
@@ -29,6 +37,11 @@ class IGDBService {
     });
   }
 
+  /**
+   * Refresh the access token by making a request to Twitch's OAuth endpoint.
+   * Store the new access token and set its expiry time.
+   * @throws {Error} If the token refresh fails
+   */
   async refreshAccessToken() {
     try {
       // Request a new access token from Twitch's OAuth endpoint
@@ -56,11 +69,23 @@ class IGDBService {
     }
   }
 
+  /**
+   * Check if the access token has expired.
+   * @returns {boolean} True if the token has expired, false otherwise
+   */
   isTokenExpired() {
     // Check if the token expiry time has passed
     return !this.tokenExpiry || Date.now() >= this.tokenExpiry;
   }
 
+  /**
+   * Execute an API request to the IGDB endpoint.
+   * Refresh the access token if it has expired.
+   * @param {string} endpoint - The IGDB API endpoint
+   * @param {string} query - The query string for the API request
+   * @returns {Promise<Object>} The response data from the API
+   * @throws {Error} If the API request fails
+   */
   async executeRequest(endpoint, query) {
     try {
       // Refresh the access token if it has expired
@@ -82,9 +107,9 @@ class IGDBService {
   }
 
   /**
-   * Search for games by name/keyword
+   * Search for games by name/keyword.
    * @param {string} query - Search term
-   * @param {number} limit - Maximum number of results (default: 5)
+   * @param {number} [limit=5] - Maximum number of results (default: 5)
    * @returns {Promise<Array>} Array of game objects
    * @throws {Error} If search fails
    */
@@ -93,7 +118,7 @@ class IGDBService {
       // Clean and encode the search query
       const sanitizedQuery = query
         .trim()
-        .replace(/"/g, "\\\"") // Escape double quotes
+        .replace(/"/g, '\\"') // Escape double quotes
         .replace(/[\u2018\u2019]/g, "'"); // Handle smart quotes
 
       const igdbQuery = `
@@ -140,6 +165,12 @@ class IGDBService {
     }
   }
 
+  /**
+   * Get a list of popular games.
+   * @param {number} [limit=6] - Maximum number of results (default: 6)
+   * @returns {Promise<Array>} Array of popular game objects
+   * @throws {Error} If the request fails
+   */
   async getPopularGames(limit = 6) {
     try {
       return await this.executeRequest(

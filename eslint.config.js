@@ -21,7 +21,6 @@ export default [
       "no-unused-vars": "warn",
       "no-console": ["warn", { allow: ["warn", "error", "log"] }],
       semi: ["error", "always"],
-      quotes: ["error", "double"],
     },
   },
 ];
