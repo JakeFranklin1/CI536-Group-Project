@@ -1,5 +1,5 @@
-const axios = require('axios');
-require('dotenv').config();
+const axios = require("axios");
+require("dotenv").config();
 
 class IGDBService {
   constructor() {
@@ -19,12 +19,12 @@ class IGDBService {
 
     // Create an axios instance with the necessary headers
     this.axios = axios.create({
-      baseURL: 'https://api.igdb.com/v4',
+      baseURL: "https://api.igdb.com/v4",
       headers: {
-        'Client-ID': process.env.IGDB_CLIENT_ID,
+        "Client-ID": process.env.IGDB_CLIENT_ID,
         Authorization: `Bearer ${this.accessToken}`,
-        Accept: 'application/json',
-        'Content-Type': 'text/plain',
+        Accept: "application/json",
+        "Content-Type": "text/plain",
       },
     });
   }
@@ -33,13 +33,13 @@ class IGDBService {
     try {
       // Request a new access token from Twitch's OAuth endpoint
       const response = await axios.post(
-        'https://id.twitch.tv/oauth2/token',
+        "https://id.twitch.tv/oauth2/token",
         null,
         {
           params: {
             client_id: process.env.IGDB_CLIENT_ID,
             client_secret: process.env.IGDB_CLIENT_SECRET,
-            grant_type: 'client_credentials',
+            grant_type: "client_credentials",
           },
         },
       );
@@ -49,9 +49,9 @@ class IGDBService {
       // Subtract 1 hour from the expiry time for a safety margin
       this.tokenExpiry = Date.now() + (response.data.expires_in - 3600) * 1000;
 
-      console.log('IGDB access token refreshed');
+      console.log("IGDB access token refreshed");
     } catch (error) {
-      console.error('Error refreshing IGDB access token:', error.message);
+      console.error("Error refreshing IGDB access token:", error.message);
       throw error;
     }
   }
@@ -94,7 +94,7 @@ class IGDBService {
       const sanitizedQuery = query
         .trim()
         .replace(/"/g, '\\"') // Escape double quotes
-        .replace(/[\u2018\u2019]/g, '\''); // Handle smart quotes
+        .replace(/[\u2018\u2019]/g, "'"); // Handle smart quotes
 
       const igdbQuery = `
                 fields
@@ -112,9 +112,9 @@ class IGDBService {
                 limit ${limit};
             `;
 
-      console.log('IGDB Search Query:', igdbQuery); // Debug log
+      console.log("IGDB Search Query:", igdbQuery); // Debug log
 
-      const results = await this.executeRequest('/games', igdbQuery);
+      const results = await this.executeRequest("/games", igdbQuery);
 
       // Transform cover URLs to HTTPS and larger size
       return results.map((game) => ({
@@ -124,14 +124,14 @@ class IGDBService {
               ...game.cover,
               url: game.cover.url
                 ? game.cover.url
-                    .replace('t_thumb', 't_cover_big')
-                    .replace('http:', 'https:')
+                    .replace("t_thumb", "t_cover_big")
+                    .replace("http:", "https:")
                 : null,
             }
           : null,
       }));
     } catch (error) {
-      console.error('Search error:', {
+      console.error("Search error:", {
         query,
         error: error.message,
         stack: error.stack,
@@ -143,7 +143,7 @@ class IGDBService {
   async getPopularGames(limit = 6) {
     try {
       return await this.executeRequest(
-        '/games',
+        "/games",
         `
                 fields
                     name,
@@ -166,7 +166,7 @@ class IGDBService {
             `,
       );
     } catch (error) {
-      console.error('Error getting popular games:', error);
+      console.error("Error getting popular games:", error);
       throw error;
     }
   }

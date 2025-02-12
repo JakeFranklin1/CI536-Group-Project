@@ -3,12 +3,12 @@
 // This route is used to get data from the igdbService and return it to the client.
 
 // Import the necessary modules
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const igdbService = require('../services/igdbService');
+const igdbService = require("../services/igdbService");
 
 // Route to get popular games
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     // Call the IGDB service to get popular games
     const games = await igdbService.getPopularGames();
@@ -21,21 +21,21 @@ router.get('/', async (req, res) => {
 });
 
 // Search games by query
-router.get('/search/:query', async (req, res) => {
+router.get("/search/:query", async (req, res) => {
   try {
     const searchQuery = decodeURIComponent(req.params.query);
     const limit = parseInt(req.query.limit) || 5;
 
     if (!searchQuery || searchQuery.length < 2) {
       return res.status(400).json({
-        error: 'Search query must be at least 2 characters',
-        endpoint: '/api/games/search',
-        method: 'GET',
+        error: "Search query must be at least 2 characters",
+        endpoint: "/api/games/search",
+        method: "GET",
         query: searchQuery,
       });
     }
 
-    console.log('Processing search:', {
+    console.log("Processing search:", {
       query: searchQuery,
       limit: limit,
     });
@@ -48,7 +48,7 @@ router.get('/search/:query', async (req, res) => {
 
     res.json(games);
   } catch (error) {
-    console.error('Search route error:', {
+    console.error("Search route error:", {
       query: req.params.query,
       error: error.message,
       stack: error.stack,
@@ -56,8 +56,8 @@ router.get('/search/:query', async (req, res) => {
 
     res.status(500).json({
       error: error.message,
-      endpoint: '/api/games/search',
-      method: 'GET',
+      endpoint: "/api/games/search",
+      method: "GET",
       query: req.params.query,
     });
   }
