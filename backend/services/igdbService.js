@@ -93,7 +93,7 @@ class IGDBService {
       // Clean and encode the search query
       const sanitizedQuery = query
         .trim()
-        .replace(/"/g, '\\"') // Escape double quotes
+        .replace(/"/g, "\\\"") // Escape double quotes
         .replace(/[\u2018\u2019]/g, "'"); // Handle smart quotes
 
       const igdbQuery = `
