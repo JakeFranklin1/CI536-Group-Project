@@ -60,7 +60,7 @@ app.use((err, req, res, next) => {
 // Start Server
 const server = app.listen(PORT, () => {
   // Log server start details to the console
-  console.log(`
+    console.log(`
     🚀 Server running on port ${PORT}
     📁 Frontend files served from: ${path.join(__dirname, "../frontend")}
     🌐 API endpoints available at: http://localhost:${PORT}/api
