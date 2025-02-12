@@ -20,8 +20,8 @@ export default [
     rules: {
       "no-unused-vars": "warn",
       "no-console": ["warn", { allow: ["warn", "error", "log"] }],
-      semi: ["error", "always"],
-      quotes: ["error", "single"],
+      "semi": ["error", "always"],
+      "quotes": ["error", "double"],
     },
   },
 ];

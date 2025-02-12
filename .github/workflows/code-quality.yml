@@ -24,6 +24,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Fix Code Formatting
+        run: npm run format
+
+      - name: Fix ESLint Issues
+        run: npm run lint:fix
+
       - name: Check Code Formatting
         run: npm run format:check
 
