@@ -64,6 +64,7 @@ const server = app.listen(PORT, () => {
     🚀 Server running on port ${PORT}
     📁 Frontend files served from: ${path.join(__dirname, "../frontend")}
     🌐 API endpoints available at: http://localhost:${PORT}/api
+    👨‍💻 See the website at http://localhost:${PORT}
     `);
 });
 
