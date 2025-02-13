@@ -19,6 +19,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.x.x",
     "axios": "^1.x.x",
+    "ci536-group-project": "file:",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2"
