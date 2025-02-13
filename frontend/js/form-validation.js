@@ -1,5 +1,4 @@
-/* global document */
-import supabase from './supabase-client.js';
+import supabase from "./supabase-client.js";
 
 /**
  * Form Validation Module
@@ -148,7 +147,8 @@ document.addEventListener("DOMContentLoaded", () => {
             form.reset();
             inputs.forEach((input) => {
               input.classList.remove("success", "error");
-              const errorSpan = input.parentNode.querySelector(".error-message");
+              const errorSpan =
+                input.parentNode.querySelector(".error-message");
               errorSpan.style.display = "none";
             });
           }
