@@ -39,9 +39,7 @@ npm install
 
 ## 4. Set Up Environment Variables
 
-Create a `.env` file in the project root and add API keys and secrets:
-
-**_TODO: ADD EXAMPLE FILE_**
+Make sure the `.env` file is in the project root with the appropriate API keys.
 
 ## 5. Run the Development Server
 
@@ -50,6 +48,8 @@ Start the backend:
 ```bash
 npm run dev
 ```
+
+https://github.com/user-attachments/assets/36eb23cf-f7c9-481b-a5fd-0e327fbc4967
 
 # Additional Notes
 
