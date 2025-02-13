@@ -7,7 +7,7 @@
   "workspaces": [
     "backend"
   ],
-  "scripts": {
+"scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon --delay 1 backend/server.js",
     "build": "cd frontend && npm install && cd .. && npm install && npm run build:server",
