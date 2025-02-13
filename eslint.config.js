@@ -15,6 +15,9 @@ export default [
         __dirname: "readonly",
         module: "readonly",
         require: "readonly",
+        document: "readonly",
+        window: "readonly",
+        setTimeout: "readonly",
       },
     },
     rules: {
