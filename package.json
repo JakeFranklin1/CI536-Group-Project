@@ -10,8 +10,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon --delay 1 backend/server.js",
-    "build": "cd frontend && npm install && npm run build && cd ..",
-    "vercel-build": "npm run build",
+    "build": "cd frontend && npm install && cd .. && npm install && npm run build:server",
+    "build:server": "netlify-lambda build backend",
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -24,7 +24,8 @@
     "ci536-group-project": "file:",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "netlify-lambda": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
