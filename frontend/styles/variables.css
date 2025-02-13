@@ -47,13 +47,14 @@
   --font--size-large: clamp(26px, 3.81vw, 3.81vw);
   --font--size-medium: 26px;
   --font--size-regular: 16px;
+  --font--size-small: 14px;
   --font--size-regular-line-height: 1.25;
 
   /* Primary Colours */
   --accent-color: #005eff;
-  --text-color: #ffffff;
-  --background-color: #f7f7f7;
-  --secondary-text-color: #818181;
+  --text-color: #000000;
+  --background-color: #ffffff;
+  --secondary-text-color: #00000051;
 
   /* Secondary Colours */
 }

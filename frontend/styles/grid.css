@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --grid-column-count: 12;
   --grid-gap: 16px;
   --grid-margin: 24px;
@@ -17,11 +17,11 @@ body {
 .footer {
   grid-column: 1 / span 12;
   width: 100%;
-}
+} */
 
 /* COMMENT/UNCOMMENT THIS TO MANAGE GRID OVERLAY */
-
-/* .grid-overlay {
+/*
+.grid-overlay {
   position: fixed;
   top: 0;
   left: 0;
