@@ -13,6 +13,16 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  opacity: 0; /* Initially hide the body */
+  transition: opacity 0.3s ease-in-out;
+}
+
+body.fade-out {
+  opacity: 0;
+}
+
+body.fade-in {
+  opacity: 1; /* Fade in the body */
 }
 
 a {

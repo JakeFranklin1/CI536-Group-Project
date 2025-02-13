@@ -10,6 +10,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon --delay 1 backend/server.js",
+    "build": "cd frontend && npm run build",
+    "vercel-build": "npm run build",
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -17,7 +19,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.x.x",
+    "@supabase/supabase-js": "github:supabase/supabase-js",
     "axios": "^1.x.x",
     "ci536-group-project": "file:",
     "cors": "^2.8.5",

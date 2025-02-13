@@ -1,4 +1,5 @@
 /* global document */
+import supabase from './supabase-client.js';
 
 /**
  * Form Validation Module
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
    * Form submission handler
    * Prevents default form submission if validation fails
    */
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     let isValid = true;
 
@@ -117,9 +118,80 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (isValid) {
-      // TODO: Add API call to backend here, sign user up on supabase.
-      console.log("Form is valid, submitting...");
-      form.submit();
+      const submitButton = form.querySelector(".submit-btn");
+      if (submitButton.id === "register-btn") {
+        // SIGNUP FORM SUBMISSION
+        submitButton.disabled = true;
+        submitButton.textContent = "Signing up...";
+
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email: form.querySelector("#email").value,
+            password: form.querySelector("#password").value,
+            options: {
+              data: {
+                full_name: form.querySelector("#name").value,
+              },
+            },
+          });
+
+          if (error) throw error;
+
+          if (data.user) {
+            // Show success message
+            const successMessage = document.createElement("div");
+            successMessage.className = "success-message";
+            successMessage.textContent = "Successfully signed up!";
+            form.insertBefore(successMessage, submitButton);
+
+            // Clear form
+            form.reset();
+            inputs.forEach((input) => {
+              input.classList.remove("success", "error");
+              const errorSpan = input.parentNode.querySelector(".error-message");
+              errorSpan.style.display = "none";
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error.message);
+          const errorMessage = document.createElement("div");
+          errorMessage.className = "error-message";
+          errorMessage.textContent = error.message;
+          errorMessage.style.display = "block";
+          form.insertBefore(errorMessage, submitButton);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Sign Up";
+        }
+      } else if (submitButton.id === "login-btn") {
+        // LOGIN FORM SUBMISSION
+        submitButton.disabled = true;
+        submitButton.textContent = "Logging in...";
+
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: form.querySelector("#email").value,
+            password: form.querySelector("#password").value,
+          });
+
+          if (error) throw error;
+
+          if (data.user) {
+            // Redirect to marketplace
+            window.location.href = "../pages/marketplace.html";
+          }
+        } catch (error) {
+          console.error("Login Error:", error.message);
+          const errorMessage = document.createElement("div");
+          errorMessage.className = "error-message";
+          errorMessage.textContent = error.message;
+          errorMessage.style.display = "block";
+          form.insertBefore(errorMessage, submitButton);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Log In";
+        }
+      }
     }
   });
 

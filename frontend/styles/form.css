@@ -5,6 +5,7 @@
   font-size: var(--font--size-regular);
   opacity: 0.75;
   width: 100%;
+  margin-left: 4px;
 }
 
 #hero-big {
@@ -34,10 +35,11 @@
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative; /* Add this to the form-group */
+  }
 
 .form-group label {
   font-size: var(--font--size-regular);
@@ -64,12 +66,15 @@
 }
 
 .error-message {
-  display: none;
-  color: #ff3b30;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  animation: slideIn 0.3s ease;
-}
+    display: none;
+    color: #ff3b30;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    animation: slideIn 0.3s ease;
+    position: absolute;
+    right: 0;
+    text-align: right;
+  }
 
 /* Animations */
 @keyframes slideIn {
@@ -150,6 +155,16 @@
 .form-footer a:hover {
   color: #1401c2;
 }
+
+.success-message {
+    color: #34c759;
+    background-color: #f6fef9;
+    border: 1px solid #34c759;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    animation: slideIn 0.3s ease;
+  }
 
 @media screen and (max-width: 1024px) {
   .form-container {
