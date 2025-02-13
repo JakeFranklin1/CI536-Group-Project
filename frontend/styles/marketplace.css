@@ -24,3 +24,9 @@
 #user-data p {
   margin: 0.5rem 0;
 }
+
+.bye {
+    font-size: var(--font--size-regular);
+    margin-top: 1rem;
+    color: #0091ff;
+}
