@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon --delay 1 backend/server.js",
-    "build": "cd frontend && npm run build",
+    "build": "cd frontend && npm install && npm run build && cd ..",
     "vercel-build": "npm run build",
     "test": "jest",
     "lint": "eslint .",
