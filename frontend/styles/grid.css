@@ -21,7 +21,7 @@ body {
 
 /* COMMENT/UNCOMMENT THIS TO MANAGE GRID OVERLAY */
 
-.grid-overlay {
+/* .grid-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -52,4 +52,4 @@ body {
   margin-right: var(--grid-margin);
   max-width: 100%;
   padding: 0 var(--grid-gap);
-}
+} */

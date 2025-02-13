@@ -1,35 +1,36 @@
 {
-  "$schema": "https://schemastore.azurewebsites.net/schemas/json/package.json",
-  "name": "ci536-group-project",
-  "version": "1.0.0",
-  "description": "A marketplace for games",
-  "type": "module",
-  "workspaces": [
-    "backend"
-  ],
-  "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon --delay 1 backend/server.js",
-    "test": "jest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.x.x",
-    "axios": "^1.x.x",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.20.0",
-    "eslint": "^9.20.1",
-    "eslint-config-prettier": "^10.0.1",
-    "jest": "^29.x.x",
-    "nodemon": "^3.1.9",
-    "prettier": "^3.5.0",
-    "supabase": "^2.12.1"
-  }
+    "$schema": "https://schemastore.azurewebsites.net/schemas/json/package.json",
+    "name": "ci536-group-project",
+    "version": "1.0.0",
+    "description": "A marketplace for games",
+    "type": "module",
+    "workspaces": [
+        "backend"
+    ],
+    "scripts": {
+        "start": "node backend/server.js",
+        "dev": "nodemon --delay 1 backend/server.js",
+        "test": "jest",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.x.x",
+        "axios": "^1.x.x",
+        "ci536-group-project": "file:",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.20.0",
+        "eslint": "^9.20.1",
+        "eslint-config-prettier": "^10.0.1",
+        "jest": "^29.x.x",
+        "nodemon": "^3.1.9",
+        "prettier": "^3.5.0",
+        "supabase": "^2.12.1"
+    }
 }
