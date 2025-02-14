@@ -173,9 +173,9 @@
   animation: slideIn 0.3s ease;
 }
 
-@media screen and (max-width: 2050px) {
+@media screen and (max-width: 2100px) {
   .form-container {
-    max-width: 500px;
+    max-width: 530px;
   }
 }
 
