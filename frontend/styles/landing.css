@@ -32,23 +32,23 @@ a {
 
 /* HEADER */
 .main-header {
-    position: absolute;
-    top: 0px;
-    margin-top: 16px;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-sizing: border-box;
-    padding: 0 24px;
-    width: 100%
-  }
+  position: absolute;
+  top: 0px;
+  margin-top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+  padding: 0 24px;
+  width: 100%;
+}
 
-  .header-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0 auto;
-  }
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto;
+}
 
 .logo {
   width: 52px;
@@ -113,7 +113,6 @@ a {
     margin-top: 0;
   }
 
-
   .header-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -121,9 +120,9 @@ a {
 }
 
 @media screen and (max-width: 480px) {
-    .main-header {
-        padding: 12px 16px;
-      }
+  .main-header {
+    padding: 12px 16px;
+  }
 
   .logo {
     width: 40px;
