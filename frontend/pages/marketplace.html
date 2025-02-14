@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GameStore Sign Up</title>
@@ -8,23 +9,10 @@
     <meta name="theme-color" content="#000000" />
 
     <!-- Favicons -->
-    <link
-      rel="icon"
-      type="image/png"
-      href="../assets/favicons/favicon-96x96.png"
-      sizes="96x96"
-    />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="../assets/favicons/favicon.svg"
-    />
+    <link rel="icon" type="image/png" href="../assets/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicons/favicon.svg" />
     <link rel="shortcut icon" href="../assets/favicons/favicon.ico" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="../assets/favicons/apple-touch-icon.png"
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="MyWebSite" />
     <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
@@ -35,39 +23,50 @@
     <link rel="stylesheet" href="../styles/variables.css" />
     <link rel="stylesheet" href="../styles/marketplace.css" />
     <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="../js/form-validation.js"></script>
     <script type="module" src="../js/page-transition.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
-  </head>
+</head>
 
-  <body>
-    <header class="main-header">
-      <div class="header-content">
-        <img src="../assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
-        <span class="brand-name">GameStore</span>
-      </div>
-    </header>
-    <div class="container">
-      <div class="welcome-container">
-        <h1>Hello.</h1>
-        <div id="user-data"></div>
-        <a href="../index.html" class="bye">Back</a>
-      </div>
+<body>
+
+    <!-- ALL OF THIS IS A PLACEHOLDER -->
+     
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Authentication Required</h2>
+            <p>You need to be signed in to access the marketplace.</p>
+            <div class="modal-buttons">
+                <a href="login.html" class="modal-btn primary">Log In</a>
+                <a href="../index.html" class="modal-btn secondary">Sign Up</a>
+            </div>
+        </div>
     </div>
-  </body>
+
+    <header class="main-header">
+        <div class="header-content">
+            <img src="../assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
+            <span class="brand-name">GameStore</span>
+        </div>
+    </header>
+    <div class="loading" id="loading">Loading...</div>
+    <div class="container">
+        <div class="welcome-container">
+            <h1>Hello.</h1>
+            <div id="user-data"></div>
+            <button onclick="handleSignOut()" class="bye">Sign Out</button>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/marketplace.js"></script>
+</body>
+
 </html>

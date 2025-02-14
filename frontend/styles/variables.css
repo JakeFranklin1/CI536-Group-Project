@@ -34,7 +34,7 @@
 ----------------------------------------------------------------------------- */
 :root {
   /* Fonts */
-  --font--family: "Satoshi", system-ui, sans-serif;
+  --font--family: "Roboto", system-ui, sans-serif;
   /* Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif */
 
   --font--style: normal;
