@@ -1,5 +1,3 @@
-**ADMIN LOGIN: USER = a@a.com PASS: a**
-
 # Environment Setup Guide
 
 ## 1. Install Required Software
