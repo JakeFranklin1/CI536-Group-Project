@@ -32,18 +32,23 @@ a {
 
 /* HEADER */
 .main-header {
-  position: absolute;
-  top: 0px;
-  margin-top: 16px;
-  left: 24px;
-  z-index: 1000;
-}
+    position: absolute;
+    top: 0px;
+    margin-top: 16px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    padding: 0 24px;
+    width: 100%
+  }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto;
+  }
 
 .logo {
   width: 52px;
@@ -102,12 +107,12 @@ a {
   }
 
   .main-header {
-    width: 100%;
-    background-color: #ffffff;
+    padding: 12px 24px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 12px 0px 12px 24px;
-    left: 0px;
+    background-color: #ffffff;
+    margin-top: 0;
   }
+
 
   .header-content {
     max-width: 1200px;
@@ -116,9 +121,9 @@ a {
 }
 
 @media screen and (max-width: 480px) {
-  .main-header {
-    padding: 12px 16px;
-  }
+    .main-header {
+        padding: 12px 16px;
+      }
 
   .logo {
     width: 40px;
