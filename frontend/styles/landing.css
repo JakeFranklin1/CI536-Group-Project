@@ -86,7 +86,6 @@ a {
   object-position: 100% center;
 }
 
-
 @media screen and (max-width: 1200px) {
   .video-container video {
     object-position: 90% center;

@@ -62,7 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           // Regular password validation
           if (value.length < 6) {
-            showError(input, errorSpan, "Password must be at least 6 characters");
+            showError(
+              input,
+              errorSpan,
+              "Password must be at least 6 characters"
+            );
           } else {
             showSuccess(input, errorSpan);
           }
