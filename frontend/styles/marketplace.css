@@ -4,6 +4,8 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-container {
@@ -43,24 +45,38 @@
 .bye:active {
   color: #004999;
 }
-
 .loading {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1500;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  visibility: visible;
 }
 
-.loading::after {
-  content: "Loading...";
-  font-size: var(--font--size-regular);
-  color: var(--text-color);
+/* Hide main content while loading */
+.loading ~ .container {
+  visibility: hidden;
+}
+
+/* Show content only after loading is complete */
+.loading[style*="display: none"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading[style*="display: none"] ~ .container {
+  visibility: visible;
 }
 
 .hidden {
