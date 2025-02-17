@@ -150,6 +150,7 @@
 .form-footer {
   margin-top: 1.5rem;
   font-size: 1.15rem;
+  margin-bottom: 0;
 }
 
 .form-footer a {
@@ -191,8 +192,8 @@
 
 @media screen and (max-width: 768px) {
   .form-container {
-    max-width: none; /* Change from 100% */
-    width: 100%; /* Change from 70% */
+    max-width: none;
+    width: 100%;
     padding: 0 24px;
     margin: 48px auto;
     justify-content: flex-start;
@@ -201,7 +202,7 @@
 
   .container {
     width: 100%;
-    padding: 0; /* Add this */
+    padding: 0;
     box-sizing: border-box;
   }
 
@@ -216,6 +217,50 @@
 
   .form-footer {
     font-size: 1rem;
+  }
+}
+
+/* Special media query for small laptops */
+@media screen and (max-height: 700px) and (orientation: landscape) {
+
+  .form-container {
+    padding: 16px 48px;
+    height: auto;
+    margin-top: 60px;
+    max-width: 700px; /* Added max-width for consistency */
+    width: 70%; /* Added width for better scaling */
+  }
+
+  .form-group {
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.25rem;
+  }
+
+  .form-footer {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  #hero-big {
+    font-size: 2.25rem;
+  }
+
+  #hero-small {
+    font-size: 0.9rem;
   }
 }
 
