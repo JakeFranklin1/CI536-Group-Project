@@ -222,13 +222,13 @@
 
 /* Special media query for small laptops */
 @media screen and (max-height: 700px) and (orientation: landscape) {
-  .form-container {
-    padding: 16px 48px;
-    height: auto;
-    margin-top: 60px;
-    max-width: 700px; /* Added max-width for consistency */
-    width: 70%; /* Added width for better scaling */
-  }
+    .form-container {
+        padding: 16px 48px;
+        height: auto;
+        margin-top: 60px;
+        max-width: 700px; /* Added max-width for consistency */
+        width: 70%; /* Added width for better scaling */
+    }
 
     .form-group {
         gap: 0.25rem;
