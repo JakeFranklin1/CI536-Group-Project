@@ -7,8 +7,6 @@ For both Windows & macOS, install:
 - [Node.js (v18 or later)](https://nodejs.org/)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Git (Windows)](https://git-scm.com/download/win) | [Git (macOS)](https://git-scm.com/download/mac)
-- [Supabase CLI](https://supabase.com/docs/guides/cli)
-- [PostgreSQL](https://www.postgresql.org/download/)
 
 ## VS Code Extensions (Recommended Plugins)
 
@@ -25,9 +23,7 @@ Inside VS Code, install the following extensions:
 
 ## 2. Clone the GitHub Repository
 
-```bash
-git clone https://github.com/JakeFranklin1/CI536-Group-Project.git
-```
+https://github.com/user-attachments/assets/ddfe203f-28a2-4a81-9b9f-19f384aa59fd
 
 ## 3. Install Project Dependencies
 
@@ -64,6 +60,10 @@ Since multiple people are coding, **we need a clear Git workflow** to prevent co
 - **Main branch** (`main`)
   - Contains stable code
   - No direct commits allowed
+ 
+- **Develop branch** (`develop`)
+  - Contains potentially unstable code
+  - Used to detect clashes before merging with Main
 
 ### Development Branches
 
@@ -91,7 +91,7 @@ git commit -m "Add login functionality"
 git push origin feature-login
 
 # When ready to merge
-git checkout main
-git pull origin main
+git checkout develop
+git pull origin develop
 git merge feature-login
 ```
