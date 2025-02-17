@@ -45,6 +45,7 @@
 .bye:active {
     color: #004999;
 }
+
 .loading {
     font-size: 3rem;
     position: fixed;
