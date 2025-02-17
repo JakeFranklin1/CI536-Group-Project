@@ -1,19 +1,20 @@
 :root {
-    --grid-column-count: 12;
-    --grid-gap: 22px;
+  --grid-column-count: 12;
+  --grid-gap: 22px;
 }
 
 body {
-    display: grid;
-    grid-template-columns: repeat(var(--grid-column-count), 1fr);
-    gap: var(--grid-gap);
-    margin: 0 auto; /* Center the content */
-    padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-column-count), 1fr);
+  gap: var(--grid-gap);
+  margin: 0 auto; /* Center the content */
+  padding: 0;
 }
 
-.header, .footer {
-    grid-column: 1 / span 12;
-    width: 100%;
+.header,
+.footer {
+  grid-column: 1 / span 12;
+  width: 100%;
 }
 /* 
 .grid-overlay {
