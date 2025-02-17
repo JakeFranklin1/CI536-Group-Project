@@ -47,6 +47,13 @@ npm run dev
 
 https://github.com/user-attachments/assets/36eb23cf-f7c9-481b-a5fd-0e327fbc4967
 
+## 6. Switch to deploy branch
+
+```bash
+git checkout develop
+git pull origin develop
+```
+
 # Additional Notes
 
 ## Git Workflow for Collaboration
