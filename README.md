@@ -58,9 +58,10 @@ Since multiple people are coding, **we need a clear Git workflow** to prevent co
 ### Main Branches
 
 - **Main branch** (`main`)
+
   - Contains stable code
   - No direct commits allowed
- 
+
 - **Develop branch** (`develop`)
   - Contains potentially unstable code
   - Used to detect clashes before merging with Main
