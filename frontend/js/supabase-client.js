@@ -14,7 +14,7 @@ const supabaseUrl = "https://qhyflzufryzcwmqjiyjv.supabase.co";
  *              It has limited permissions and should not be used for sensitive operations.
  */
 const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeWZsenVmcnl6Y3dtcWppeWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkzNjA3NTksImV4cCI6MjA1NDkzNjc1OX0.wOO5F7EU-C4ZZnBiVHpPsOp4HDagvOfBqUZdqP56rU4";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeWZsenVmcnl6Y3dtcWppeWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkzNjA3NTksImV4cCI6MjA1NDkzNjc1OX0.wOO5F7EU-C4ZZnBiVHpPsOp4HDagvOfBqUZdqP56rU4";
 
 /**
  * @constant {object} supabase

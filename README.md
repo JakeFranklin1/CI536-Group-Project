@@ -59,24 +59,24 @@ Since multiple people are coding, **we need a clear Git workflow** to prevent co
 
 - **Main branch** (`main`)
 
-  - Contains stable code
-  - No direct commits allowed
+    - Contains stable code
+    - No direct commits allowed
 
 - **Develop branch** (`develop`)
-  - Contains potentially unstable code
-  - Used to detect clashes before merging with Main
+    - Contains potentially unstable code
+    - Used to detect clashes before merging with Main
 
 ### Development Branches
 
 - **Feature branches** (`feature-xyz`)
-  - Each member works on a separate branch
-  - Named according to feature being developed
+    - Each member works on a separate branch
+    - Named according to feature being developed
 
 ### Maintenance Branches
 
 - **Bug fix branches** (`bugfix-xyz`)
-  - Used specifically for fixing issues
-  - Named according to bug being fixed
+    - Used specifically for fixing issues
+    - Named according to bug being fixed
 
 Example workflow:
 

@@ -1,55 +1,55 @@
 name: Code Quality Check
 on:
-  pull_request:
-    branches: [main, develop]
-  push:
-    branches: [main, develop]
+    pull_request:
+        branches: [main, develop]
+    push:
+        branches: [main, develop]
 jobs:
-  code-quality:
-    name: Code Quality
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
+    code-quality:
+        name: Code Quality
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.head_ref }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: "npm"
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  cache: "npm"
 
-      - name: Install Dependencies
-        run: npm ci
+            - name: Install Dependencies
+              run: npm ci
 
-      - name: Run Prettier to Fix Formatting
-        run: npm run format
+            - name: Run Prettier to Fix Formatting
+              run: npm run format
 
-      - name: Run ESLint to Fix Issues
-        run: npm run lint:fix
+            - name: Run ESLint to Fix Issues
+              run: npm run lint:fix
 
-      - name: Run ESLint to Check Code
-        run: npm run lint
+            - name: Run ESLint to Check Code
+              run: npm run lint
 
-      - name: Commit Changes
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git diff --quiet && git diff --staged --quiet || git commit -m "style: format code with prettier and eslint"
+            - name: Commit Changes
+              run: |
+                  git config --global user.name 'github-actions[bot]'
+                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+                  git add -A
+                  git diff --quiet && git diff --staged --quiet || git commit -m "style: format code with prettier and eslint"
 
-      - name: Push Changes
-        run: git push
+            - name: Push Changes
+              run: git push
 
-      - name: Report Status
-        if: always()
-        run: |
-          echo "✨ Workflow Summary:"
-          echo "Repository: ${{ github.repository }}"
-          echo "Branch: ${{ github.ref }}"
-          echo "Status: ${{ job.status }}"
-          echo "Run ID: ${{ github.run_id }}"
-          echo "Triggered by: ${{ github.actor }}"
+            - name: Report Status
+              if: always()
+              run: |
+                  echo "✨ Workflow Summary:"
+                  echo "Repository: ${{ github.repository }}"
+                  echo "Branch: ${{ github.ref }}"
+                  echo "Status: ${{ job.status }}"
+                  echo "Run ID: ${{ github.run_id }}"
+                  echo "Triggered by: ${{ github.actor }}"

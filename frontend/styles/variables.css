@@ -3,58 +3,58 @@
 
 /* Any fonts we want to use in here should be declared, use this as an example */
 @font-face {
-  font-family: "Satoshi";
-  src: url("../fonts/Satoshi-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Satoshi";
+    src: url("../fonts/Satoshi-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "Satoshi";
-  src: url("../fonts/Satoshi-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Satoshi";
+    src: url("../fonts/Satoshi-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "Satoshi";
-  src: url("../fonts/Satoshi-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
+    font-family: "Satoshi";
+    src: url("../fonts/Satoshi-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "Satoshi";
-  src: url("../fonts/Satoshi-Black.otf") format("opentype");
-  font-weight: 900;
-  font-style: normal;
+    font-family: "Satoshi";
+    src: url("../fonts/Satoshi-Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
 }
 
 /* Variables
 ----------------------------------------------------------------------------- */
 :root {
-  /* Fonts */
-  --font--family: "Roboto", system-ui, sans-serif;
-  /* Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif */
+    /* Fonts */
+    --font--family: "Roboto", system-ui, sans-serif;
+    /* Satoshi, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif */
 
-  --font--style: normal;
-  --font--weight: 500;
-  --font--feature-settings: "liga", "ss02", "ss03", "ss04", "ss06";
-  --font--feature-settings-no-stylized-numeral-8: "ss06" 0;
+    --font--style: normal;
+    --font--weight: 500;
+    --font--feature-settings: "liga", "ss02", "ss03", "ss04", "ss06";
+    --font--feature-settings-no-stylized-numeral-8: "ss06" 0;
 
-  /* Use these for your text sizes */
-  --font--size-huge: clamp(36px, 5.14vw, 5.14vw);
-  --font--size-large: clamp(26px, 3.81vw, 3.81vw);
-  --font--size-medium: 26px;
-  --font--size-regular: 16px;
-  --font--size-small: 14px;
-  --font--size-regular-line-height: 1.25;
+    /* Use these for your text sizes */
+    --font--size-huge: clamp(36px, 5.14vw, 5.14vw);
+    --font--size-large: clamp(26px, 3.81vw, 3.81vw);
+    --font--size-medium: 26px;
+    --font--size-regular: 16px;
+    --font--size-small: 14px;
+    --font--size-regular-line-height: 1.25;
 
-  /* Primary Colours */
-  --accent-color: #005eff;
-  --text-color: #000000;
-  --background-color: #ffffff;
-  --secondary-text-color: #00000051;
+    /* Primary Colours */
+    --accent-color: #005eff;
+    --text-color: #000000;
+    --background-color: #ffffff;
+    --secondary-text-color: #00000051;
 
-  /* Secondary Colours */
+    /* Secondary Colours */
 }

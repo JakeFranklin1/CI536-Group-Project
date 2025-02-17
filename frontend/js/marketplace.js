@@ -15,7 +15,7 @@ import supabase from "./supabase-client.js";
  * @returns {Promise<void>}
  */
 window.handleSignOut = async () => {
-  await signOut();
+    await signOut();
 };
 
 /**
@@ -27,55 +27,55 @@ window.handleSignOut = async () => {
  * @returns {Promise<void>}
  */
 async function initializeMarketplace() {
-  const loadingElement = document.getElementById("loading");
-  const userDataContainer = document.getElementById("user-data");
+    const loadingElement = document.getElementById("loading");
+    const userDataContainer = document.getElementById("user-data");
 
-  try {
-    /**
-     * @constant {boolean} isAuthenticated
-     * @description Checks if the user is authenticated. If not, the function returns early,
-     *              preventing further execution.
-     */
-    const isAuthenticated = await checkAuth();
-    if (!isAuthenticated) return;
+    try {
+        /**
+         * @constant {boolean} isAuthenticated
+         * @description Checks if the user is authenticated. If not, the function returns early,
+         *              preventing further execution.
+         */
+        const isAuthenticated = await checkAuth();
+        if (!isAuthenticated) return;
 
-    /**
-     * @constant {object} userResponse
-     * @description Fetches the user data from Supabase.
-     */
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
+        /**
+         * @constant {object} userResponse
+         * @description Fetches the user data from Supabase.
+         */
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.getUser();
 
-    if (error) throw error;
+        if (error) throw error;
 
-    if (user) {
-      // Extract only needed user data
-      const filteredUserData = {
-        email: user.email,
-        id: user.id,
-        confirmed_at: user.confirmed_at,
-      };
+        if (user) {
+            // Extract only needed user data
+            const filteredUserData = {
+                email: user.email,
+                id: user.id,
+                confirmed_at: user.confirmed_at,
+            };
 
-      userDataContainer.innerHTML = `
+            userDataContainer.innerHTML = `
         <div class="user-info">
           <p><strong>Email:</strong> ${filteredUserData.email}</p>
           <p><strong>ID:</strong> ${filteredUserData.id}</p>
           <p><strong>Confirmed At:</strong> ${filteredUserData.confirmed_at}</p>
         </div>
       `;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    userDataContainer.innerHTML = `
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        userDataContainer.innerHTML = `
                     <div class="error-message">
                         Failed to load user data. Please try again later.
                     </div>
                 `;
-  } finally {
-    loadingElement.style.display = "none";
-  }
+    } finally {
+        loadingElement.style.display = "none";
+    }
 }
 
 /**

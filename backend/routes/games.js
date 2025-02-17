@@ -15,15 +15,15 @@ const igdbService = require("../services/igdbService");
  * @returns {Error} 500 - Unexpected error
  */
 router.get("/", async (req, res) => {
-  try {
-    // Call the IGDB service to get popular games
-    const games = await igdbService.getPopularGames();
-    // Respond with the list of popular games
-    res.json(games);
-  } catch (error) {
-    // Handle any errors by responding with a 500 status and error message
-    res.status(500).json({ error: error.message });
-  }
+    try {
+        // Call the IGDB service to get popular games
+        const games = await igdbService.getPopularGames();
+        // Respond with the list of popular games
+        res.json(games);
+    } catch (error) {
+        // Handle any errors by responding with a 500 status and error message
+        res.status(500).json({ error: error.message });
+    }
 });
 
 /**
@@ -37,52 +37,52 @@ router.get("/", async (req, res) => {
  * @returns {Error} 500 - Unexpected error
  */
 router.get("/search/:query", async (req, res) => {
-  try {
-    // Decode the search query from the URL
-    const searchQuery = decodeURIComponent(req.params.query);
-    // Get the limit from the query parameters or default to 5
-    const limit = parseInt(req.query.limit) || 5;
+    try {
+        // Decode the search query from the URL
+        const searchQuery = decodeURIComponent(req.params.query);
+        // Get the limit from the query parameters or default to 5
+        const limit = parseInt(req.query.limit) || 5;
 
-    // Validate the search query
-    if (!searchQuery || searchQuery.length < 2) {
-      return res.status(400).json({
-        error: "Search query must be at least 2 characters",
-        endpoint: "/api/games/search",
-        method: "GET",
-        query: searchQuery,
-      });
+        // Validate the search query
+        if (!searchQuery || searchQuery.length < 2) {
+            return res.status(400).json({
+                error: "Search query must be at least 2 characters",
+                endpoint: "/api/games/search",
+                method: "GET",
+                query: searchQuery,
+            });
+        }
+
+        console.log("Processing search:", {
+            query: searchQuery,
+            limit: limit,
+        });
+
+        // Call the IGDB service to search for games
+        const games = await igdbService.searchGames(searchQuery, limit);
+
+        // If no games are found, respond with an empty array
+        if (!games || games.length === 0) {
+            return res.json([]);
+        }
+
+        // Respond with the list of games matching the search query
+        res.json(games);
+    } catch (error) {
+        console.error("Search route error:", {
+            query: req.params.query,
+            error: error.message,
+            stack: error.stack,
+        });
+
+        // Handle any errors by responding with a 500 status and error message
+        res.status(500).json({
+            error: error.message,
+            endpoint: "/api/games/search",
+            method: "GET",
+            query: req.params.query,
+        });
     }
-
-    console.log("Processing search:", {
-      query: searchQuery,
-      limit: limit,
-    });
-
-    // Call the IGDB service to search for games
-    const games = await igdbService.searchGames(searchQuery, limit);
-
-    // If no games are found, respond with an empty array
-    if (!games || games.length === 0) {
-      return res.json([]);
-    }
-
-    // Respond with the list of games matching the search query
-    res.json(games);
-  } catch (error) {
-    console.error("Search route error:", {
-      query: req.params.query,
-      error: error.message,
-      stack: error.stack,
-    });
-
-    // Handle any errors by responding with a 500 status and error message
-    res.status(500).json({
-      error: error.message,
-      endpoint: "/api/games/search",
-      method: "GET",
-      query: req.params.query,
-    });
-  }
 });
 
 // Export the router to be used in other parts of the application

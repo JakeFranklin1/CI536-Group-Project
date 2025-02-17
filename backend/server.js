@@ -37,28 +37,28 @@ app.use("/api/auth", authRouter); // Use authRouter for routes starting with /ap
 
 // User Registration
 app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
-  const { user, error } = await supabase.auth.signUp({ email, password });
-  if (error) return res.status(400).json({ error: error.message });
-  res.status(200).json({ user });
+    const { email, password } = req.body;
+    const { user, error } = await supabase.auth.signUp({ email, password });
+    if (error) return res.status(400).json({ error: error.message });
+    res.status(200).json({ user });
 });
 
 // User Login
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const { user, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  if (error) return res.status(400).json({ error: error.message });
-  res.status(200).json({ user });
+    const { email, password } = req.body;
+    const { user, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+    if (error) return res.status(400).json({ error: error.message });
+    res.status(200).json({ user });
 });
 
 // User Logout
 app.post("/logout", async (req, res) => {
-  const { error } = await supabase.auth.signOut();
-  if (error) return res.status(400).json({ error: error.message });
-  res.status(200).json({ message: "Logged out successfully" });
+    const { error } = await supabase.auth.signOut();
+    if (error) return res.status(400).json({ error: error.message });
+    res.status(200).json({ message: "Logged out successfully" });
 });
 
 /**
@@ -74,25 +74,25 @@ app.post("/logout", async (req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  // Log the error details to the console
-  console.error("Server Error:", {
-    message: err.message,
-    stack: err.stack,
-    timestamp: new Date().toISOString(),
-  });
+    // Log the error details to the console
+    console.error("Server Error:", {
+        message: err.message,
+        stack: err.stack,
+        timestamp: new Date().toISOString(),
+    });
 
-  // Send a 500 Internal Server Error response with error details
-  res.status(500).json({
-    error: "Something went wrong!",
-    requestId: req.id,
-    path: req.path,
-  });
+    // Send a 500 Internal Server Error response with error details
+    res.status(500).json({
+        error: "Something went wrong!",
+        requestId: req.id,
+        path: req.path,
+    });
 });
 
 // Start Server
 const server = app.listen(PORT, () => {
-  // Log server start details to the console
-  console.log(`
+    // Log server start details to the console
+    console.log(`
     🚀 Server running on port ${PORT}
     📁 Frontend files served from: ${path.join(__dirname, "../frontend")}
     🌐 API endpoints available at: http://localhost:${PORT}/api
@@ -108,15 +108,15 @@ const server = app.listen(PORT, () => {
  * @param {Error} error - The error object
  */
 server.on("error", (error) => {
-  if (error.code === "EADDRINUSE") {
-    // Log error message if the port is already in use
-    console.error(
-      `Port ${PORT} is already in use. Please use a different port.`
-    );
-    process.exit(1); // Exit the process with a failure code
-  } else {
-    throw error; // Rethrow the error if it's not EADDRINUSE
-  }
+    if (error.code === "EADDRINUSE") {
+        // Log error message if the port is already in use
+        console.error(
+            `Port ${PORT} is already in use. Please use a different port.`
+        );
+        process.exit(1); // Exit the process with a failure code
+    } else {
+        throw error; // Rethrow the error if it's not EADDRINUSE
+    }
 });
 
 /**
@@ -126,6 +126,6 @@ server.on("error", (error) => {
  * @param {Error} error - The error object
  */
 process.on("uncaughtException", (error) => {
-  // Log uncaught exceptions to the console
-  console.error("🔥 Uncaught Exception:", error);
+    // Log uncaught exceptions to the console
+    console.error("🔥 Uncaught Exception:", error);
 });
