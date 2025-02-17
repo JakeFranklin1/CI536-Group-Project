@@ -51,14 +51,20 @@ async function initializeMarketplace() {
     if (error) throw error;
 
     if (user) {
+      // Extract only needed user data
+      const filteredUserData = {
+        email: user.email,
+        id: user.id,
+        confirmed_at: user.confirmed_at,
+      };
+
       userDataContainer.innerHTML = `
-                        <div class="user-info">
-                            <p><strong>Email:</strong> ${user.email}</p>
-                            <p><strong>Member since:</strong> ${new Date(
-                              user.created_at
-                            ).toLocaleDateString()}</p>
-                        </div>
-                    `;
+        <div class="user-info">
+          <p><strong>Email:</strong> ${filteredUserData.email}</p>
+          <p><strong>ID:</strong> ${filteredUserData.id}</p>
+          <p><strong>Confirmed At:</strong> ${filteredUserData.confirmed_at}</p>
+        </div>
+      `;
     }
   } catch (error) {
     console.error("Error:", error);
