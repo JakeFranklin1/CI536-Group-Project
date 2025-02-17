@@ -222,7 +222,6 @@
 
 /* Special media query for small laptops */
 @media screen and (max-height: 700px) and (orientation: landscape) {
-
   .form-container {
     padding: 16px 48px;
     height: auto;
