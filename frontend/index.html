@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>GameStore Sign Up</title>
 
     <!-- Meta -->
@@ -10,19 +11,10 @@
     <meta name="theme-color" content="#000000" />
 
     <!-- Favicons -->
-    <link
-      rel="icon"
-      type="image/png"
-      href="/assets/favicons/favicon-96x96.png"
-      sizes="96x96"
-    />
+    <link rel="icon" type="image/png" href="/assets/favicons/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg" />
     <link rel="shortcut icon" href="/assets/favicons/favicon.ico" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/assets/favicons/apple-touch-icon.png"
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="MyWebSite" />
     <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
@@ -33,115 +25,80 @@
     <link rel="stylesheet" href="styles/variables.css" />
 
     <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-  </head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
 
-  <body>
+<body>
     <!-- Nav -->
     <header class="main-header">
-      <div class="header-content">
-        <img src="assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
-        <span class="brand-name">GameStore</span>
-      </div>
+        <div class="header-content">
+            <img src="assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
+            <span class="brand-name">GameStore</span>
+        </div>
     </header>
 
     <!-- Main container -->
     <div class="container">
-      <div class="form-container">
-        <p id="hero-small">Welcome to GameStore</p>
-        <h1 id="hero-big">Sign Up Now.</h1>
+        <div class="form-container">
+            <p id="hero-small">Welcome to GameStore</p>
+            <h1 id="hero-big">Sign Up Now.</h1>
 
-        <!-- Form -->
-        <form class="signup-form">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              placeholder="Enter your full name"
-              name="name"
-              required
-              aria-label="Full Name"
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="you@example.com"
-              name="email"
-              required
-              aria-label="Email Address"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="At least 6 characters"
-              name="password"
-              required
-              aria-label="Password"
-            />
-          </div>
-          <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
-            <input
-              type="password"
-              id="confirm-password"
-              placeholder="Re-enter your password"
-              name="confirm-password"
-              required
-              aria-label="Confirm Password"
-            />
-          </div>
-          <button type="submit" id="register-btn" class="submit-btn">
-            Sign Up
-          </button>
-        </form>
-        <p class="form-footer">
-          Already have an account? <a href="pages/login.html">Log in.</a>
-        </p>
-      </div>
+            <!-- Form -->
+            <form class="signup-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" name="name" required
+                        aria-label="Full Name" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" name="email" required
+                        aria-label="Email Address" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="At least 6 characters" name="password" required
+                        aria-label="Password" />
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Re-enter your password"
+                        name="confirm-password" required aria-label="Confirm Password" />
+                </div>
+                <button type="submit" id="register-btn" class="submit-btn">
+                    Sign Up
+                </button>
+            </form>
+            <p class="form-footer">
+                Already have an account? <a href="pages/login.html">Log in.</a>
+            </p>
+        </div>
 
-      <!-- Video -->
-      <div class="video-container" id="video-container">
-        <!-- Video will be loaded here by JavaScript -->
-      </div>
+        <!-- Video -->
+        <div class="video-container" id="video-container">
+            <!-- Video will be loaded here by JavaScript -->
+        </div>
     </div>
 
     <!-- Scripts -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"
-      defer
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
     <script type="module" src="./js/form-validation.js" defer></script>
     <script type="module" src="./js/page-transition.js" defer></script>
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        if (window.innerWidth > 768) {
-          const videoContainer = document.getElementById("video-container");
-          const videoElement = document.createElement("video");
-          videoElement.src = "../assets/videos/video-optimised.mp4";
-          videoElement.autoplay = true;
-          videoElement.muted = true;
-          videoElement.loop = true;
-          videoContainer.appendChild(videoElement);
-        }
-      });
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.innerWidth > 768) {
+                const videoContainer = document.getElementById("video-container");
+                const videoElement = document.createElement("video");
+                videoElement.src = "../assets/videos/video-optimised.mp4";
+                videoElement.autoplay = true;
+                videoElement.muted = true;
+                videoElement.loop = true;
+                videoContainer.appendChild(videoElement);
+            }
+        });
     </script>
-  </body>
+</body>
+
 </html>
