@@ -83,7 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     const validatePassword = (input, value, errorSpan) => {
         if (value.length < 6) {
-            showError(input, errorSpan, "Password must be at least 6 characters");
+            showError(
+                input,
+                errorSpan,
+                "Password must be at least 6 characters"
+            );
         } else {
             showSuccess(input, errorSpan);
         }
@@ -217,7 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (error) {
                 if (error.message.includes("Invalid login credentials")) {
-                    showError(form.querySelector("#password"), form.querySelector("#password").nextElementSibling, "Incorrect email or password.");
+                    showError(
+                        form.querySelector("#password"),
+                        form.querySelector("#password").nextElementSibling,
+                        "Incorrect email or password."
+                    );
                 }
                 throw error;
             }

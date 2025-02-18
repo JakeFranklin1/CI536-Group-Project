@@ -49,7 +49,10 @@ export async function checkAuth() {
 
 export async function checkAuthAndRedirect(redirectPath) {
     try {
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.getUser();
 
         if (error) {
             console.error("Auth check error:", error.message);
