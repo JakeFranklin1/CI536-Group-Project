@@ -99,6 +99,13 @@
             }
         });
     </script>
+    <script type="module">
+        import { checkAuthAndRedirect } from "./js/services/auth-service.js";
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await checkAuthAndRedirect("./pages/marketplace.html");
+        });
+    </script>
 </body>
 
 </html>
