@@ -47,6 +47,24 @@ export async function checkAuth() {
     }
 }
 
+export async function checkAuthAndRedirect(redirectPath) {
+    try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+
+        if (error) {
+            console.error("Auth check error:", error.message);
+            return;
+        }
+
+        if (user) {
+            console.log("User authenticated, redirecting...");
+            window.location.href = redirectPath;
+        }
+    } catch (error) {
+        console.error("Authentication check failed:", error.message);
+    }
+}
+
 /**
  * @function getUserData
  * @description Retrieves the current user's data.

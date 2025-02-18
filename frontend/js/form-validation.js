@@ -29,72 +29,78 @@ document.addEventListener("DOMContentLoaded", () => {
         const errorSpan = input.parentNode.querySelector(".error-message");
 
         switch (input.id) {
-            case "name": {
-                // Name must be at least 2 characters long
-                if (value.length < 2) {
-                    showError(
-                        input,
-                        errorSpan,
-                        "Name must be at least 2 characters"
-                    );
-                } else {
-                    showSuccess(input, errorSpan);
-                }
+            case "name":
+                validateName(input, value, errorSpan);
                 break;
-            }
-
-            case "email": {
-                // Email must match standard email format
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) {
-                    showError(
-                        input,
-                        errorSpan,
-                        "Please enter a valid email address"
-                    );
-                } else {
-                    showSuccess(input, errorSpan);
-                }
+            case "email":
+                validateEmail(input, value, errorSpan);
                 break;
-            }
-
-            case "password": {
-                const email = document.getElementById("email").value;
-                // Special validation for test account
-                if (email === "a@a.com") {
-                    if (value.length < 1) {
-                        showError(input, errorSpan, "");
-                    } else {
-                        showSuccess(input, errorSpan);
-                    }
-                } else {
-                    // Regular password validation
-                    if (value.length < 6) {
-                        showError(
-                            input,
-                            errorSpan,
-                            "Password must be at least 6 characters"
-                        );
-                    } else {
-                        showSuccess(input, errorSpan);
-                    }
-                }
+            case "password":
+                validatePassword(input, value, errorSpan);
                 break;
-            }
-
-            case "confirm-password": {
-                // Confirmation password must match original password
-                const password = document.getElementById("password").value;
-                if (value !== password) {
-                    showError(input, errorSpan, "Passwords do not match");
-                } else {
-                    showSuccess(input, errorSpan);
-                }
+            case "confirm-password":
+                validateConfirmPassword(input, value, errorSpan);
                 break;
-            }
-
             default:
                 break;
+        }
+    };
+
+    /**
+     * Validates the name input field
+     * @param {HTMLInputElement} input - The input element to validate
+     * @param {string} value - The trimmed value of the input field
+     * @param {HTMLElement} errorSpan - The error message container
+     */
+    const validateName = (input, value, errorSpan) => {
+        if (value.length < 2) {
+            showError(input, errorSpan, "Name must be at least 2 characters");
+        } else {
+            showSuccess(input, errorSpan);
+        }
+    };
+
+    /**
+     * Validates the email input field
+     * @param {HTMLInputElement} input - The input element to validate
+     * @param {string} value - The trimmed value of the input field
+     * @param {HTMLElement} errorSpan - The error message container
+     */
+    const validateEmail = (input, value, errorSpan) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            showError(input, errorSpan, "Please enter a valid email address");
+        } else {
+            showSuccess(input, errorSpan);
+        }
+    };
+
+    /**
+     * Validates the password input field
+     * @param {HTMLInputElement} input - The input element to validate
+     * @param {string} value - The trimmed value of the input field
+     * @param {HTMLElement} errorSpan - The error message container
+     */
+    const validatePassword = (input, value, errorSpan) => {
+        if (value.length < 6) {
+            showError(input, errorSpan, "Password must be at least 6 characters");
+        } else {
+            showSuccess(input, errorSpan);
+        }
+    };
+
+    /**
+     * Validates the confirm password input field
+     * @param {HTMLInputElement} input - The input element to validate
+     * @param {string} value - The trimmed value of the input field
+     * @param {HTMLElement} errorSpan - The error message container
+     */
+    const validateConfirmPassword = (input, value, errorSpan) => {
+        const password = document.getElementById("password").value;
+        if (value !== password) {
+            showError(input, errorSpan, "Passwords do not match");
+        } else {
+            showSuccess(input, errorSpan);
         }
     };
 
@@ -141,84 +147,114 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isValid) {
             const submitButton = form.querySelector(".submit-btn");
             if (submitButton.id === "register-btn") {
-                // SIGNUP FORM SUBMISSION
-                submitButton.disabled = true;
-                submitButton.textContent = "Signing up...";
-
-                try {
-                    const { data, error } = await supabase.auth.signUp({
-                        email: form.querySelector("#email").value,
-                        password: form.querySelector("#password").value,
-                        options: {
-                            data: {
-                                full_name: form.querySelector("#name").value,
-                            },
-                        },
-                    });
-
-                    if (error) throw error;
-
-                    if (data.user) {
-                        // Show success message
-                        const successMessage = document.createElement("div");
-                        successMessage.className = "success-message";
-                        successMessage.textContent = "Successfully signed up!";
-                        form.insertBefore(successMessage, submitButton);
-
-                        // Clear form
-                        form.reset();
-                        inputs.forEach((input) => {
-                            input.classList.remove("success", "error");
-                            const errorSpan =
-                                input.parentNode.querySelector(
-                                    ".error-message"
-                                );
-                            errorSpan.style.display = "none";
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error:", error.message);
-                    const errorMessage = document.createElement("div");
-                    errorMessage.className = "error-message";
-                    errorMessage.textContent = error.message;
-                    errorMessage.style.display = "block";
-                    form.insertBefore(errorMessage, submitButton);
-                } finally {
-                    submitButton.disabled = false;
-                    submitButton.textContent = "Sign Up";
-                }
+                await handleSignUp(submitButton);
             } else if (submitButton.id === "login-btn") {
-                // LOGIN FORM SUBMISSION
-                submitButton.disabled = true;
-                submitButton.textContent = "Logging in...";
-
-                try {
-                    const { data, error } =
-                        await supabase.auth.signInWithPassword({
-                            email: form.querySelector("#email").value,
-                            password: form.querySelector("#password").value,
-                        });
-
-                    if (error) throw error;
-
-                    if (data.user) {
-                        // Redirect to marketplace
-                        window.location.href = "../pages/marketplace.html";
-                    }
-                } catch (error) {
-                    console.error("Login Error:", error.message);
-                    const errorMessage = document.createElement("div");
-                    errorMessage.className = "error-message";
-                    errorMessage.textContent = error.message;
-                    errorMessage.style.display = "block";
-                    form.insertBefore(errorMessage, submitButton);
-                } finally {
-                    submitButton.disabled = false;
-                    submitButton.textContent = "Log In";
-                }
+                await handleLogin(submitButton);
             }
         }
     });
+
+    /**
+     * Handles the sign-up process
+     * @param {HTMLButtonElement} submitButton - The submit button element
+     */
+    const handleSignUp = async (submitButton) => {
+        submitButton.disabled = true;
+        submitButton.textContent = "Signing up...";
+
+        try {
+            // Attempt signup first
+            const { data, error } = await supabase.auth.signUp({
+                email: form.querySelector("#email").value,
+                password: form.querySelector("#password").value,
+                options: {
+                    data: {
+                        full_name: form.querySelector("#name").value,
+                    },
+                },
+            });
+
+            if (error) {
+                // Check for existing user error
+                if (error.message.includes("User already registered")) {
+                    showError(
+                        form.querySelector("#email"),
+                        form.querySelector("#email").nextElementSibling,
+                        "Email is already registered"
+                    );
+                } else {
+                    throw error;
+                }
+                return;
+            }
+
+            if (data.user) {
+                showSuccessMessage("Successfully signed up!");
+                form.reset();
+                clearFormState();
+            }
+        } catch (error) {
+            console.error("Error:", error.message);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Sign Up";
+        }
+    };
+
+    /**
+     * Handles the login process
+     * @param {HTMLButtonElement} submitButton - The submit button element
+     */
+    const handleLogin = async (submitButton) => {
+        submitButton.disabled = true;
+        submitButton.textContent = "Logging in...";
+
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: form.querySelector("#email").value,
+                password: form.querySelector("#password").value,
+            });
+
+            if (error) {
+                if (error.message.includes("Invalid login credentials")) {
+                    showError(form.querySelector("#password"), form.querySelector("#password").nextElementSibling, "Incorrect email or password.");
+                }
+                throw error;
+            }
+
+            if (data.user) {
+                window.location.href = "../pages/marketplace.html";
+            }
+        } catch (error) {
+            console.error("Login Error:", error.message);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Log In";
+        }
+    };
+
+    /**
+     * Displays a success message after successful sign-up
+     * @param {string} message - The success message to display
+     */
+    const showSuccessMessage = (message) => {
+        const successMessage = document.createElement("div");
+        successMessage.className = "success-message";
+        successMessage.textContent = message;
+        form.insertBefore(successMessage, form.querySelector(".submit-btn"));
+    };
+
+    /**
+     * Clears the form state by removing success and error classes
+     * and hiding error messages
+     */
+    const clearFormState = () => {
+        inputs.forEach((input) => {
+            input.classList.remove("success", "error");
+            const errorSpan = input.parentNode.querySelector(".error-message");
+            errorSpan.style.display = "none";
+        });
+    };
 
     /**
      * Real-time validation setup
