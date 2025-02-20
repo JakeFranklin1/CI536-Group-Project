@@ -186,8 +186,10 @@ function generateGameCards(count) {
  * @listens DOMContentLoaded
  * @description Initializes the marketplace when the DOM is fully loaded.
  */
-document.addEventListener("DOMContentLoaded", () => {
-    initializeMarketplace();
+document.addEventListener("DOMContentLoaded", async () => {
+    // Call initializeMarketplace to check authentication and potentially show the modal
+    await initializeMarketplace();
+
     setSelectedNavItem();
     initializeMobileMenu();
     generateGameCards(24);

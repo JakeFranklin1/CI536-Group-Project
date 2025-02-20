@@ -5,8 +5,8 @@
     <!-- Meta's -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About GameStore</title>
-    <meta name="description" content="Learn more about GameStore and the resources we use." />
+    <title>GameStore</title>
+    <meta name="description" content="Sign up to GameStore today!" />
     <meta name="theme-color" content="#000000" />
 
     <!-- Favicons -->
@@ -14,23 +14,42 @@
     <link rel="icon" type="image/svg+xml" href="../assets/favicons/favicon.svg" />
     <link rel="shortcut icon" href="../assets/favicons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="GameStore" />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
     <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../styles/about-main.css" />
+    <link rel="stylesheet" href="../styles/marketplace-main.css" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/page-transition.js"></script>
+    <script type="module" src="../js/marketplace.js"></script>
+    <script type="module" src="../js/dropdown.js"></script>
 </head>
 
 <body>
 
     <div class="loading" id="loading">Loading...</div>
 
+    <!-- Modal for users who aren't signed in -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Authentication Required</h2>
+            <p>You need to be signed in to access the marketplace.</p>
+            <div class="modal-buttons">
+                <a href="login.html" class="modal-btn primary">Log In</a>
+                <a href="../index.html" class="modal-btn secondary">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Header Content -->
+
     <header class="main-header">
         <div class="header-content">
             <div class="brand-container">
@@ -69,7 +88,7 @@
                     <h3>Settings</h3>
                     <ul>
                         <li>
-                            <a href="#">
+                            <a href="">
                                 <span class="icon-container"><i class="fa fa-user"></i></span>
                                 Profile
                             </a>
@@ -205,13 +224,16 @@
                 <!-- Talk about what the website is and its purpose here
                  Also talk about the resourcesused, which are: IGDB, Font Awesome, Google Fonts
                  I made an about.css (located in styles/layouts) which you can use for the CSS styling. -->
+                <div style="text-align: center; margin-top: 10em;">
+                    <a href="marketplace.html" style="font-size: 1.5em; color: rgb(255, 0, 0); text-decoration: none;">GO
+                        BACK</a>
+                </div>
             </div>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="../js/marketplace.js"></script>
-    <script type="module" src="../js/page-transition.js"></script>
 </body>
 
 </html>
