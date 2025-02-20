@@ -148,6 +148,13 @@ function initializeMobileMenu() {
     hamburger?.addEventListener("click", () => {
         hamburger.classList.toggle("active");
         sideNav?.classList.toggle("active");
+
+        // Remove box-shadow when active
+        if (hamburger.classList.contains("active")) {
+            hamburger.style.boxShadow = "none";
+        } else {
+            hamburger.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)"; // Restore default shadow
+        }
     });
 }
 
@@ -183,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeMarketplace();
     setSelectedNavItem();
     initializeMobileMenu();
-    generateGameCards(12);
+    generateGameCards(24);
 
     const brandContainer = document.querySelector(".brand-container");
     if (brandContainer) {

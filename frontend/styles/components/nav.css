@@ -176,10 +176,6 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.hamburger-menu:hover .line {
-    background: #ff3366;
-}
-
 @media (max-width: 768px) {
 
     .hamburger-menu {
