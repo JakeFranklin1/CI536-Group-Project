@@ -164,14 +164,14 @@ function initializeMobileMenu() {
  * @param {number} count - Number of cards to generate
  */
 function generateGameCards(count) {
-    const gamesGrid = document.querySelector('.games-grid');
+    const gamesGrid = document.querySelector(".games-grid");
 
     // Check if gamesGrid exists before proceeding
     if (gamesGrid) {
         const template = gamesGrid.innerHTML; // Save the original card as template
 
         // Clear the grid
-        gamesGrid.innerHTML = '';
+        gamesGrid.innerHTML = "";
 
         // Generate cards
         for (let i = 0; i < count; i++) {

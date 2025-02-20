@@ -43,15 +43,12 @@ a,
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-
     #current-section {
         font-size: var(--font--size-huge);
     }
 }
 
-
 @media (max-width: 768px) {
-
     #current-section {
         font-size: var(--font--size-huge);
         text-align: center;
@@ -65,6 +62,6 @@ a,
     }
 }
 
-    .hidden {
-        display: none;
-    }
+.hidden {
+    display: none;
+}
