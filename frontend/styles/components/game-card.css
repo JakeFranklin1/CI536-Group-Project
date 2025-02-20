@@ -78,7 +78,6 @@
     margin: 0;
 }
 
-
 @media (min-width: 1440px) {
     .games-grid {
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -109,8 +108,6 @@
 }
 
 @media (max-width: 768px) {
-
-
     #current-section {
         font-size: var(--font--size-huge);
         text-align: center;
