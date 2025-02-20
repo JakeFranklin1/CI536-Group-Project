@@ -141,6 +141,16 @@ function setSelectedNavItem() {
     });
 }
 
+function initializeMobileMenu() {
+    const hamburger = document.querySelector(".hamburger-menu");
+    const sideNav = document.querySelector(".side-nav");
+
+    hamburger?.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        sideNav?.classList.toggle("active");
+    });
+}
+
 /**
  * @listens DOMContentLoaded
  * @description Initializes the marketplace when the DOM is fully loaded.
@@ -148,6 +158,7 @@ function setSelectedNavItem() {
 document.addEventListener("DOMContentLoaded", () => {
     initializeMarketplace();
     setSelectedNavItem();
+    initializeMobileMenu();
 
     const brandContainer = document.querySelector(".brand-container");
     if (brandContainer) {
