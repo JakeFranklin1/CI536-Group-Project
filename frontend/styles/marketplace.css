@@ -1,4 +1,21 @@
-.container {
+
+body {
+    background-color: #0D0D0D;
+}
+
+.logo {
+    filter: brightness(0) invert(1); /* This will make the SVG white */
+}
+
+.brand-name {
+    color: white;
+}
+
+.cart-btn i {
+    color: #ffffff;
+}
+
+/* .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,6 +23,116 @@
     min-height: 100vh;
     position: relative;
     z-index: 1;
+} */
+
+/* Page Layout */
+.page-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+    padding-top: 84px; /* Height of header + margin */
+}
+
+/* Side Navigation */
+.side-nav {
+    font-family: 'Raleway', sans-serif;
+    background-color: #0D0D0D;
+    padding: 24px;
+    height: 100vh;
+    position: fixed;
+    width: 250px;
+    overflow-y: auto;
+}
+
+.filter-section ul li a {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    color: white;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+    background-color: #2a2a2a;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.filter-section {
+    margin-bottom: 24px;
+}
+
+.icon-container i {
+    font-size: 28px;
+    color: rgb(255, 255, 255);
+}
+
+.filter-section h3 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 12px;
+}
+
+/* .filter-section ul li a:hover {
+} */
+
+.filter-section ul li a:hover .icon-container {
+    background-color: white;
+}
+
+.filter-section ul li a:hover .icon-container i {
+    color: rgb(0, 0, 0);
+}
+
+/* Main Content */
+.main-content {
+    padding: 24px;
+    margin-left: 250px; /* Same as side-nav width */
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side-nav {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+    }
+
+    .side-nav.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+        padding: 16px;
+    }
 }
 
 .welcome-container {
