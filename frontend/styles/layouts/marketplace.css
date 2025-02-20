@@ -1,0 +1,67 @@
+body {
+    background-color: #0d0d0d;
+}
+
+/* This horror is only temporary, until one of us adds a the theme toggle. */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+a,
+.brand-name {
+    color: white;
+}
+
+.logo {
+    filter: brightness(0) invert(1); /* This will make the SVG white */
+}
+
+.main-content {
+    margin-left: 245px;
+}
+
+.page-layout {
+    min-height: 100vh;
+    padding-top: 84px;
+}
+
+#current-section {
+    font-family: "Poppins", sans-serif;
+    font-size: var(--font--size-large);
+    font-weight: 900;
+    color: white;
+    width: fit-content;
+    white-space: nowrap;
+    margin-bottom: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    #current-section {
+        font-size: var(--font--size-huge);
+    }
+}
+
+@media (max-width: 768px) {
+    #current-section {
+        font-size: var(--font--size-huge);
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,131 @@
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #0d0d0d; /* Match the body background */
+    padding: 16px 24px;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Brand container (left side) */
+.brand-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.brand-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.2s ease;
+    transform-origin: center;
+    cursor: pointer;
+}
+
+.brand-content:hover {
+    transform: scale(1.05) translateX(2.5%);
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+}
+
+.brand-name {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Search bar (center) */
+
+.search-bar {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    transition: max-width 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 0px 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.search-bar:focus-within {
+    max-width: 400px;
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+.search-btn:hover {
+    color: var(--primary-color);
+}
+
+/* Cart container (right side) */
+
+.cart-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.cart-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #ffffff;
+    transition: color 0.2s ease;
+}
+
+.cart-btn i {
+    font-size: 32px;
+}
+
+.cart-btn:hover {
+    color: #d5d5d5;
+}
+
+@media (max-width: 768px) {
+    .brand-name {
+        display: none;
+    }
+}

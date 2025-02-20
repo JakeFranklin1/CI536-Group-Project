@@ -1,0 +1,103 @@
+.dropdown-menu {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 24px;
+}
+
+.dropdown-btn {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content; /* Changed from 250px to fit-content */
+    padding: 12px 16px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    color: #333333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Added to prevent text wrapping */
+}
+
+.dropdown-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    display: none;
+    z-index: 100;
+    border: 1px solid #e0e0e0;
+}
+
+.dropdown-content button {
+    font-family: "Poppins", sans-serif;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    color: #333333;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-content button:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-content button i.fa-check {
+    color: #00b141;
+    margin-right: 8px;
+}
+.dropdown-menu.active .dropdown-content {
+    display: block;
+}
+
+.dropdown-menu.active .dropdown-btn i {
+    transform: rotate(180deg);
+    transition: transform 0.2s ease;
+}
+
+.dropdown-btn i {
+    padding-left: 8px;
+    font-weight: 400;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-menu.active .dropdown-btn {
+    width: 0px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .dropdown-btn {
+        margin: 0 auto;
+    }
+
+    .dropdown-content {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

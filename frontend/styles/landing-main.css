@@ -1,0 +1,12 @@
+/* layouts */
+@import url("layouts/landing.css");
+
+/* Resets */
+@import url("resets/normalize.css");
+@import url("resets/variables.css");
+
+/* Components */
+@import url("components/form.css");
+
+/* Utils */
+@import url("utils/general.css");

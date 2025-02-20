@@ -1,0 +1,39 @@
+/* General Styles */
+html {
+    font-family: "Roboto", sans-serif;
+    scroll-behavior: smooth;
+    transition: all 0.5s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0; /* Initially hide the body */
+    transition: opacity 0.3s ease-in-out;
+}
+
+body.fade-out {
+    opacity: 0;
+}
+
+body.fade-in {
+    opacity: 1; /* Fade in the body */
+}
+
+a {
+    text-decoration: none;
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
