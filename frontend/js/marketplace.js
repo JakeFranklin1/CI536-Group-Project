@@ -152,6 +152,30 @@ function initializeMobileMenu() {
 }
 
 /**
+ * @function generateGameCards
+ * @description Generates multiple game cards and adds them to the games grid
+ * @param {number} count - Number of cards to generate
+ */
+function generateGameCards(count) {
+    const gamesGrid = document.querySelector('.games-grid');
+
+    // Check if gamesGrid exists before proceeding
+    if (gamesGrid) {
+        const template = gamesGrid.innerHTML; // Save the original card as template
+
+        // Clear the grid
+        gamesGrid.innerHTML = '';
+
+        // Generate cards
+        for (let i = 0; i < count; i++) {
+            gamesGrid.innerHTML += template;
+        }
+    } else {
+        console.warn("Games grid not found on this page.");
+    }
+}
+
+/**
  * @listens DOMContentLoaded
  * @description Initializes the marketplace when the DOM is fully loaded.
  */
@@ -159,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeMarketplace();
     setSelectedNavItem();
     initializeMobileMenu();
+    generateGameCards(12);
 
     const brandContainer = document.querySelector(".brand-container");
     if (brandContainer) {

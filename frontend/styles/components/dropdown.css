@@ -78,7 +78,7 @@
 }
 
 .dropdown-menu.active .dropdown-btn {
-    display: none;
+    width: 0px;
 }
 
 .hidden {
