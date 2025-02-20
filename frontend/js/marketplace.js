@@ -58,28 +58,99 @@ async function initializeMarketplace() {
                 confirmed_at: user.confirmed_at,
             };
 
-            userDataContainer.innerHTML = `
-        <div class="user-info">
-          <p><strong>Email:</strong> ${filteredUserData.email}</p>
-          <p><strong>ID:</strong> ${filteredUserData.id}</p>
-          <p><strong>Confirmed At:</strong> ${filteredUserData.confirmed_at}</p>
-        </div>
-      `;
+            console.log("User Data:", filteredUserData);
         }
     } catch (error) {
         console.error("Error:", error);
         userDataContainer.innerHTML = `
-                    <div class="error-message">
-                        Failed to load user data. Please try again later.
-                    </div>
-                `;
+            <div class="error-message">
+                Failed to load user data. Please try again later.
+            </div>
+        `;
     } finally {
         loadingElement.style.display = "none";
     }
 }
 
 /**
+ * @function handleBrandClick
+ * @description Handles the click event on the brand container. Navigates to marketplace.html if not already there,
+ *              otherwise displays a toast message.
+ */
+function handleBrandClick() {
+    if (window.location.pathname.endsWith("marketplace.html")) {
+        showToast("You are already on the marketplace page.");
+    } else {
+        window.location.href = "marketplace.html";
+    }
+}
+
+/**
+ * @function showToast
+ * @description Displays a toast message.
+ * @param {string} message - The message to display in the toast.
+ */
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        document.body.removeChild(toast);
+    }, 3000);
+}
+
+/**
+ * @function setSelectedNavItem
+ * @description Sets the selected state for navigation items based on current page
+ */
+function setSelectedNavItem() {
+    const currentPath = window.location.pathname;
+    const allNavItems = document.querySelectorAll(".filter-section ul li");
+
+    // Remove selected class from all items
+    allNavItems.forEach((item) => item.classList.remove("selected"));
+
+    // Set selected based on current path
+    if (currentPath.includes("about.html")) {
+        document
+            .querySelector('a[href="about.html"]')
+            .parentElement.classList.add("selected");
+    } else if (currentPath.includes("profile.html")) {
+        document
+            .querySelector('a[href="profile.html"]')
+            .parentElement.classList.add("selected");
+    }
+
+    // Add click handlers for filter buttons
+    const filterButtons = document.querySelectorAll(".filter-section button");
+    filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            // Remove selected from ALL items across ALL filter sections
+            const allListItems =
+                document.querySelectorAll(".filter-section li");
+            allListItems.forEach((item) => item.classList.remove("selected"));
+
+            // Add selected to clicked item
+            button.parentElement.classList.add("selected");
+        });
+    });
+}
+
+/**
  * @listens DOMContentLoaded
  * @description Initializes the marketplace when the DOM is fully loaded.
  */
-document.addEventListener("DOMContentLoaded", initializeMarketplace);
+document.addEventListener("DOMContentLoaded", () => {
+    initializeMarketplace();
+    setSelectedNavItem();
+
+    const brandContainer = document.querySelector(".brand-container");
+    if (brandContainer) {
+        brandContainer.addEventListener("click", handleBrandClick);
+    }
+});
