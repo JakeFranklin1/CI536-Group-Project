@@ -38,6 +38,7 @@ a,
     color: white;
     width: fit-content;
     white-space: nowrap;
+    margin-top: 0;
     margin-bottom: 24px;
 }
 
@@ -64,4 +65,8 @@ a,
 
 .hidden {
     display: none;
+}
+
+.example-game {
+    display: none; /* Hide example game */
 }

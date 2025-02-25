@@ -24,17 +24,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="../js/page-transition.js"></script>
-    <script type="module" src="../js/marketplace.js"></script>
-    <script type="module" src="../js/dropdown.js"></script>
 </head>
 
 <body>
 
-    <div class="loading" id="loading">Loading...</div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
 
     <!-- Modal for users who aren't signed in -->
     <div id="auth-modal" class="modal hidden">
@@ -238,7 +235,7 @@
             </div>
 
             <div class="games-grid">
-                <div class="game-card">
+                <div class="game-card example-game">
                     <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Example Game" class="game-image">
                     <div class="game-details">
                         <div class="purchase-row">
@@ -257,8 +254,11 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/page-transition.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
+    <script type="module" src="../js/dropdown.js"></script>
 </body>
 
 </html>

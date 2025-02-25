@@ -126,10 +126,13 @@ class IGDBService {
                 fields
                     name,
                     summary,
-                    cover.*,
                     platforms.name,
+                    cover.url,
                     rating,
-                    first_release_date;
+                    total_rating,
+                    total_rating_count,
+                    first_release_date,
+                    genres.name;
                 search "${sanitizedQuery}";
                 where
                     version_parent = null
@@ -166,44 +169,56 @@ class IGDBService {
         }
     }
 
-    /**
+   /**
      * Get a list of popular games.
-     * @param {number} [limit=6] - Maximum number of results (default: 6)
+     * @param {number} [limit=12] - Maximum number of results (default: 12)
      * @returns {Promise<Array>} Array of popular game objects
      * @throws {Error} If the request fails
      */
-    async getPopularGames(limit = 6) {
-        try {
-            return await this.executeRequest(
-                "/games",
-                `
-                fields
-                    name,
-                    summary,
-                    cover.*,
-                    rating,
-                    total_rating,
-                    total_rating_count,
-                    follows,
-                    hypes,
-                    first_release_date,
-                    screenshots.*,
-                    genres.*;
-                where
-                    total_rating_count > 50
-                    & cover != null
-                    & total_rating > 70;
-                sort total_rating_count desc;
-                limit ${limit};
+   async getPopularGames(limit = 12) {
+    try {
+        const results = await this.executeRequest(
+            "/games",
             `
-            );
-        } catch (error) {
-            console.error("Error getting popular games:", error);
-            throw error;
-        }
-    }
+            fields
+                name,
+                summary,
+                platforms.name,
+                cover.url,
+                rating,
+                total_rating,
+                total_rating_count,
+                first_release_date,
+                screenshots.game,
+                screenshots.url,
+                genres.name;
+            where
+                total_rating_count > 50
+                & cover != null
+                & total_rating > 70;
+            sort total_rating_count desc;
+            limit ${limit};
+            `
+        );
 
-    // Additional methods should be added here, using executeRequest for API calls
+        // Transform the results to include properly formatted cover URLs
+        return results.map(game => ({
+            ...game,
+            cover: game.cover ? {
+                ...game.cover,
+                url: game.cover.url ?
+                    game.cover.url
+                        .replace("t_thumb", "t_cover_big")
+                        .replace("http:", "https:")
+                    : null
+            } : null
+        }));
+
+    } catch (error) {
+        console.error("Error getting popular games:", error);
+        throw error;
+    }
+}
 }
 
 module.exports = new IGDBService();

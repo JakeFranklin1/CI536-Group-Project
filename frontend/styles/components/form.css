@@ -61,6 +61,34 @@
     background: #ffffff;
 }
 
+.form-group input[type="date"] {
+    color: #757575;
+}
+
+.form-group input[type="date"]:focus,
+.form-group input[type="date"]:valid {
+    color: #000000;
+}
+
+.form-group input[type="date"]::-webkit-datetime-edit {
+    color: #757575;
+}
+
+.form-group input[type="date"]:focus::-webkit-datetime-edit,
+.form-group input[type="date"]:valid::-webkit-datetime-edit {
+    color: #000000;
+}
+
+.reset-password {
+    text-align: right;
+    margin-bottom: 1px;
+}
+
+.reset-password p {
+    font-size: 16px;
+    margin: 0;
+}
+
 /* Form States */
 
 .form-group input:focus {
@@ -136,6 +164,10 @@
     transition: all 0.4s ease;
 }
 
+#login-btn {
+    margin-top: 0;
+}
+
 .submit-btn:hover {
     background-color: #5e5e5e;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -148,19 +180,19 @@
 /* Form Footer */
 
 .form-footer {
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     font-size: 1.15rem;
     margin-bottom: 0;
 }
 
-.form-footer a {
+a {
     color: #0062ff;
     font-weight: 500;
     position: relative;
     transition: color 0.3s ease;
 }
 
-.form-footer a:hover {
+a:hover {
     color: #1401c2;
 }
 
@@ -170,7 +202,7 @@
     border: 1px solid #34c759;
     border-radius: 8px;
     padding: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: -1rem; /* Negative margin to balance elements */
     animation: slideIn 0.3s ease;
 }
 
@@ -226,8 +258,8 @@
         padding: 16px 48px;
         height: auto;
         margin-top: 60px;
-        max-width: 700px; /* Added max-width for consistency */
-        width: 70%; /* Added width for better scaling */
+        max-width: 700px;
+        width: 70%;
     }
 
     .form-group {
@@ -266,7 +298,7 @@
 @media screen and (max-width: 480px) {
     .form-container {
         width: 100%;
-        padding: 0 16px; /* Reduce padding for smaller screens */
+        padding: 0 16px;
     }
     .form-footer {
         font-size: 1rem;
