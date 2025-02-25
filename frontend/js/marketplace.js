@@ -15,7 +15,7 @@ import supabase from "./supabase-client.js";
 const axios = window.axios;
 
 const API_URL = process.env.NODE_ENV === 'production'
-  ? 'https://your-render-app.onrender.com'
+  ? 'https://gamestore-backend-9v90.onrender.com'
   : 'http://localhost:3000';
 
 /**
