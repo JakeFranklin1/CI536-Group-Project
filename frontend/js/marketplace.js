@@ -332,7 +332,7 @@ function getPlatformIcons(platforms = []) {
 
             return `<img src="${iconPath}" alt="${platform.name}" class="platform-icon">`;
         })
-        .filter((icon) => icon !== "") // Remove empty strings (duplicates)
+        .filter((icon) => icon !== ""); // Remove empty strings (duplicates)
 }
 
 /**
