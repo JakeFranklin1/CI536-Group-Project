@@ -196,6 +196,7 @@ function initializeMobileMenu() {
 async function generateGameCards(count) {
     const gamesGrid = document.querySelector(".games-grid");
     const loadingElement = document.querySelector("#loading");
+    const spinner = document.querySelector(".spinner");
 
     if (!gamesGrid) {
         console.warn("Games grid not found on this page.");
@@ -205,8 +206,6 @@ async function generateGameCards(count) {
     try {
         // Clear the grid immediately to remove example game
         gamesGrid.innerHTML = "";
-
-        // Use the global axios variable (provided by the CDN)
         const response = await axios.get(
             `http://localhost:3000/api/games?limit=${count}`
         );
@@ -252,30 +251,88 @@ async function generateGameCards(count) {
         spinner.style.display = "none";
     }
 }
-
 /**
  * @function getPlatformIcons
- * @description Converts platform names to Font Awesome icons
- * @param {Array} platforms - Array of platform objects
+ * @description Converts platform names to corresponding icon images
+ * @param {Array} platforms - Array of platform objects from IGDB API
  * @returns {string} HTML string of platform icons
  */
 function getPlatformIcons(platforms = []) {
+    // Common platform name parts and their corresponding icons
     const platformIcons = {
+        // Exact matches
         PC: "../assets/icons/windows.svg",
         PlayStation: "../assets/icons/playstation.svg",
-        Nintendo: "../assets/icons/nintendo.svg",
+        "PlayStation 4": "../assets/icons/playstation.svg",
+        "PlayStation 5": "../assets/icons/playstation.svg",
+        "PlayStation 3": "../assets/icons/playstation.svg",
         Xbox: "../assets/icons/xbox.svg",
-        // Android: "../assets/icons/xbox.svg",
-        // iOS: "../assets/icons/xbox.svg",
+        "Xbox One": "../assets/icons/xbox.svg",
+        "Xbox Series X": "../assets/icons/xbox.svg",
+        "Xbox Series S": "../assets/icons/xbox.svg",
+        "Nintendo Switch": "../assets/icons/nintendo.svg",
+        Nintendo: "../assets/icons/nintendo.svg",
+        "Wii U": "../assets/icons/nintendo.svg",
+        Wii: "../assets/icons/nintendo.svg",
+        iOS: "../assets/icons/apple.svg",
+        Mac: "../assets/icons/apple.svg",
+        Android: "../assets/icons/android.svg",
     };
 
+    // Used icons for unique platforms to avoid duplicates
+    const usedIcons = new Set();
+
+    // Map each platform to an icon, avoiding duplicates
     return platforms
         .map((platform) => {
-            const iconClass =
-                platformIcons[platform.name] || "../assets/icons/windows.svg";
-            return `<img src="${iconClass}">`;
+            // Try exact match first
+            let iconPath = platformIcons[platform.name];
+
+            // If no exact match, try partial match
+            if (!iconPath) {
+                if (platform.name.includes("PlayStation")) {
+                    iconPath = "../assets/icons/playstation.svg";
+                } else if (platform.name.includes("Xbox")) {
+                    iconPath = "../assets/icons/xbox.svg";
+                } else if (
+                    platform.name.includes("Nintendo") ||
+                    platform.name.includes("Wii") ||
+                    platform.name.includes("Switch")
+                ) {
+                    iconPath = "../assets/icons/nintendo.svg";
+                } else if (
+                    platform.name.includes("PC") ||
+                    platform.name.includes("Windows")
+                ) {
+                    iconPath = "../assets/icons/windows.svg";
+                } else if (
+                    platform.name.includes("Mac") ||
+                    platform.name.includes("iOS") ||
+                    platform.name.includes("Apple")
+                ) {
+                    iconPath = "../assets/icons/apple.svg";
+                } else if (platform.name.includes("Android")) {
+                    iconPath = "../assets/icons/android.svg";
+                } else {
+                    // Default fallback
+                    iconPath = "../assets/icons/windows.svg";
+                }
+            }
+
+            // Check if we've already used this icon type (to avoid duplicates)
+            if (usedIcons.has(iconPath)) {
+                return "";
+            }
+
+            // Add to used icons
+            usedIcons.add(iconPath);
+
+            // For debugging
+            console.log(`Platform: ${platform.name} → Icon: ${iconPath}`);
+
+            return `<img src="${iconPath}" alt="${platform.name}" class="platform-icon">`;
         })
-        .join("");
+        .filter((icon) => icon !== ""); // Remove empty strings (duplicates)
 }
 
 /**

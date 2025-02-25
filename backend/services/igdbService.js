@@ -185,6 +185,7 @@ class IGDBService {
                 summary,
                 platforms.name,
                 cover.url,
+                age_ratings,
                 rating,
                 total_rating,
                 total_rating_count,
