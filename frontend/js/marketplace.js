@@ -12,8 +12,6 @@ import supabase from "./supabase-client.js";
  * @type {import('axios').AxiosStatic}
  */
 const axios = window.axios;
-const loadingElement = document.querySelector("#loading");
-const spinner = document.querySelector(".spinner");
 
 /**
  * @function handleSignOut
@@ -166,6 +164,8 @@ function initializeMobileMenu() {
  * Use this to test the marketplace without loads of API calls
  */
 // function generateGameCards(count) {
+// const loadingElement = document.querySelector("#loading");
+// const spinner = document.querySelector(".spinner");
 //     const gamesGrid = document.querySelector(".games-grid");
 
 //     // Check if gamesGrid exists before proceeding
@@ -250,7 +250,6 @@ async function generateGameCards(count) {
     } finally {
         loadingElement.style.display = "none";
         spinner.style.display = "none";
-
     }
 }
 
@@ -270,13 +269,13 @@ function getPlatformIcons(platforms = []) {
         // iOS: "../assets/icons/xbox.svg",
     };
 
-
     return platforms
-    .map((platform) => {
-        const iconClass = platformIcons[platform.name] || "../assets/icons";
-        return `<img src="${iconClass}">`;
-    })
-    .join("");
+        .map((platform) => {
+            const iconClass =
+                platformIcons[platform.name] || "../assets/icons/windows.svg";
+            return `<img src="${iconClass}">`;
+        })
+        .join("");
 }
 
 /**
