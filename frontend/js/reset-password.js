@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
      * @param {string} message - Error message to display
      */
     const showError = (message) => {
-        const errorSpan = emailInput.parentNode.querySelector(".error-message") ||
+        const errorSpan =
+            emailInput.parentNode.querySelector(".error-message") ||
             (() => {
                 const span = document.createElement("span");
                 span.className = "error-message";
@@ -78,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             showSuccess("Password reset link sent! Please check your email.");
             form.reset();
-
         } catch (error) {
             showError(error.message);
             console.error("Reset Error:", error.message);

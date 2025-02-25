@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const { error } = await supabase.auth.updateUser({
-                password: password
+                password: password,
             });
 
             if (error) throw error;
@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 window.location.href = "./login.html";
             }, 2000);
-
         } catch (error) {
             showError(error.message);
             console.error("Update Error:", error.message);
@@ -49,7 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Helper functions for error/success handling
     const showError = (message) => {
-        const errorSpan = document.querySelector(".error-message") ||
+        const errorSpan =
+            document.querySelector(".error-message") ||
             (() => {
                 const span = document.createElement("span");
                 span.className = "error-message";

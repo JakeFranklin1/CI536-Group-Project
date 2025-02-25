@@ -33,9 +33,6 @@ window.handleSignOut = async () => {
  * @returns {Promise<void>}
  */
 async function initializeMarketplace() {
-    const loadingElement = document.querySelector("#loading");
-    const spinner =  document.querySelector(".spinner");
-
     try {
         /**
          * @constant {boolean} isAuthenticated
@@ -69,8 +66,8 @@ async function initializeMarketplace() {
     } catch (error) {
         console.error("Error:", error);
     } finally {
-        loadingElement.style.display = "none";
-        spinner.style.display = "none";
+        // loadingElement.style.display = "none";
+        // spinner.style.display = "none";
     }
 }
 
@@ -164,12 +161,12 @@ function initializeMobileMenu() {
  * @function generateGameCards
  * @description Generates multiple game cards and adds them to the games grid
  * @param {number} count - Number of cards to generate
+ * Use this to test the marketplace without loads of API calls
  */
 // function generateGameCards(count) {
+// const loadingElement = document.querySelector("#loading");
+// const spinner = document.querySelector(".spinner");
 //     const gamesGrid = document.querySelector(".games-grid");
-//     // const gameImage = document.querySelector(".game-image");
-//     // const gameTitle = document.querySelector(".game-title");
-
 
 //     // Check if gamesGrid exists before proceeding
 //     if (gamesGrid) {
@@ -182,6 +179,9 @@ function initializeMobileMenu() {
 //         for (let i = 0; i < count; i++) {
 //             gamesGrid.innerHTML += template;
 //         }
+
+//         loadingElement.style.display = "none";
+//         spinner.style.display = "none";
 //     } else {
 //         console.warn("Games grid not found on this page.");
 //     }
@@ -191,6 +191,7 @@ function initializeMobileMenu() {
  * @function generateGameCards
  * @description Fetches and displays popular games from the IGDB API
  * @param {number} count - Number of games to fetch
+ * This is the actual method for generating game cards for the marketplace
  */
 async function generateGameCards(count) {
     const gamesGrid = document.querySelector(".games-grid");
@@ -202,26 +203,25 @@ async function generateGameCards(count) {
     }
 
     try {
-        // Show loading spinner
-        loadingElement.style.display = "flex";
-
         // Clear the grid immediately to remove example game
-        gamesGrid.innerHTML = '';
+        gamesGrid.innerHTML = "";
 
         // Use the global axios variable (provided by the CDN)
-        const response = await axios.get(`http://localhost:3000/api/games?limit=${count}`);
+        const response = await axios.get(
+            `http://localhost:3000/api/games?limit=${count}`
+        );
         const games = response.data;
 
         // Generate cards for each game
-        games.forEach(game => {
+        games.forEach((game) => {
             // Improve image quality by using the highest resolution available
             const coverUrl = game.cover?.url
                 ? game.cover.url
-                    .replace("t_thumb", "t_720p") // Use 720p for higher quality
-                    .replace("t_cover_big", "t_720p")
-                    .replace("t_cover_big_2x", "t_720p")
-                    .replace("http:", "https:")
-                : '../assets/images/placeholder-game.webp';
+                      .replace("t_thumb", "t_720p") // Use 720p for higher quality
+                      .replace("t_cover_big", "t_720p")
+                      .replace("t_cover_big_2x", "t_720p")
+                      .replace("http:", "https:")
+                : "../assets/images/placeholder-game.webp";
 
             const platforms = getPlatformIcons(game.platforms);
             const price = generateRandomPrice();
@@ -232,7 +232,7 @@ async function generateGameCards(count) {
                     <div class="game-details">
                         <div class="purchase-row">
                             <span class="add-to-cart">Add to Cart</span>
-                            <span class="price">$${price}</span>
+                            <span class="price">£${price}</span>
                         </div>
                         <div class="platform-icons">
                             ${platforms}
@@ -243,13 +243,13 @@ async function generateGameCards(count) {
             `;
             gamesGrid.innerHTML += gameCard;
         });
-
     } catch (error) {
-        console.error('Error fetching games:', error);
-        gamesGrid.innerHTML = '<div class="error-message">Failed to load games. Please try again later.</div>';
+        console.error("Error fetching games:", error);
+        gamesGrid.innerHTML =
+            '<div class="error-message">Failed to load games. Please try again later.</div>';
     } finally {
-        // Hide loading spinner when done (success or error)
         loadingElement.style.display = "none";
+        spinner.style.display = "none";
     }
 }
 
@@ -261,18 +261,21 @@ async function generateGameCards(count) {
  */
 function getPlatformIcons(platforms = []) {
     const platformIcons = {
-        'PC': 'fa-windows',
-        'PlayStation': 'fa-gamepad',
-        'Android': 'fa-android',
-        'iOS': 'fa-apple'
+        PC: "../assets/icons/windows.svg",
+        PlayStation: "../assets/icons/playstation.svg",
+        Nintendo: "../assets/icons/nintendo.svg",
+        Xbox: "../assets/icons/xbox.svg",
+        // Android: "../assets/icons/xbox.svg",
+        // iOS: "../assets/icons/xbox.svg",
     };
 
     return platforms
-        .map(platform => {
-            const iconClass = platformIcons[platform.name] || 'fa-gamepad';
-            return `<i class="fa ${iconClass}"></i>`;
+        .map((platform) => {
+            const iconClass =
+                platformIcons[platform.name] || "../assets/icons/windows.svg";
+            return `<img src="${iconClass}">`;
         })
-        .join('');
+        .join("");
 }
 
 /**
@@ -281,7 +284,7 @@ function getPlatformIcons(platforms = []) {
  * @returns {string} Formatted price string
  */
 function generateRandomPrice() {
-    const prices = ['59.99', '49.99', '39.99', '29.99'];
+    const prices = ["59.99", "49.99", "39.99", "29.99", "19.99"];
     return prices[Math.floor(Math.random() * prices.length)];
 }
 
@@ -291,7 +294,7 @@ function generateRandomPrice() {
  */
 document.addEventListener("DOMContentLoaded", async () => {
     initializeMarketplace();
-    generateGameCards(12);
+    generateGameCards(24);
     initializeMobileMenu();
     setSelectedNavItem();
 

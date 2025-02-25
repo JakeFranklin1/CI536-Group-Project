@@ -125,7 +125,6 @@
 }
 
 @media (max-width: 768px) {
-
     .brand-name {
         display: none;
     }
@@ -136,7 +135,6 @@
     }
 }
 @media (max-width: 480px) {
-
     .logo {
         width: 36px;
         height: 36px;
