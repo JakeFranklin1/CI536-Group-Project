@@ -42,6 +42,7 @@
 
 .filter-section ul li a,
 .filter-section ul li button {
+    font-size: 18px;
     display: flex;
     align-items: center;
     padding: 8px 12px;
@@ -77,8 +78,14 @@
     color: rgb(255, 255, 255);
 }
 
+.icon-container img {
+    filter: brightness(0) invert(1);
+    height: 28px;
+    width: 28px;
+}
+
 .filter-section h3 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 900;
     color: white;
     margin-bottom: 12px;
@@ -92,6 +99,10 @@
 .filter-section ul li a:hover .icon-container i,
 .filter-section ul li button:hover .icon-container i {
     color: rgb(0, 0, 0);
+}
+.filter-section ul li a:hover .icon-container img,
+.filter-section ul li button:hover .icon-container img {
+    filter: brightness(1) invert(0);
 }
 
 .filter-section ul li.selected .icon-container {
@@ -192,7 +203,7 @@
         transform: translateX(100%);
         transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1000;
-        padding-top: 84px;
+        padding-top: 24px;
         scrollbar-color: #333 #ffffff;
     }
 

@@ -16,8 +16,9 @@ const igdbService = require("../services/igdbService");
  */
 router.get("/", async (req, res) => {
     try {
-        // Call the IGDB service to get popular games
-        const games = await igdbService.getPopularGames();
+        const limit = req.query.limit ? parseInt(req.query.limit) : 24;
+        // Call the IGDB service to get popular games, passing the limit parameter
+        const games = await igdbService.getPopularGames(limit);
         // Respond with the list of popular games
         res.json(games);
     } catch (error) {

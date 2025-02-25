@@ -55,6 +55,11 @@
                         aria-label="Email Address" />
                 </div>
                 <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" required
+                        aria-label="Date of Birth" />
+                </div>
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="At least 6 characters" name="password" required
                         aria-label="Password" />
@@ -96,13 +101,13 @@
             }
         });
     </script>
-    <script type="module">
+    <!-- <script type="module">
         import { checkAuthAndRedirect } from "./js/services/auth-service.js";
 
         document.addEventListener("DOMContentLoaded", async () => {
             await checkAuthAndRedirect("./pages/marketplace.html");
         });
-    </script>
+    </script> -->
 </body>
 
 </html>

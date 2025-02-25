@@ -8,9 +8,13 @@ const dotenv = require("dotenv"); // Module to load environment variables from a
 const express = require("express"); // Express framework for building web applications
 const cors = require("cors"); // Middleware to enable Cross-Origin Resource Sharing
 const path = require("path"); // Module to handle and transform file paths
-const { createClient } = require("@supabase/supabase-js"); // Supabase client for authentication
 const gamesRouter = require("./routes/games"); // Router for handling game-related API routes
-const authRouter = require("./routes/auth"); // Router for handling authentication-related API routes
+
+// const { createClient } = require("@supabase/supabase-js"); // Supabase client for authentication - not needed for now
+// Initialize Supabase client - not needed for now
+// const supabaseUrl = process.env.SUPABASE_URL;
+// const supabaseKey = process.env.SUPABASE_ANON_KEY;
+// const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Configure environment variables
 dotenv.config(); // Load environment variables from .env file
@@ -18,11 +22,6 @@ dotenv.config(); // Load environment variables from .env file
 // Create Express application instance
 const app = express();
 const PORT = process.env.PORT || 3000; // Set the port to the value from environment variables or default to 3000
-
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Middleware Setup
 app.use(cors()); // Enable CORS for all routes
@@ -33,33 +32,6 @@ app.use(express.static(path.join(__dirname, "../frontend"))); // Serve static fi
 
 // Route Configuration
 app.use("/api/games", gamesRouter); // Use gamesRouter for routes starting with /api/games
-app.use("/api/auth", authRouter); // Use authRouter for routes starting with /api/auth
-
-// User Registration
-app.post("/register", async (req, res) => {
-    const { email, password } = req.body;
-    const { user, error } = await supabase.auth.signUp({ email, password });
-    if (error) return res.status(400).json({ error: error.message });
-    res.status(200).json({ user });
-});
-
-// User Login
-app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    const { user, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    });
-    if (error) return res.status(400).json({ error: error.message });
-    res.status(200).json({ user });
-});
-
-// User Logout
-app.post("/logout", async (req, res) => {
-    const { error } = await supabase.auth.signOut();
-    if (error) return res.status(400).json({ error: error.message });
-    res.status(200).json({ message: "Logged out successfully" });
-});
 
 /**
  * Error Handling Middleware

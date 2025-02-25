@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
             case "email":
                 validateEmail(input, value, errorSpan);
                 break;
+            case "dob":
+                validateDob(input, value, errorSpan);
+                break;
             case "password":
                 validatePassword(input, value, errorSpan);
                 break;
@@ -70,6 +73,39 @@ document.addEventListener("DOMContentLoaded", () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
             showError(input, errorSpan, "Please enter a valid email address");
+        } else {
+            showSuccess(input, errorSpan);
+        }
+    };
+
+    /**
+     * Validates the date of birth input field
+     * @param {HTMLInputElement} input - The input element to validate
+     * @param {string} value - The trimmed value of the input field
+     * @param {HTMLElement} errorSpan - The error message container
+     */
+    const validateDob = (input, value, errorSpan) => {
+        if (!value) {
+            showError(input, errorSpan, "Please enter your date of birth");
+            return;
+        }
+
+        const dob = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
+
+        // Check if birthday hasn't occurred this year
+        const hasBirthdayOccurred =
+            today.getMonth() > dob.getMonth() ||
+            (today.getMonth() === dob.getMonth() &&
+                today.getDate() >= dob.getDate());
+
+        const actualAge = hasBirthdayOccurred ? age : age - 1;
+
+        if (actualAge < 13) {
+            showError(input, errorSpan, "You must be at least 13 years old");
+        } else if (actualAge > 120) {
+            showError(input, errorSpan, "Please enter a valid date of birth");
         } else {
             showSuccess(input, errorSpan);
         }
@@ -166,6 +202,15 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.disabled = true;
         submitButton.textContent = "Signing up...";
 
+        let fullName = form.querySelector("#name").value.trim();
+        let nameArray = fullName.split(" ");
+        let firstName = nameArray[0];
+        let lastName = nameArray.length > 1 ? nameArray.slice(1).join(" ") : "";
+
+        // Ensure date of birth is in yyyy-mm-dd format
+        let dob = form.querySelector("#dob").value;
+        let formattedDob = new Date(dob).toISOString().split("T")[0];
+
         try {
             // Attempt signup first
             const { data, error } = await supabase.auth.signUp({
@@ -173,7 +218,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 password: form.querySelector("#password").value,
                 options: {
                     data: {
-                        full_name: form.querySelector("#name").value,
+                        full_name: fullName,
+                        first_name: firstName,
+                        last_name: lastName,
+                        email: form.querySelector("#email").value,
+                        dob: formattedDob,
                     },
                 },
             });
@@ -249,6 +298,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const successMessage = document.createElement("div");
         successMessage.className = "success-message";
         successMessage.textContent = message;
+
+        const existingMessage = document.querySelector(".success-message");
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+
         form.insertBefore(successMessage, form.querySelector(".submit-btn"));
     };
 
