@@ -196,6 +196,7 @@ function initializeMobileMenu() {
 async function generateGameCards(count) {
     const gamesGrid = document.querySelector(".games-grid");
     const loadingElement = document.querySelector("#loading");
+    const spinner = document.querySelector(".spinner");
 
     if (!gamesGrid) {
         console.warn("Games grid not found on this page.");
@@ -261,23 +262,22 @@ function getPlatformIcons(platforms = []) {
     // Common platform name parts and their corresponding icons
     const platformIcons = {
         // Exact matches
-        "PC": "../assets/icons/windows.svg",
-        "PlayStation": "../assets/icons/playstation.svg",
+        PC: "../assets/icons/windows.svg",
+        PlayStation: "../assets/icons/playstation.svg",
         "PlayStation 4": "../assets/icons/playstation.svg",
         "PlayStation 5": "../assets/icons/playstation.svg",
         "PlayStation 3": "../assets/icons/playstation.svg",
-        "Xbox": "../assets/icons/xbox.svg",
+        Xbox: "../assets/icons/xbox.svg",
         "Xbox One": "../assets/icons/xbox.svg",
         "Xbox Series X": "../assets/icons/xbox.svg",
         "Xbox Series S": "../assets/icons/xbox.svg",
         "Nintendo Switch": "../assets/icons/nintendo.svg",
-        "Nintendo": "../assets/icons/nintendo.svg",
+        Nintendo: "../assets/icons/nintendo.svg",
         "Wii U": "../assets/icons/nintendo.svg",
-        "Wii": "../assets/icons/nintendo.svg",
-        "iOS": "../assets/icons/apple.svg",
-        "Mac": "../assets/icons/apple.svg",
-        "Android": "../assets/icons/android.svg",
-        "Linux": "../assets/icons/linux.svg"
+        Wii: "../assets/icons/nintendo.svg",
+        iOS: "../assets/icons/apple.svg",
+        Mac: "../assets/icons/apple.svg",
+        Android: "../assets/icons/android.svg",
     };
 
     // Used icons for unique platforms to avoid duplicates
@@ -295,21 +295,25 @@ function getPlatformIcons(platforms = []) {
                     iconPath = "../assets/icons/playstation.svg";
                 } else if (platform.name.includes("Xbox")) {
                     iconPath = "../assets/icons/xbox.svg";
-                } else if (platform.name.includes("Nintendo") ||
-                           platform.name.includes("Wii") ||
-                           platform.name.includes("Switch")) {
+                } else if (
+                    platform.name.includes("Nintendo") ||
+                    platform.name.includes("Wii") ||
+                    platform.name.includes("Switch")
+                ) {
                     iconPath = "../assets/icons/nintendo.svg";
-                } else if (platform.name.includes("PC") ||
-                           platform.name.includes("Windows")) {
+                } else if (
+                    platform.name.includes("PC") ||
+                    platform.name.includes("Windows")
+                ) {
                     iconPath = "../assets/icons/windows.svg";
-                } else if (platform.name.includes("Mac") ||
-                           platform.name.includes("iOS") ||
-                           platform.name.includes("Apple")) {
+                } else if (
+                    platform.name.includes("Mac") ||
+                    platform.name.includes("iOS") ||
+                    platform.name.includes("Apple")
+                ) {
                     iconPath = "../assets/icons/apple.svg";
                 } else if (platform.name.includes("Android")) {
                     iconPath = "../assets/icons/android.svg";
-                } else if (platform.name.includes("Linux")) {
-                    iconPath = "../assets/icons/linux.svg";
                 } else {
                     // Default fallback
                     iconPath = "../assets/icons/windows.svg";
@@ -318,7 +322,7 @@ function getPlatformIcons(platforms = []) {
 
             // Check if we've already used this icon type (to avoid duplicates)
             if (usedIcons.has(iconPath)) {
-                return '';
+                return "";
             }
 
             // Add to used icons
@@ -329,10 +333,9 @@ function getPlatformIcons(platforms = []) {
 
             return `<img src="${iconPath}" alt="${platform.name}" class="platform-icon">`;
         })
-        .filter(icon => icon !== '') // Remove empty strings (duplicates)
+        .filter((icon) => icon !== "") // Remove empty strings (duplicates)
         .join("");
 }
-
 
 /**
  * @function generateRandomPrice
