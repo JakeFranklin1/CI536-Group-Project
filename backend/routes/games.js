@@ -1,11 +1,31 @@
-// Reading this guide will help you understand how the games route works in the backend.
-// https://expressjs.com/en/guide/routing.html
-// This route is used to get data from the igdbService and return it to the client.
-
-// Import the necessary modules
 const express = require("express");
 const router = express.Router();
 const igdbService = require("../services/igdbService");
+
+const ageRatingMappings = {
+    1: "PEGI 3", // PEGI 3
+    2: "PEGI 7", // PEGI 7
+    3: "PEGI 12", // PEGI 12
+    4: "PEGI 16", // PEGI 16
+    5: "PEGI 18", // PEGI 18
+    6: "RP", // Rating Pending
+    7: "EC", // Early Childhood
+    8: "E", // Everyone
+    9: "E10+", // Everyone 10+
+    10: "T", // Teen
+    11: "M", // Mature
+    12: "AO", // Adults Only
+};
+
+const esrbToPegi = {
+    EC: "PEGI 3",
+    E: "PEGI 3",
+    "E10+": "PEGI 7",
+    T: "PEGI 12",
+    M: "PEGI 16",
+    AO: "PEGI 18",
+    RP: "Rating Pending",
+};
 
 /**
  * Route to get popular games.
@@ -17,12 +37,48 @@ const igdbService = require("../services/igdbService");
 router.get("/", async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : 24;
-        // Call the IGDB service to get popular games, passing the limit parameter
         const games = await igdbService.getPopularGames(limit);
-        // Respond with the list of popular games
-        res.json(games);
+
+        // Map the games to include the age rating
+        const gamesWithAgeRating = games.map((game) => {
+            let ageRatingString = "Not Rated"; // Default value
+
+            if (game.age_ratings && game.age_ratings.length > 0) {
+                // Find the PEGI rating, if available
+                let pegiRating = game.age_ratings.find(
+                    (rating) => rating.category === 2
+                ); // 2 is PEGI
+
+                // If no PEGI rating, find the first available rating
+                if (!pegiRating) {
+                    pegiRating = game.age_ratings[0];
+                }
+
+                if (pegiRating) {
+                    ageRatingString =
+                        ageRatingMappings[pegiRating.rating] || "Unknown";
+                } else {
+                    // Convert ESRB to PEGI if PEGI rating is not available
+                    let esrbRating = game.age_ratings.find(
+                        (rating) => rating.category === 1
+                    ); // 1 is ESRB
+
+                    if (esrbRating) {
+                        ageRatingString =
+                            esrbToPegi[ageRatingMappings[esrbRating.rating]] ||
+                            "Unknown";
+                    }
+                }
+            }
+
+            return {
+                ...game,
+                age_rating_string: ageRatingString,
+            };
+        });
+
+        res.json(gamesWithAgeRating);
     } catch (error) {
-        // Handle any errors by responding with a 500 status and error message
         res.status(500).json({ error: error.message });
     }
 });
@@ -39,50 +95,18 @@ router.get("/", async (req, res) => {
  */
 router.get("/search/:query", async (req, res) => {
     try {
-        // Decode the search query from the URL
-        const searchQuery = decodeURIComponent(req.params.query);
-        // Get the limit from the query parameters or default to 5
-        const limit = parseInt(req.query.limit) || 5;
+        const query = req.params.query;
+        const limit = req.query.limit ? parseInt(req.query.limit) : 5;
 
-        // Validate the search query
-        if (!searchQuery || searchQuery.length < 2) {
-            return res.status(400).json({
-                error: "Search query must be at least 2 characters",
-                endpoint: "/api/games/search",
-                method: "GET",
-                query: searchQuery,
-            });
+        if (!query) {
+            return res.status(400).json({ error: "Search query is required" });
         }
 
-        console.log("Processing search:", {
-            query: searchQuery,
-            limit: limit,
-        });
-
-        // Call the IGDB service to search for games
-        const games = await igdbService.searchGames(searchQuery, limit);
-
-        // If no games are found, respond with an empty array
-        if (!games || games.length === 0) {
-            return res.json([]);
-        }
-
-        // Respond with the list of games matching the search query
+        const games = await igdbService.searchGames(query, limit);
         res.json(games);
     } catch (error) {
-        console.error("Search route error:", {
-            query: req.params.query,
-            error: error.message,
-            stack: error.stack,
-        });
-
-        // Handle any errors by responding with a 500 status and error message
-        res.status(500).json({
-            error: error.message,
-            endpoint: "/api/games/search",
-            method: "GET",
-            query: req.params.query,
-        });
+        console.error("Search error:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 

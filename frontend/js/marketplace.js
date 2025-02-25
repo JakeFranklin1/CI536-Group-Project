@@ -5,6 +5,7 @@
  */
 
 import { signOut, checkAuth } from "./services/auth-service.js";
+import { updateCartCount, updateCartTotal } from "./side-cart.js";
 import supabase from "./supabase-client.js";
 
 /**
@@ -203,31 +204,54 @@ async function generateGameCards(count) {
         return;
     }
 
+    // Clear the grid and add loading cards
+    gamesGrid.innerHTML = Array(count)
+        .fill(
+            `
+        <div class="game-card loading">
+        </div>
+    `
+        )
+        .join("");
+
     try {
-        // Clear the grid immediately to remove example game
-        gamesGrid.innerHTML = "";
         const response = await axios.get(
             `http://localhost:3000/api/games?limit=${count}`
         );
         const games = response.data;
 
+        // Clear the grid again for real content
+        gamesGrid.innerHTML = "";
+
         // Generate cards for each game
         games.forEach((game) => {
-            // Improve image quality by using the highest resolution available
-            const coverUrl = game.cover?.url
-                ? game.cover.url
-                      .replace("t_thumb", "t_720p") // Use 720p for higher quality
-                      .replace("t_cover_big", "t_720p")
-                      .replace("t_cover_big_2x", "t_720p")
-                      .replace("http:", "https:")
-                : "../assets/images/placeholder-game.webp";
+            let coverUrl;
+            // Check for specific GTA games and use custom images
+            if (game.name.toLowerCase().includes('grand theft auto v') ||
+                game.name.toLowerCase().includes('gta v') ||
+                game.name.toLowerCase().includes('gta 5')) {
+                coverUrl = '../assets/images/gta5.webp';
+            } else if (game.name.toLowerCase().includes('grand theft auto: san andreas') ||
+                      game.name.toLowerCase().includes('gta iv') ||
+                      game.name.toLowerCase().includes('gta 4')) {
+                coverUrl = '../assets/images/gta4.jpg';
+            } else {
+                // Use default IGDB cover for other games
+                coverUrl = game.cover?.url
+                    ? game.cover.url
+                        .replace("t_thumb", "t_720p")
+                        .replace("t_cover_big", "t_720p")
+                        .replace("t_cover_big_2x", "t_720p")
+                        .replace("http:", "https:")
+                    : "../assets/images/placeholder-game.webp";
+            }
 
             const platforms = getPlatformIcons(game.platforms);
             const price = generateRandomPrice();
 
             const gameCard = `
-                <div class="game-card">
-                    <img src="${coverUrl}" alt="${game.name}" class="game-image" loading="lazy">
+                <div class="game-card" data-age-rating="${game.age_rating_string}">
+                    <img src="${coverUrl}" class="game-image" loading="lazy">
                     <div class="game-details">
                         <div class="purchase-row">
                             <span class="add-to-cart">Add to Cart</span>
@@ -237,10 +261,21 @@ async function generateGameCards(count) {
                             ${platforms}
                         </div>
                         <h2 class="game-title">${game.name}</h2>
+                        <p class="game-age-rating">Age rating: ${game.age_rating_string}</p>
                     </div>
                 </div>
             `;
             gamesGrid.innerHTML += gameCard;
+        });
+
+        // Add event listeners to the "Add to Cart" buttons
+        const addToCartButtons = document.querySelectorAll(".add-to-cart");
+        addToCartButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                // Find the game card associated with the button
+                const gameCard = this.closest(".game-card");
+                addItemToCart(gameCard);
+            });
         });
     } catch (error) {
         console.error("Error fetching games:", error);
@@ -345,6 +380,93 @@ function generateRandomPrice() {
     return prices[Math.floor(Math.random() * prices.length)];
 }
 
+function addItemToCart(gameCard) {
+    // Create flying animation element
+    const addToCartBtn = gameCard.querySelector(".add-to-cart");
+    const cartIcon = document.querySelector(".cart-btn");
+
+    // Get the coordinates
+    const start = addToCartBtn.getBoundingClientRect();
+    const end = cartIcon.getBoundingClientRect();
+
+    // Create the animation element
+    const circle = document.createElement("div");
+    circle.className = "add-to-cart-animation";
+
+    // Set initial position
+    circle.style.left = `${start.left + start.width / 2}px`;
+    circle.style.top = `${start.top + start.height / 2}px`;
+
+    // Calculate the animation path
+    const keyframes = [
+        {
+            left: `${start.left + start.width / 2}px`,
+            top: `${start.top + start.height / 2}px`,
+            transform: "scale(3)",
+            opacity: 1,
+        },
+        {
+            left: `${end.left + end.width / 2}px`,
+            top: `${end.top + end.height / 2}px`,
+            transform: "scale(0.1)",
+            opacity: 0,
+        },
+    ];
+
+    document.body.appendChild(circle);
+
+    // Animate the circle
+    const animation = circle.animate(keyframes, {
+        duration: 1000,
+        easing: "cubic-bezier(0.47, 0, 0.745, 0.715)",
+    });
+
+    // Add the item to cart after animation
+    animation.onfinish = () => {
+        circle.remove();
+
+        const gameTitle = gameCard.querySelector(".game-title").textContent;
+        const gamePrice = gameCard.querySelector(".price").textContent;
+        const gameImage = gameCard.querySelector(".game-image").src;
+
+        const cartItemHTML = `
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">${gameTitle}</div>
+                    <div class="cart-item-info">
+                        <img src="${gameImage}" alt="${gameTitle}" class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">Platform</div>
+                            <div class="cart-item-price">${gamePrice}</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        const cartItemsContainer = document.querySelector(".cart-items");
+        const emptyCart = cartItemsContainer.querySelector(".empty-cart");
+        if (emptyCart) {
+            emptyCart.remove();
+            document.querySelector(".cart-summary").style.display = "block";
+        }
+
+        cartItemsContainer.insertAdjacentHTML("beforeend", cartItemHTML);
+        updateCartTotal();
+        updateCartCount();
+    };
+}
 /**
  * @listens DOMContentLoaded
  * @description Initializes the marketplace when the DOM is fully loaded.
@@ -354,9 +476,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     generateGameCards(24);
     initializeMobileMenu();
     setSelectedNavItem();
+    updateCartCount();
 
     const brandContainer = document.querySelector(".brand-container");
     if (brandContainer) {
         brandContainer.addEventListener("click", handleBrandClick);
     }
+
+    // Add event listeners to quantity inputs and buttons
+    const quantityInputs = document.querySelectorAll(".quantity-input");
+    quantityInputs.forEach((input) => {
+        input.addEventListener("change", updateCartTotal);
+    });
+
+    const incrementButtons = document.querySelectorAll(".quantity-increment");
+    incrementButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const input = this.previousElementSibling;
+            input.value = parseInt(input.value) + 1;
+            updateCartTotal();
+        });
+    });
+
+    const decrementButtons = document.querySelectorAll(".quantity-decrement");
+    decrementButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const input = this.nextElementSibling;
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+                updateCartTotal();
+            }
+        });
+    });
+
+    const removeButtons = document.querySelectorAll(".cart-remove");
+    removeButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const cartItem = this.closest(".cart-item");
+            cartItem.remove();
+            updateCartTotal();
+        });
+    });
 });

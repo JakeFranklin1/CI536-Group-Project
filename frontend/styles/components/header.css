@@ -105,6 +105,33 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition:
+        opacity 0.3s,
+        transform 0.3s;
+}
+
+.cart-count.active {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .cart-btn {

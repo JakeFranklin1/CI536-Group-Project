@@ -175,6 +175,7 @@ class IGDBService {
      * @returns {Promise<Array>} Array of popular game objects
      * @throws {Error} If the request fails
      */
+
     async getPopularGames(limit = 12) {
         try {
             const results = await this.executeRequest(
@@ -185,7 +186,8 @@ class IGDBService {
                 summary,
                 platforms.name,
                 cover.url,
-                age_ratings,
+                age_ratings.category,
+                age_ratings.rating,
                 rating,
                 total_rating,
                 total_rating_count,

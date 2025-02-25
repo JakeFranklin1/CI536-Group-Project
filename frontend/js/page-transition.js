@@ -24,28 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     links.forEach((link) => {
         link.addEventListener("click", function (event) {
-            /**
-             * @param {Event} event - The click event object.
-             */
-            event.preventDefault(); // Prevent immediate navigation
             const targetURL = this.getAttribute("href");
+            if (targetURL && targetURL !== window.location.href) {
+                event.preventDefault(); // Prevent immediate navigation
 
-            /**
-             * @description Removes the 'fade-in' class and adds the 'fade-out' class to the body element.
-             *              This triggers the fade-out animation.
-             */
-            document.body.classList.remove("fade-in");
-            document.body.classList.add("fade-out");
+                document.body.classList.remove("fade-in");
+                document.body.classList.add("fade-out");
 
-            /**
-             * @function setTimeout
-             * @description Waits for the fade-out animation to complete before navigating to the target URL.
-             * @param {function} - A function that navigates to the target URL.
-             * @param {number} 300 - The duration of the fade-out animation in milliseconds (matches the CSS transition duration).
-             */
-            setTimeout(() => {
-                window.location.href = targetURL;
-            }, 300); // Match the CSS transition duration
+                setTimeout(() => {
+                    window.location.href = targetURL;
+                }, 300); // Match the CSS transition duration
+            }
         });
     });
 

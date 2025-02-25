@@ -64,12 +64,84 @@
             </div>
 
             <div class="cart-container">
-                <button class="cart-btn" type="button" title="View cart">
+                <button id="open-cart-btn" class="cart-btn" type="button" title="View cart">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
             </div>
         </div>
     </header>
+
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Side cart -->
+    <div class="side-cart">
+        <div class="side-cart-header">
+            <button type="button" id="close-cart-btn" class="closebtn">&times;</button>
+            <h3>Shopping Cart</h3>
+        </div>
+
+        <div class="cart-items">
+
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">Example Game</div>
+                    <div class="cart-item-info">
+                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
+                            class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">PlayStation 5</div>
+                            <div class="cart-item-price">£59.99</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">Example Game</div>
+                    <div class="cart-item-info">
+                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
+                            class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">PlayStation 5</div>
+                            <div class="cart-item-price">£59.99</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="total-cost">$129.98</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
 
     <div class="page-layout">
         <button class="hamburger-menu" aria-label="Toggle navigation menu">
@@ -256,6 +328,7 @@
                             <img src="../assets/icons/nintendo.svg" title="Windows logo">
                         </div>
                         <h2 class="game-title">Example Game Title</h2>
+                        <p class="game-age-rating">Age rating: M</p>
                     </div>
                 </div>
             </div>
@@ -265,6 +338,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="../js/page-transition.js"></script>
+    <script type="module" src="../js/side-cart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
     <script type="module" src="../js/dropdown.js"></script>
 </body>
