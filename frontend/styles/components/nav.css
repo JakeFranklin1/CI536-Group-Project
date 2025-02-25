@@ -78,6 +78,12 @@
     color: rgb(255, 255, 255);
 }
 
+.icon-container img {
+    filter: brightness(0) invert(1);
+    height: 28px;
+    width: 28px;
+}
+
 .filter-section h3 {
     font-size: 1.5rem;
     font-weight: 900;
@@ -93,6 +99,10 @@
 .filter-section ul li a:hover .icon-container i,
 .filter-section ul li button:hover .icon-container i {
     color: rgb(0, 0, 0);
+}
+.filter-section ul li a:hover .icon-container img,
+.filter-section ul li button:hover .icon-container img {
+    filter: brightness(1) invert(0);
 }
 
 .filter-section ul li.selected .icon-container {

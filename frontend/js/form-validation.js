@@ -79,36 +79,37 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     /**
- * Validates the date of birth input field
- * @param {HTMLInputElement} input - The input element to validate
- * @param {string} value - The trimmed value of the input field
- * @param {HTMLElement} errorSpan - The error message container
- */
-const validateDob = (input, value, errorSpan) => {
-    if (!value) {
-        showError(input, errorSpan, "Please enter your date of birth");
-        return;
-    }
+     * Validates the date of birth input field
+     * @param {HTMLInputElement} input - The input element to validate
+     * @param {string} value - The trimmed value of the input field
+     * @param {HTMLElement} errorSpan - The error message container
+     */
+    const validateDob = (input, value, errorSpan) => {
+        if (!value) {
+            showError(input, errorSpan, "Please enter your date of birth");
+            return;
+        }
 
-    const dob = new Date(value);
-    const today = new Date();
-    const age = today.getFullYear() - dob.getFullYear();
+        const dob = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
 
-    // Check if birthday hasn't occurred this year
-    const hasBirthdayOccurred =
-        today.getMonth() > dob.getMonth() ||
-        (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+        // Check if birthday hasn't occurred this year
+        const hasBirthdayOccurred =
+            today.getMonth() > dob.getMonth() ||
+            (today.getMonth() === dob.getMonth() &&
+                today.getDate() >= dob.getDate());
 
-    const actualAge = hasBirthdayOccurred ? age : age - 1;
+        const actualAge = hasBirthdayOccurred ? age : age - 1;
 
-    if (actualAge < 13) {
-        showError(input, errorSpan, "You must be at least 13 years old");
-    } else if (actualAge > 120) {
-        showError(input, errorSpan, "Please enter a valid date of birth");
-    } else {
-        showSuccess(input, errorSpan);
-    }
-};
+        if (actualAge < 13) {
+            showError(input, errorSpan, "You must be at least 13 years old");
+        } else if (actualAge > 120) {
+            showError(input, errorSpan, "Please enter a valid date of birth");
+        } else {
+            showSuccess(input, errorSpan);
+        }
+    };
 
     /**
      * Validates the password input field
@@ -197,7 +198,7 @@ const validateDob = (input, value, errorSpan) => {
      * Handles the sign-up process
      * @param {HTMLButtonElement} submitButton - The submit button element
      */
-        const handleSignUp = async (submitButton) => {
+    const handleSignUp = async (submitButton) => {
         submitButton.disabled = true;
         submitButton.textContent = "Signing up...";
 

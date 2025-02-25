@@ -169,17 +169,17 @@ class IGDBService {
         }
     }
 
-   /**
+    /**
      * Get a list of popular games.
      * @param {number} [limit=12] - Maximum number of results (default: 12)
      * @returns {Promise<Array>} Array of popular game objects
      * @throws {Error} If the request fails
      */
-   async getPopularGames(limit = 12) {
-    try {
-        const results = await this.executeRequest(
-            "/games",
-            `
+    async getPopularGames(limit = 12) {
+        try {
+            const results = await this.executeRequest(
+                "/games",
+                `
             fields
                 name,
                 summary,
@@ -199,26 +199,27 @@ class IGDBService {
             sort total_rating_count desc;
             limit ${limit};
             `
-        );
+            );
 
-        // Transform the results to include properly formatted cover URLs
-        return results.map(game => ({
-            ...game,
-            cover: game.cover ? {
-                ...game.cover,
-                url: game.cover.url ?
-                    game.cover.url
-                        .replace("t_thumb", "t_cover_big")
-                        .replace("http:", "https:")
-                    : null
-            } : null
-        }));
-
-    } catch (error) {
-        console.error("Error getting popular games:", error);
-        throw error;
+            // Transform the results to include properly formatted cover URLs
+            return results.map((game) => ({
+                ...game,
+                cover: game.cover
+                    ? {
+                          ...game.cover,
+                          url: game.cover.url
+                              ? game.cover.url
+                                    .replace("t_thumb", "t_cover_big")
+                                    .replace("http:", "https:")
+                              : null,
+                      }
+                    : null,
+            }));
+        } catch (error) {
+            console.error("Error getting popular games:", error);
+            throw error;
+        }
     }
-}
 }
 
 module.exports = new IGDBService();
