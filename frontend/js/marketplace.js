@@ -14,6 +14,10 @@ import supabase from "./supabase-client.js";
  */
 const axios = window.axios;
 
+const API_URL = process.env.NODE_ENV === 'production'
+  ? 'https://your-render-app.onrender.com'
+  : 'http://localhost:3000';
+
 /**
  * @function handleSignOut
  * @description Signs out the user and redirects them to the index page.
@@ -215,9 +219,7 @@ async function generateGameCards(count) {
         .join("");
 
     try {
-        const response = await axios.get(
-            `http://localhost:3000/api/games?limit=${count}`
-        );
+        const response = await axios.get(`${API_URL}/api/games?limit=${count}`);
         const games = response.data;
 
         // Clear the grid again for real content
