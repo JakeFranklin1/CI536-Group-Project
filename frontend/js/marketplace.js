@@ -206,7 +206,6 @@ async function generateGameCards(count) {
     try {
         // Clear the grid immediately to remove example game
         gamesGrid.innerHTML = "";
-
         const response = await axios.get(
             `http://localhost:3000/api/games?limit=${count}`
         );
@@ -334,7 +333,6 @@ function getPlatformIcons(platforms = []) {
             return `<img src="${iconPath}" alt="${platform.name}" class="platform-icon">`;
         })
         .filter((icon) => icon !== "") // Remove empty strings (duplicates)
-        .join("");
 }
 
 /**
