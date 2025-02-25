@@ -24,15 +24,17 @@ const app = express();
 const PORT = process.env.PORT || 10000; // Set the port to the value from environment variables or default to 3000
 
 // Middleware Setup
-app.use(cors({
-    origin: [
-        'https://ci536-gamestore.netlify.app',
-        'http://localhost:3000',
-        'https://gamestore-backend-9v90.onrender.com'
-    ],
-    methods: ['GET', 'POST'],
-    credentials: true
-}));
+app.use(
+    cors({
+        origin: [
+            "https://ci536-gamestore.netlify.app",
+            "http://localhost:3000",
+            "https://gamestore-backend-9v90.onrender.com",
+        ],
+        methods: ["GET", "POST"],
+        credentials: true,
+    })
+);
 app.use(express.json()); // Parse incoming JSON requests
 
 // Static File Serving
@@ -70,13 +72,16 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-const server = app.listen(PORT, '0.0.0.0', () => { // Add host binding
+const server = app.listen(PORT, "0.0.0.0", () => {
+    // Add host binding
     console.log(`
     🚀 Server running on port ${PORT}
     📁 Frontend files served from: ${path.join(__dirname, "../frontend")}
-    🌐 API endpoints available at: ${process.env.NODE_ENV === 'production'
-        ? 'https://gamestore-backend-9v90.onrender.com/api'
-        : `http://localhost:${PORT}/api`}
+    🌐 API endpoints available at: ${
+        process.env.NODE_ENV === "production"
+            ? "https://gamestore-backend-9v90.onrender.com/api"
+            : `http://localhost:${PORT}/api`
+    }
     `);
 });
 

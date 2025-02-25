@@ -87,7 +87,7 @@
 }
 
 .add-to-cart::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -2px;
     left: 0;

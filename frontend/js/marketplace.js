@@ -14,9 +14,9 @@ import supabase from "./supabase-client.js";
  */
 const axios = window.axios;
 
-const API_URL = process.env.NODE_ENV === 'production'
-  ? 'https://gamestore-backend-9v90.onrender.com'
-  : 'http://localhost:3000';
+const API_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:3000"
+    : "https://gamestore-backend-9v90.onrender.com";
 
 /**
  * @function handleSignOut
@@ -229,22 +229,28 @@ async function generateGameCards(count) {
         games.forEach((game) => {
             let coverUrl;
             // Check for specific GTA games and use custom images
-            if (game.name.toLowerCase().includes('grand theft auto v') ||
-                game.name.toLowerCase().includes('gta v') ||
-                game.name.toLowerCase().includes('gta 5')) {
-                coverUrl = '../assets/images/gta5.webp';
-            } else if (game.name.toLowerCase().includes('grand theft auto: san andreas') ||
-                      game.name.toLowerCase().includes('gta iv') ||
-                      game.name.toLowerCase().includes('gta 4')) {
-                coverUrl = '../assets/images/gta4.jpg';
+            if (
+                game.name.toLowerCase().includes("grand theft auto v") ||
+                game.name.toLowerCase().includes("gta v") ||
+                game.name.toLowerCase().includes("gta 5")
+            ) {
+                coverUrl = "../assets/images/gta5.webp";
+            } else if (
+                game.name
+                    .toLowerCase()
+                    .includes("grand theft auto: san andreas") ||
+                game.name.toLowerCase().includes("gta iv") ||
+                game.name.toLowerCase().includes("gta 4")
+            ) {
+                coverUrl = "../assets/images/gta4.jpg";
             } else {
                 // Use default IGDB cover for other games
                 coverUrl = game.cover?.url
                     ? game.cover.url
-                        .replace("t_thumb", "t_720p")
-                        .replace("t_cover_big", "t_720p")
-                        .replace("t_cover_big_2x", "t_720p")
-                        .replace("http:", "https:")
+                          .replace("t_thumb", "t_720p")
+                          .replace("t_cover_big", "t_720p")
+                          .replace("t_cover_big_2x", "t_720p")
+                          .replace("http:", "https:")
                     : "../assets/images/placeholder-game.webp";
             }
 
