@@ -78,7 +78,6 @@
     }
 }
 
-/* Add hover effect for add to cart button */
 .add-to-cart {
     color: #ffffff;
     cursor: pointer;
@@ -101,6 +100,10 @@
     width: 100%;
 }
 
+.add-to-cart:hover {
+    color: #ffffffdd;
+}
+
 .price {
     color: #ffffff;
     font-weight: 700;
@@ -109,7 +112,7 @@
 
 .platform-icons {
     display: flex;
-    gap: 2px;
+    gap: 8px;
 }
 
 .platform-icons img {
@@ -158,6 +161,28 @@
 
     .game-image {
         height: 300px;
+    }
+}
+
+@media (hover: none) {
+    .game-card:hover {
+        transform: none;
+    }
+
+    .game-card:active {
+        background-color: #232323;
+    }
+
+    .add-to-cart:hover::after {
+        width: 0;
+    }
+
+    .add-to-cart:active::after {
+        width: 100%;
+    }
+
+    .add-to-cart:active {
+        color: #ffffffdd;
     }
 }
 

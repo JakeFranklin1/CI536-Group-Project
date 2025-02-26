@@ -7,7 +7,7 @@
 import { updateCartCount, updateCartTotal } from "./components/SideCart.js";
 import { signOut, checkAuth } from "./services/auth-service.js";
 import { escapeHTML } from "./utils/sanitise.js";
-import supabase from "./supabase-client.js";
+import supabase from "./api/supabase-client.js";
 
 /**
  * Global axios from CDN

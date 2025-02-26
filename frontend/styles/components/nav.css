@@ -235,6 +235,10 @@
         color: #0d0d0d;
     }
 
+    .icon-container img {
+        filter: brightness(1) invert(0);
+    }
+
     /* Update hover and selected states */
     .filter-section ul li a:hover .icon-container,
     .filter-section ul li button:hover .icon-container,
@@ -246,6 +250,12 @@
     .filter-section ul li button:hover .icon-container i,
     .filter-section ul li.selected .icon-container i {
         color: white;
+    }
+
+    .filter-section ul li a:hover .icon-container img,
+    .filter-section ul li button:hover .icon-container img,
+    .filter-section ul li.selected .icon-container img {
+        filter: brightness(0) invert(1);
     }
 
     .side-nav.active {

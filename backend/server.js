@@ -80,7 +80,7 @@ const server = app.listen(PORT, "0.0.0.0", () => {
     🌐 API endpoints available at: ${
         process.env.NODE_ENV === "production"
             ? "https://gamestore-backend-9v90.onrender.com/api"
-            : `http://localhost:${PORT}/api`
+            : `http://localhost:${PORT}`
     }
     `);
 });

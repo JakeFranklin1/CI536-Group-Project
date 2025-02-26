@@ -1,4 +1,4 @@
-import supabase from "./supabase-client.js";
+import supabase from "../api/supabase-client.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".signup-form");
