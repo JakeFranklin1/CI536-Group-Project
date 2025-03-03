@@ -165,36 +165,6 @@ function initializeMobileMenu() {
 }
 
 /**
- * @function generateGameCards
- * @description Generates multiple game cards and adds them to the games grid
- * @param {number} count - Number of cards to generate
- * Use this to test the marketplace without loads of API calls
- */
-// function generateGameCards(count) {
-// const loadingElement = document.querySelector("#loading");
-// const spinner = document.querySelector(".spinner");
-//     const gamesGrid = document.querySelector(".games-grid");
-
-//     // Check if gamesGrid exists before proceeding
-//     if (gamesGrid) {
-//         const template = gamesGrid.innerHTML; // Save the original card as template
-
-//         // Clear the grid
-//         gamesGrid.innerHTML = "";
-
-//         // Generate cards
-//         for (let i = 0; i < count; i++) {
-//             gamesGrid.innerHTML += template;
-//         }
-
-//         loadingElement.style.display = "none";
-//         spinner.style.display = "none";
-//     } else {
-//         console.warn("Games grid not found on this page.");
-//     }
-// }
-
-/**
  * Creates a game card DOM element with proper security measures
  * @param {Object} game - Game data from API
  * @param {string} coverUrl - URL for the game cover image
@@ -432,7 +402,7 @@ function getPlatformIcons(platforms = []) {
  * @returns {string} Formatted price string
  */
 function generateRandomPrice() {
-    const prices = ["59.99", "49.99", "39.99", "29.99", "19.99"];
+    const prices = ["59.99", "49.99", "39.99", "29.99", "19.99", "9.99"];
     return prices[Math.floor(Math.random() * prices.length)];
 }
 
@@ -458,7 +428,7 @@ function addItemToCart(gameCard) {
         {
             left: `${start.left + start.width / 2}px`,
             top: `${start.top + start.height / 2}px`,
-            transform: "scale(2)",
+            transform: "scale(1)",
             opacity: 1,
         },
         {
