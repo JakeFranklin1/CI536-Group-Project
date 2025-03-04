@@ -17,6 +17,6 @@
 
 /* Utils */
 @import url("utils/toast.css");
-/* @import url("utils/loading.css"); */
+@import url("utils/loading.css");
 @import url("utils/general.css");
 @import url("utils/game-card-loading.css");

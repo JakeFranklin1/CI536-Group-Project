@@ -42,7 +42,7 @@ export function createGameCard(game, coverUrl, platforms, price) {
     const addToCart = document.createElement("span");
     addToCart.className = "add-to-cart";
     addToCart.textContent = "Add to Cart";
-    addToCart.addEventListener("click", function() {
+    addToCart.addEventListener("click", function () {
         CartActions.addItemToCart(card);
     });
 

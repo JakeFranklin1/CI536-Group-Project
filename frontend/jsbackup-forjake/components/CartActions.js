@@ -102,16 +102,16 @@ function addItemToCart(gameCard) {
  */
 function initializeCartEvents() {
     // Add event listeners to quantity buttons
-    document.addEventListener('click', function(e) {
+    document.addEventListener("click", function (e) {
         // Increment button
-        if (e.target.matches('.quantity-increment')) {
+        if (e.target.matches(".quantity-increment")) {
             const valueSpan = e.target.previousElementSibling;
             valueSpan.textContent = parseInt(valueSpan.textContent) + 1;
             updateCartTotal();
         }
 
         // Decrement button
-        if (e.target.matches('.quantity-decrement')) {
+        if (e.target.matches(".quantity-decrement")) {
             const valueSpan = e.target.nextElementSibling;
             if (parseInt(valueSpan.textContent) > 1) {
                 valueSpan.textContent = parseInt(valueSpan.textContent) - 1;
@@ -120,8 +120,11 @@ function initializeCartEvents() {
         }
 
         // Remove button
-        if (e.target.matches('.cart-remove') || e.target.closest('.cart-remove')) {
-            const cartItem = e.target.closest('.cart-item');
+        if (
+            e.target.matches(".cart-remove") ||
+            e.target.closest(".cart-remove")
+        ) {
+            const cartItem = e.target.closest(".cart-item");
             cartItem.remove();
             updateCartTotal();
             updateCartCount();
@@ -131,5 +134,5 @@ function initializeCartEvents() {
 
 export default {
     addItemToCart,
-    initializeCartEvents
+    initializeCartEvents,
 };

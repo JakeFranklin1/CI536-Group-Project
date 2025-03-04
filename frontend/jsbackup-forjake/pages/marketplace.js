@@ -9,14 +9,14 @@ import { createGameCard } from "./components/GameCard.js";
 import {
     setSelectedNavItem,
     initializeMobileMenu,
-    handleBrandClick
+    handleBrandClick,
 } from "./components/Navigation.js";
 import CartActions from "./components/CartActions.js";
 import {
     fetchGames,
     getCoverUrl,
     getPlatformIcons,
-    generateRandomPrice
+    generateRandomPrice,
 } from "./services/game-service.js";
 import supabase from "./api/supabase-client.js";
 

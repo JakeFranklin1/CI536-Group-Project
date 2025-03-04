@@ -5,10 +5,9 @@
     <!-- Meta's -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GameStore Marketplace</title>
+    <title>GameStore</title>
     <meta name="description" content="Sign up to GameStore today!" />
     <meta name="theme-color" content="#000000" />
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; img-src 'self' https: data:;"> -->
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="../assets/favicons/favicon-96x96.png" sizes="96x96" />
@@ -28,11 +27,6 @@
 </head>
 
 <body>
-
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-    </div>
-
 
     <!-- Modal for users who aren't signed in -->
     <div id="auth-modal" class="modal hidden">
@@ -65,7 +59,7 @@
             </div>
 
             <div class="cart-container">
-                <button id="open-cart-btn" class="cart-btn" type="button" title="View cart">
+                <button class="cart-btn" type="button" title="View cart">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
             </div>
@@ -154,7 +148,6 @@
         </button>
         <aside class="side-nav">
             <nav class="side-nav-content">
-
                 <div class="filter-section">
                     <h3>Settings</h3>
                     <ul>
@@ -177,7 +170,7 @@
                             </button>
                         </li>
                         <li>
-                            <a href="#" onclick="handleSignOut()">
+                            <a href="" onclick="handleSignOut()">
                                 <span class="icon-container"><i class="fa fa-sign-out"></i></span>
                                 Sign Out
                             </a>
@@ -185,25 +178,14 @@
                     </ul>
                 </div>
 
+
                 <div class="filter-section">
                     <h3>Community</h3>
                     <ul>
                         <li>
                             <a href="sell.html">
-                                <span class="icon-container"><i class="fa fa-tag"></i></span>
+                                <span class="icon-container"><i class="fa fa-exchange"></i></span>
                                 List a Game
-                            </a>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-clock-o"></i></span>
-                                Recently Added
-                            </button>
-                        </li>
-                        <li>
-                            <a href="sell.html">
-                                <span class="icon-container"><i class="fa fa-list"></i></span>
-                                Manage Listings
                             </a>
                         </li>
                     </ul>
@@ -244,40 +226,32 @@
                         </li>
                         <li>
                             <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/playstation.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-gamepad"></i></span>
                                 PlayStation
                             </button>
                         </li>
                         <li>
                             <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/xbox.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-gamepad"></i></span>
                                 Xbox
                             </button>
                         </li>
                         <li>
                             <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/nintendo.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-gamepad"></i></span>
                                 Nintendo
                             </button>
                         </li>
                         <li>
                             <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/android.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-android"></i></span>
                                 Android
                             </button>
                         </li>
                         <li>
                             <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/apple.svg"
-                                        title="playstation"></span>
-                                Apple
+                                <span class="icon-container"><i class="fa fa-apple"></i></span>
+                                iOS
                             </button>
                         </li>
                     </ul>
@@ -313,7 +287,7 @@
                         <li>
                             <button type="button">
                                 <span class="icon-container"><i class="fa fa-futbol-o"></i></span>
-                                Sport
+                                Sports
                             </button>
                         </li>
                     </ul>
@@ -322,40 +296,15 @@
         </aside>
 
         <main class="main-content">
-            <h1 id="current-section">Popular in 2025</h1>
-
-            <div class="dropdown-menu">
-                <button class="dropdown-btn">
-                    <span>Sort by: <strong id="filter-choice">Most Popular</strong></span>
-                    <i class="fa fa-chevron-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <button type="button" data-sort="popular">Most Popular <i class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="newest">Newest First <i class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="price-low">Price: Low to High <i
-                            class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="price-high">Price: High to Low <i
-                            class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="name">Name: A to Z <i class="fa fa-check hidden"></i></button>
-                </div>
-            </div>
-
-            <div class="games-grid">
-                <div class="game-card example-game">
-                    <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Example Game" class="game-image">
-                    <div class="game-details">
-                        <div class="purchase-row">
-                            <span class="add-to-cart">Add to Cart</span>
-                            <span class="price">$59.99</span>
-                        </div>
-                        <div class="platform-icons">
-                            <img src="../assets/icons/windows.svg" title="Windows logo">
-                            <img src="../assets/icons/playstation.svg" title="Windows logo">
-                            <img src="../assets/icons/nintendo.svg" title="Windows logo">
-                        </div>
-                        <h2 class="game-title">Example Game Title</h2>
-                        <p class="game-age-rating">Age rating: M</p>
-                    </div>
+            <h1 id="current-section">About GameStore</h1>
+            <div class="about-section">
+                <!-- Talk about what the website is and its purpose here
+                 Also talk about the resourcesused, which are: IGDB, Font Awesome, Google Fonts
+                 I made an about.css (located in styles/layouts) which you can use for the CSS styling. -->
+                <div style="text-align: left; margin-top: 10em;">
+                    <a href="marketplace.html"
+                        style="font-size: 1.5em; color: rgb(255, 0, 0); text-decoration: none;">GO
+                        BACK</a>
                 </div>
             </div>
         </main>
@@ -366,7 +315,6 @@
     <script type="module" src="../js/utils/page-transition.js"></script>
     <script type="module" src="../js/components/SideCart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
-    <script type="module" src="../js/utils/dropdown.js"></script>
 </body>
 
 </html>
