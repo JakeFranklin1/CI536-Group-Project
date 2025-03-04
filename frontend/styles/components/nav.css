@@ -109,8 +109,10 @@
     background-color: white;
 }
 
+
+.filter-section ul li.selected .icon-container img,
 .filter-section ul li.selected .icon-container i {
-    color: black;
+    filter: brightness(1) invert(0);
 }
 
 /* Mobile Nav */

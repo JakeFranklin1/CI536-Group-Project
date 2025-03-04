@@ -57,11 +57,15 @@ function handleQuantityChange(controls, increment) {
     let value = parseInt(valueSpan.textContent);
 
     if (increment) {
+        console.log("Incrementing value from: ", value);
         value++;
+        console.log("Incremented value: ", value);
     } else if (value > 1) {
+        console.log("Decrementing value");
         value--;
     }
 
+    console.log("Value updated: ", value);
     valueSpan.textContent = value;
     updateCartTotal();
 }

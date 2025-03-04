@@ -334,33 +334,7 @@ function addItemToCart(gameCard) {
             }
         });
     };
-    window.addItemToCart = addItemToCart;
 }
-
-/**
- * @listens DOMContentLoaded
- * @description Initializes the marketplace when the DOM is fully loaded.
- */
-document.addEventListener("DOMContentLoaded", async () => {
-    initializeMarketplace();
-
-    // Load initial games using the GameDisplayService
-    // Pass the addItemToCart function as the callback for the "Add to Cart" button
-    loadGames({ timeframe: "Popular in 2025" }, 24, false, addItemToCart);
-
-    initializeMobileMenu();
-    setSelectedNavItem();
-    updateCartCount();
-
-    const brandContainer = document.querySelector(".brand-container");
-    if (brandContainer) {
-        brandContainer.addEventListener("click", handleBrandClick);
-    }
-
-    // Add event listeners to existing cart items
-    setupCartItemEventListeners();
-});
-
 /**
  * Sets up event listeners for cart item controls
  */
@@ -401,3 +375,28 @@ function setupCartItemEventListeners() {
         });
     });
 }
+
+/**
+ * @listens DOMContentLoaded
+ * @description Initializes the marketplace when the DOM is fully loaded.
+ */
+document.addEventListener("DOMContentLoaded", async () => {
+    initializeMarketplace();
+
+    // Load initial games using the GameDisplayService
+    // Pass the addItemToCart function as the callback for the "Add to Cart" button
+    loadGames({ timeframe: "Popular in 2025" }, 24, false, addItemToCart);
+
+    initializeMobileMenu();
+    setSelectedNavItem();
+    updateCartCount();
+
+    const brandContainer = document.querySelector(".brand-container");
+    if (brandContainer) {
+        brandContainer.addEventListener("click", handleBrandClick);
+    }
+
+    // Add event listeners to existing cart items
+    setupCartItemEventListeners();
+    window.addItemToCart = addItemToCart;
+});
