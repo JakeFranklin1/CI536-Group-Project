@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * @module marketplace
  * @description This module handles the logic for the marketplace page, including authentication checks,
@@ -8,6 +9,8 @@ import { updateCartCount, updateCartTotal } from "./components/SideCart.js";
 import { signOut, checkAuth } from "./services/auth-service.js";
 import { escapeHTML } from "./utils/sanitise.js";
 import supabase from "./supabase-client.js";
+import { createFilterParams } from "./services/FilterService.js";
+import { loadGames } from "./services/GameDisplayService.js";
 
 /**
  * Global axios from CDN
@@ -72,9 +75,6 @@ async function initializeMarketplace() {
         }
     } catch (error) {
         console.error("Error:", error);
-    } finally {
-        // loadingElement.style.display = "none";
-        // spinner.style.display = "none";
     }
 }
 
@@ -125,11 +125,11 @@ function setSelectedNavItem() {
     if (currentPath.includes("about.html")) {
         document
             .querySelector('a[href="about.html"]')
-            .parentElement.classList.add("selected");
+            ?.parentElement.classList.add("selected");
     } else if (currentPath.includes("profile.html")) {
         document
             .querySelector('a[href="profile.html"]')
-            .parentElement.classList.add("selected");
+            ?.parentElement.classList.add("selected");
     }
 
     // Add click handlers for filter buttons
@@ -143,8 +143,30 @@ function setSelectedNavItem() {
 
             // Add selected to clicked item
             button.parentElement.classList.add("selected");
+
+            // Get filter type and value
+            const filterSection = button.closest(".filter-section");
+            const filterType = getFilterTypeFromSection(filterSection);
+            const filterValue = button.textContent.trim();
+
+            // Update the marketplace content
+            handleFilterSelection(filterType, filterValue);
         });
     });
+}
+
+/**
+ * Helper function to determine filter type from section
+ */
+function getFilterTypeFromSection(section) {
+    const sectionTitle = section.querySelector("h3").textContent.toLowerCase();
+
+    if (sectionTitle.includes("platforms")) return "platform";
+    if (sectionTitle.includes("categories")) return "category";
+    if (sectionTitle.includes("top games")) return "timeframe";
+    if (sectionTitle.includes("community")) return "community";
+
+    return "general";
 }
 
 function initializeMobileMenu() {
@@ -165,281 +187,39 @@ function initializeMobileMenu() {
 }
 
 /**
- * @function generateGameCards
- * @description Generates multiple game cards and adds them to the games grid
- * @param {number} count - Number of cards to generate
- * Use this to test the marketplace without loads of API calls
+ * @function handleFilterSelection
+ * @description Updates the marketplace content based on the selected filter
+ * @param {string} filterType - The type of filter (platform, category, timeframe)
+ * @param {string} filterValue - The specific value of the filter
  */
-// function generateGameCards(count) {
-// const loadingElement = document.querySelector("#loading");
-// const spinner = document.querySelector(".spinner");
-//     const gamesGrid = document.querySelector(".games-grid");
-
-//     // Check if gamesGrid exists before proceeding
-//     if (gamesGrid) {
-//         const template = gamesGrid.innerHTML; // Save the original card as template
-
-//         // Clear the grid
-//         gamesGrid.innerHTML = "";
-
-//         // Generate cards
-//         for (let i = 0; i < count; i++) {
-//             gamesGrid.innerHTML += template;
-//         }
-
-//         loadingElement.style.display = "none";
-//         spinner.style.display = "none";
-//     } else {
-//         console.warn("Games grid not found on this page.");
-//     }
-// }
-
-/**
- * Creates a game card DOM element with proper security measures
- * @param {Object} game - Game data from API
- * @param {string} coverUrl - URL for the game cover image
- * @param {string} platforms - HTML for platform icons
- * @param {string} price - Formatted price string
- * @returns {HTMLElement} - Complete game card DOM element
- */
-function createGameCard(game, coverUrl, platforms, price) {
-    // Create main card element
-    const card = document.createElement("div");
-    card.className = "game-card";
-    if (game.age_rating_string) {
-        card.dataset.ageRating = escapeHTML(game.age_rating_string);
+function handleFilterSelection(filterType, filterValue) {
+    // Update the page header to show the current filter
+    const currentSectionHeader = document.getElementById("current-section");
+    if (currentSectionHeader) {
+        currentSectionHeader.textContent = filterValue;
     }
 
-    // Create and add game image
-    const img = document.createElement("img");
-    img.src = escapeHTML(coverUrl);
-    img.className = "game-image";
-    img.loading = "lazy";
-    img.alt = escapeHTML(game.name || "Game Cover");
-    card.appendChild(img);
+    // Create filter parameters using the service
+    const filterParams = createFilterParams(filterType, filterValue);
 
-    // Create details container
-    const details = document.createElement("div");
-    details.className = "game-details";
-
-    // Create purchase row
-    const purchaseRow = document.createElement("div");
-    purchaseRow.className = "purchase-row";
-
-    // Add to cart button
-    const addToCart = document.createElement("span");
-    addToCart.className = "add-to-cart";
-    addToCart.textContent = "Add to Cart";
-    addToCart.addEventListener("click", function () {
-        addItemToCart(card);
-    });
-
-    // Price element
-    const priceElement = document.createElement("span");
-    priceElement.className = "price";
-    priceElement.textContent = `£${escapeHTML(price)}`;
-
-    // Add elements to purchase row
-    purchaseRow.appendChild(addToCart);
-    purchaseRow.appendChild(priceElement);
-    details.appendChild(purchaseRow);
-
-    // Platform icons
-    const platformsContainer = document.createElement("div");
-    platformsContainer.className = "platform-icons";
-    // Use DOMParser to safely convert HTML string to DOM elements
-    const parser = new DOMParser();
-    const platformDoc = parser.parseFromString(platforms, "text/html");
-    const platformElements = platformDoc.body.children;
-    // Append each platform icon to the container
-    while (platformElements.length > 0) {
-        platformsContainer.appendChild(platformElements[0]);
-    }
-    details.appendChild(platformsContainer);
-
-    // Game title
-    const title = document.createElement("h2");
-    title.className = "game-title";
-    title.textContent = escapeHTML(game.name || "Unknown Game");
-    details.appendChild(title);
-
-    // Age rating
-    const ageRating = document.createElement("p");
-    ageRating.className = "game-age-rating";
-    ageRating.textContent = `Age rating: ${escapeHTML(game.age_rating_string || "Unknown")}`;
-    details.appendChild(ageRating);
-
-    // Add details to card
-    card.appendChild(details);
-
-    return card;
-}
-/**
- * @function generateGameCards
- * @description Fetches and displays popular games from the IGDB API
- * @param {number} count - Number of games to fetch
- * This is the actual method for generating game cards for the marketplace
- */
-async function generateGameCards(count) {
-    const gamesGrid = document.querySelector(".games-grid");
-
-    if (!gamesGrid) {
-        console.warn("Games grid not found on this page.");
-        return;
-    }
-
-    // Clear the grid and add loading cards
-    gamesGrid.innerHTML = Array(count)
-        .fill('<div class="game-card loading"></div>')
-        .join("");
-
-    try {
-        const response = await axios.get(`${API_URL}/api/games?limit=${count}`);
-        const games = response.data;
-
-        // Clear the grid again for real content
-        gamesGrid.innerHTML = "";
-
-        // Generate cards for each game
-        games.forEach((game) => {
-            // Get cover URL
-            let coverUrl;
-            if (
-                game.name?.toLowerCase().includes("grand theft auto v") ||
-                game.name?.toLowerCase().includes("gta v") ||
-                game.name?.toLowerCase().includes("gta 5")
-            ) {
-                coverUrl = "../assets/images/gta5.webp";
-            } else if (
-                game.name
-                    ?.toLowerCase()
-                    .includes("grand theft auto: san andreas") ||
-                game.name?.toLowerCase().includes("gta iv") ||
-                game.name?.toLowerCase().includes("gta 4")
-            ) {
-                coverUrl = "../assets/images/gta4.jpg";
-            } else {
-                // Use default IGDB cover for other games
-                coverUrl = game.cover?.url
-                    ? game.cover.url
-                          .replace("t_thumb", "t_720p")
-                          .replace("t_cover_big", "t_720p")
-                          .replace("t_cover_big_2x", "t_720p")
-                          .replace("http:", "https:")
-                    : "../assets/images/placeholder-game.webp";
-            }
-
-            // Get platform icons and price
-            const platforms = getPlatformIcons(game.platforms);
-            const price = generateRandomPrice();
-
-            // Create and append the game card
-            const gameCard = createGameCard(game, coverUrl, platforms, price);
-            gamesGrid.appendChild(gameCard);
-        });
-    } catch (error) {
-        console.error("Error fetching games:", error);
-        gamesGrid.innerHTML =
-            '<div class="error-message">Failed to load games. Please try again later.</div>';
-    } finally {
-        console.log("Games loaded successfully.");
-    }
+    // Load games with the specified filters using the GameDisplayService
+    // Use full-screen loader for filter changes
+    loadGames(filterParams, 12, true, addItemToCart);
 }
 
 /**
- * @function getPlatformIcons
- * @description Converts platform names to corresponding icon images
- * @param {Array} platforms - Array of platform objects from IGDB API
- * @returns {string} HTML string of platform icons
+ * Adds an item to the shopping cart with animation
+ * @param {HTMLElement} gameCard - The game card element to add to cart
  */
-function getPlatformIcons(platforms = []) {
-    // Common platform name parts and their corresponding icons
-    const platformIcons = {
-        // Exact matches
-        PC: "../assets/icons/windows.svg",
-        PlayStation: "../assets/icons/playstation.svg",
-        "PlayStation 4": "../assets/icons/playstation.svg",
-        "PlayStation 5": "../assets/icons/playstation.svg",
-        "PlayStation 3": "../assets/icons/playstation.svg",
-        Xbox: "../assets/icons/xbox.svg",
-        "Xbox One": "../assets/icons/xbox.svg",
-        "Xbox Series X": "../assets/icons/xbox.svg",
-        "Xbox Series S": "../assets/icons/xbox.svg",
-        "Nintendo Switch": "../assets/icons/nintendo.svg",
-        Nintendo: "../assets/icons/nintendo.svg",
-        "Wii U": "../assets/icons/nintendo.svg",
-        Wii: "../assets/icons/nintendo.svg",
-        iOS: "../assets/icons/apple.svg",
-        Mac: "../assets/icons/apple.svg",
-        Android: "../assets/icons/android.svg",
-    };
-
-    // Used icons for unique platforms to avoid duplicates
-    const usedIcons = new Set();
-
-    // Map each platform to an icon, avoiding duplicates
-    return platforms
-        .map((platform) => {
-            // Try exact match first
-            let iconPath = platformIcons[platform.name];
-
-            // If no exact match, try partial match
-            if (!iconPath) {
-                if (platform.name.includes("PlayStation")) {
-                    iconPath = "../assets/icons/playstation.svg";
-                } else if (platform.name.includes("Xbox")) {
-                    iconPath = "../assets/icons/xbox.svg";
-                } else if (
-                    platform.name.includes("Nintendo") ||
-                    platform.name.includes("Wii") ||
-                    platform.name.includes("Switch")
-                ) {
-                    iconPath = "../assets/icons/nintendo.svg";
-                } else if (
-                    platform.name.includes("PC") ||
-                    platform.name.includes("Windows")
-                ) {
-                    iconPath = "../assets/icons/windows.svg";
-                } else if (
-                    platform.name.includes("Mac") ||
-                    platform.name.includes("iOS") ||
-                    platform.name.includes("Apple")
-                ) {
-                    iconPath = "../assets/icons/apple.svg";
-                } else if (platform.name.includes("Android")) {
-                    iconPath = "../assets/icons/android.svg";
-                } else {
-                    // Default fallback
-                    iconPath = "../assets/icons/windows.svg";
-                }
-            }
-
-            // Check if we've already used this icon type (to avoid duplicates)
-            if (usedIcons.has(iconPath)) {
-                return "";
-            }
-
-            // Add to used icons
-            usedIcons.add(iconPath);
-            return `<img src="${escapeHTML(iconPath)}" alt="${escapeHTML(platform.name)}" class="platform-icon">`;
-        })
-        .filter((icon) => icon !== ""); // Remove empty strings (duplicates)
-}
-
-/**
- * @function generateRandomPrice
- * @description Generates a random price for demo purposes
- * @returns {string} Formatted price string
- */
-function generateRandomPrice() {
-    const prices = ["59.99", "49.99", "39.99", "29.99", "19.99"];
-    return prices[Math.floor(Math.random() * prices.length)];
-}
-
 function addItemToCart(gameCard) {
     // Create flying animation element
     const addToCartBtn = gameCard.querySelector(".add-to-cart");
     const cartIcon = document.querySelector(".cart-btn");
+
+    if (!addToCartBtn || !cartIcon) {
+        console.error("Required elements for cart animation not found");
+        return;
+    }
 
     // Get the coordinates
     const start = addToCartBtn.getBoundingClientRect();
@@ -458,7 +238,7 @@ function addItemToCart(gameCard) {
         {
             left: `${start.left + start.width / 2}px`,
             top: `${start.top + start.height / 2}px`,
-            transform: "scale(2)",
+            transform: "scale(1)",
             opacity: 1,
         },
         {
@@ -512,24 +292,62 @@ function addItemToCart(gameCard) {
         `;
 
         const cartItemsContainer = document.querySelector(".cart-items");
-        const emptyCart = cartItemsContainer.querySelector(".empty-cart");
+        const emptyCart = cartItemsContainer?.querySelector(".empty-cart");
         if (emptyCart) {
             emptyCart.remove();
             document.querySelector(".cart-summary").style.display = "block";
         }
 
-        cartItemsContainer.insertAdjacentHTML("beforeend", cartItemHTML);
+        cartItemsContainer?.insertAdjacentHTML("beforeend", cartItemHTML);
         updateCartTotal();
         updateCartCount();
+
+        // Add event listener to the new remove button
+        const newRemoveButton = cartItemsContainer?.querySelector(
+            ".cart-item:last-child .cart-remove"
+        );
+        newRemoveButton?.addEventListener("click", function () {
+            this.closest(".cart-item").remove();
+            updateCartTotal();
+            updateCartCount();
+        });
+
+        // Add event listeners to new quantity buttons
+        const newIncrementButton = cartItemsContainer?.querySelector(
+            ".cart-item:last-child .quantity-increment"
+        );
+        newIncrementButton?.addEventListener("click", function () {
+            const quantityValue = this.previousElementSibling;
+            quantityValue.textContent = parseInt(quantityValue.textContent) + 1;
+            updateCartTotal();
+        });
+
+        const newDecrementButton = cartItemsContainer?.querySelector(
+            ".cart-item:last-child .quantity-decrement"
+        );
+        newDecrementButton?.addEventListener("click", function () {
+            const quantityValue = this.nextElementSibling;
+            if (parseInt(quantityValue.textContent) > 1) {
+                quantityValue.textContent =
+                    parseInt(quantityValue.textContent) - 1;
+                updateCartTotal();
+            }
+        });
     };
+    window.addItemToCart = addItemToCart;
 }
+
 /**
  * @listens DOMContentLoaded
  * @description Initializes the marketplace when the DOM is fully loaded.
  */
 document.addEventListener("DOMContentLoaded", async () => {
     initializeMarketplace();
-    generateGameCards(24);
+
+    // Load initial games using the GameDisplayService
+    // Pass the addItemToCart function as the callback for the "Add to Cart" button
+    loadGames({ timeframe: "Popular in 2025" }, 24, false, addItemToCart);
+
     initializeMobileMenu();
     setSelectedNavItem();
     updateCartCount();
@@ -539,6 +357,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         brandContainer.addEventListener("click", handleBrandClick);
     }
 
+    // Add event listeners to existing cart items
+    setupCartItemEventListeners();
+});
+
+/**
+ * Sets up event listeners for cart item controls
+ */
+function setupCartItemEventListeners() {
     // Add event listeners to quantity inputs and buttons
     const quantityInputs = document.querySelectorAll(".quantity-input");
     quantityInputs.forEach((input) => {
@@ -549,7 +375,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     incrementButtons.forEach((button) => {
         button.addEventListener("click", function () {
             const input = this.previousElementSibling;
-            input.value = parseInt(input.value) + 1;
+            input.textContent = parseInt(input.textContent) + 1;
             updateCartTotal();
         });
     });
@@ -558,8 +384,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     decrementButtons.forEach((button) => {
         button.addEventListener("click", function () {
             const input = this.nextElementSibling;
-            if (parseInt(input.value) > 1) {
-                input.value = parseInt(input.value) - 1;
+            if (parseInt(input.textContent) > 1) {
+                input.textContent = parseInt(input.textContent) - 1;
                 updateCartTotal();
             }
         });
@@ -571,6 +397,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const cartItem = this.closest(".cart-item");
             cartItem.remove();
             updateCartTotal();
+            updateCartCount();
         });
     });
-});
+}

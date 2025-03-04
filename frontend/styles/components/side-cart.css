@@ -338,11 +338,11 @@
 
 @media screen and (max-width: 450px) {
     .side-cart[style*="width: 350px"] {
-        width: 100% !important;
+        width: 300px !important;
     }
 
     .cart-summary {
-        width: calc(100% - 32px);
+        width: 268px;
     }
 
     .cart-item {

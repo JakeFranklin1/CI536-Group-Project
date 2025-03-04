@@ -37,10 +37,50 @@ const esrbToPegi = {
 router.get("/", async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : 24;
-        const games = await igdbService.getPopularGames(limit);
+
+        // Extract filter parameters from the request
+        const filters = {
+            platforms: req.query.platforms,
+            genres: req.query.genres,
+            sort: req.query.sort,
+            timeframe: req.query.timeframe,
+            year: req.query.year,
+        };
+
+        // Pass filters to the getGames method
+        const games = await igdbService.getGames(limit, filters);
+
+        const filteredGames = games.filter((game) => {
+            // Filter out games with certain keywords in title or description
+            const adultContentRegex = /hentai|erotic|xxx|adult\s+only/i;
+            if (game.name && adultContentRegex.test(game.name)) {
+                return false;
+            }
+            if (game.summary && adultContentRegex.test(game.summary)) {
+                return false;
+            }
+
+            // Filter by age rating (if available)
+            if (
+                game.age_ratings &&
+                game.age_ratings.some(
+                    (rating) =>
+                        (rating.category === 1 && rating.rating === 12) || // ESRB AO
+                        (rating.category === 2 && rating.rating === 5) // PEGI 18
+                )
+            ) {
+                // Only filter PEGI 18/ESRB AO if they also have adult themes
+                const hasAdultThemes = game.themes?.some((theme) =>
+                    EXCLUDED_CONTENT.THEMES.includes(theme.id)
+                );
+                return !hasAdultThemes;
+            }
+
+            return true;
+        });
 
         // Map the games to include the age rating
-        const gamesWithAgeRating = games.map((game) => {
+        const gamesWithAgeRating = filteredGames.map((game) => {
             let ageRatingString = "Not Rated"; // Default value
 
             if (game.age_ratings && game.age_ratings.length > 0) {
