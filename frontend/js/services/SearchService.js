@@ -48,22 +48,30 @@ export function initializeSearchBar() {
 }
 
 /**
- * Positions the search results container relative to the search bar
+ * Positions the search results dropdown relative to the search bar
  * @param {HTMLElement} searchBar - The search bar element
  * @param {HTMLElement} searchResults - The search results container
  */
 function positionSearchResults(searchBar, searchResults) {
     if (!searchBar || !searchResults) return;
 
-    // Get the search bar's dimensions and position
     const searchBarRect = searchBar.getBoundingClientRect();
 
-    // Set the search results styles to match the search bar width and position
-    searchResults.style.position = 'absolute';
+    // Position directly under the search bar and ensure minimum width of 400px
+    const width = Math.max(searchBarRect.width, 398);
+
+    searchResults.style.width = `${width}px`;
+
+    // Calculate left position to center the dropdown if it's wider than the search bar
+    const leftOffset = searchBarRect.width < width ?
+        (searchBarRect.left - (width - searchBarRect.width) / 2) :
+        searchBarRect.left;
+
+    // Make sure the dropdown doesn't go off screen on the left
+    const finalLeft = Math.max(leftOffset, 10) -1;
+
+    searchResults.style.left = `${finalLeft}px`;
     searchResults.style.top = `${searchBarRect.bottom}px`;
-    searchResults.style.left = `${searchBarRect.left}px`;
-    searchResults.style.width = `${searchBarRect.width}px`;
-    searchResults.style.zIndex = '1001'; // Higher than header z-index
 }
 
 /**
@@ -77,6 +85,8 @@ function setupSearchEventListeners(searchInput, searchButton, searchResults) {
         console.error("Search elements not found");
         return;
     }
+
+    const searchBar = searchInput.closest('.search-bar');
 
     // Search on button click
     searchButton.addEventListener("click", () => {
@@ -100,6 +110,7 @@ function setupSearchEventListeners(searchInput, searchButton, searchResults) {
         // Hide results if query is empty
         if (query.length === 0) {
             searchResults.style.display = "none";
+            searchBar.classList.remove('results-visible');
             return;
         }
 
@@ -117,7 +128,13 @@ function setupSearchEventListeners(searchInput, searchButton, searchResults) {
         const searchContainer = searchInput.closest(".search-container") ||
                                searchInput.closest(".header-content");
         if (searchContainer && !searchContainer.contains(event.target)) {
-            searchResults.style.display = "none";
+            searchResults.classList.remove('visible');
+            searchBar.classList.remove('results-visible');
+            setTimeout(() => {
+                if (!searchResults.classList.contains('visible')) {
+                    searchResults.style.display = "none";
+                }
+            }, 300); // Match the CSS transition duration
         }
     });
 }
@@ -234,8 +251,13 @@ async function searchGames(query, limit = 12, isPreview = false) {
  * @param {string} query - Original search query
  */
 function displaySearchPreview(games, searchResults, query) {
+    // Find the search bar element
+    const searchBar = document.querySelector(".header-content .search-bar");
+
     if (games.length === 0) {
         searchResults.innerHTML = `<div class="no-results">No games found matching "${escapeHTML(query)}"</div>`;
+        // Add the results-visible class to the search bar for styling
+        searchBar.classList.add('results-visible');
         return;
     }
 
@@ -275,6 +297,11 @@ function displaySearchPreview(games, searchResults, query) {
 
     searchResults.innerHTML = resultsHtml;
     searchResults.style.display = "block";
+
+    // Add the results-visible class to the search bar for styling
+    searchBar.classList.add('results-visible');
+
+    setTimeout(() => searchResults.classList.add('visible'), 10);
 
     // Add click handlers for search results
     const resultItems = document.querySelectorAll(".search-result-item");
