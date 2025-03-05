@@ -11,13 +11,15 @@ import { escapeHTML } from "./utils/sanitise.js";
 import supabase from "./supabase-client.js";
 import { showToast } from "./utils/toast.js";
 import { createFilterParams } from "./services/FilterService.js";
-import { loadGames } from "./services/GameDisplayService.js";
+
 import {
-    getPlatformIcons,
-    generateRandomPrice,
     createGameCard,
-} from "./services/GameDisplayService.js";
-import { initializeSearchBar } from "./services/SearchService.js";
+    getPlatformIcons,
+    displayGames,
+    loadGames,
+    initializeSearchBar,
+    generateRandomPrice,
+} from "./services/GameService.js";
 
 /**
  * Global axios from CDN
@@ -863,6 +865,284 @@ function setupLoadMoreButton() {
     // Insert after games grid
     gamesGrid.parentNode.insertBefore(container, gamesGrid.nextSibling);
 }
+
+/**
+ * Shows detailed view for a game
+ * @param {Object} game - Game data object
+ * @param {string} coverUrl - URL for the game cover image
+ * @param {string} platforms - HTML for platform icons
+ * @param {string} price - Formatted price string
+ */
+function showGameDetails(game, coverUrl, platforms, price) {
+    // Store current scroll position
+    window.gameGridScrollPosition = window.scrollY;
+
+    // Hide side navigation
+    const sideNav = document.querySelector(".side-nav");
+    if (sideNav) {
+        sideNav.classList.add("hidden");
+        // Also hide hamburger menu on mobile
+        const hamburgerMenu = document.querySelector(".hamburger-menu");
+        if (hamburgerMenu) {
+            hamburgerMenu.classList.add("hidden");
+        }
+    }
+
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    const chooseYearBtn = document.querySelector(".choose-year-btn-container");
+
+    if (dropdownMenu) {
+        window.dropdownMenuDisplayState = dropdownMenu.style.display;
+        dropdownMenu.style.display = "none";
+    }
+
+    if (chooseYearBtn) {
+        window.chooseYearBtnDisplayState = chooseYearBtn.style.display;
+        chooseYearBtn.style.display = "none";
+    }
+
+    // Create game details container if it doesn't exist
+    let detailsContainer = document.getElementById("game-details-container");
+    if (!detailsContainer) {
+        detailsContainer = document.createElement("div");
+        detailsContainer.id = "game-details-container";
+        document.querySelector(".main-content").appendChild(detailsContainer);
+    }
+
+    // Get screenshots or use placeholder
+    const screenshots = game.screenshots || [];
+    const screenshotHtml =
+        screenshots.length > 0
+            ? screenshots
+                  .map(
+                      (s) =>
+                          `<div class="screenshot"><img src="${escapeHTML(s.url.replace("t_thumb", "t_1080p").replace("http:", "https:"))}" alt="Screenshot"></div>`
+                  )
+                  .join("")
+            : `<div class="screenshot"><img src="${escapeHTML(coverUrl)}" alt="Cover"></div>`;
+
+    // Get formatted release date
+    let releaseDate = "Unknown release date";
+    if (game.first_release_date) {
+        const date = new Date(game.first_release_date * 1000);
+        releaseDate = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    }
+
+    // Construct HTML for game details
+    detailsContainer.innerHTML = `
+    <div class="game-details-container">
+        <div class="game-details-header">
+            <button class="back-to-games">
+                <i class="fa fa-arrow-left"></i> Back to Games
+            </button>
+            <h1>${escapeHTML(game.name || "Game Details")}</h1>
+        </div>
+
+        <div class="game-details-content">
+            <div class="game-screenshots-container">
+                <div class="screenshots-nav prev">
+                    <i class="fa fa-chevron-left"></i>
+                </div>
+                <div class="screenshots-wrapper">
+                    ${screenshotHtml}
+                </div>
+                <div class="screenshots-nav next">
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <div class="game-info-container">
+                <div class="game-info-header">
+                    <div class="game-platforms">${platforms}</div>
+                    <div class="game-meta">
+                        <div class="game-rating">
+                            ${game.age_rating_string ? `<span class="age-rating">${escapeHTML(game.age_rating_string)}</span>` : ""}
+                            ${game.total_rating ? `<span class="score-rating">${Math.round(game.total_rating)}%</span>` : ""}
+                        </div>
+                        <div class="game-release-date">${escapeHTML(releaseDate)}</div>
+                    </div>
+                </div>
+
+                <div class="game-description">
+                    <p>${escapeHTML(game.summary || "No description available.")}</p>
+                </div>
+
+                <div class="game-purchase">
+                    <div class="game-price">£${escapeHTML(price)}</div>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    // Add event listeners for the back button
+    document
+        .querySelector(".back-to-games")
+        .addEventListener("click", hideGameDetails);
+
+    // Add event listener for the Add to Cart button in the details view
+    const addToCartBtn = detailsContainer.querySelector(".add-to-cart-btn");
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener("click", () => {
+            // Create a temporary game card object to leverage existing add to cart functionality
+            const tempCard = {
+                querySelector: (selector) => {
+                    if (selector === ".game-title")
+                        return { textContent: game.name };
+                    if (selector === ".price") return { textContent: price };
+                    if (selector === ".game-image") return { src: coverUrl };
+                    return null;
+                },
+            };
+            addItemToCart(tempCard);
+        });
+
+        const mainContent = document.querySelector(".main-content");
+        if (mainContent) {
+            // Store original margin value to restore it later
+            window.originalMainContentMargin = mainContent.style.marginLeft;
+            mainContent.style.marginLeft = "0";
+        }
+    }
+
+    // Setup screenshot navigation
+    setupScreenshotNavigation();
+
+    // Hide the games grid and show details
+    document.querySelector(".games-grid").style.display = "none";
+    document.querySelector(".load-more-container")?.classList.add("hidden");
+    document.getElementById("current-section").style.display = "none";
+    detailsContainer.style.display = "block";
+
+    // Scroll to top of page
+    window.scrollTo(0, 0);
+}
+
+/**
+ * Hides game details and shows the games grid
+ */
+function hideGameDetails() {
+    // Show side navigation again
+    const sideNav = document.querySelector(".side-nav");
+    if (sideNav) {
+        sideNav.classList.remove("hidden");
+        // Show hamburger menu again on mobile
+        const hamburgerMenu = document.querySelector(".hamburger-menu");
+        if (hamburgerMenu) {
+            hamburgerMenu.classList.remove("hidden");
+        }
+    }
+
+    // Restore dropdown and year button to their previous state
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    const chooseYearBtn = document.querySelector(".choose-year-btn-container");
+
+    if (dropdownMenu && window.dropdownMenuDisplayState !== undefined) {
+        dropdownMenu.style.display = window.dropdownMenuDisplayState;
+    }
+
+    if (chooseYearBtn && window.chooseYearBtnDisplayState !== undefined) {
+        chooseYearBtn.style.display = window.chooseYearBtnDisplayState;
+    }
+
+    const detailsContainer = document.getElementById("game-details-container");
+    if (detailsContainer) {
+        detailsContainer.style.display = "none";
+    }
+
+    document.querySelector(".games-grid").style.display = "grid";
+    document.querySelector(".load-more-container")?.classList.remove("hidden");
+    document.getElementById("current-section").style.display = "block";
+
+    // Restore previous scroll position
+    if (window.gameGridScrollPosition) {
+        window.scrollTo(0, window.gameGridScrollPosition);
+    }
+
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent && window.originalMainContentMargin !== undefined) {
+        mainContent.style.marginLeft = window.originalMainContentMargin;
+    } else if (mainContent) {
+        // Default margin for desktop if original wasn't stored
+        if (window.innerWidth > 768) {
+            mainContent.style.marginLeft = "245px";
+        } else {
+            mainContent.style.marginLeft = "0";
+        }
+    }
+}
+
+/**
+ * Sets up navigation for screenshots in the game details view
+ */
+function setupScreenshotNavigation() {
+    const container = document.querySelector(".screenshots-wrapper");
+    const prevBtn = document.querySelector(".screenshots-nav.prev");
+    const nextBtn = document.querySelector(".screenshots-nav.next");
+
+    if (!container || !prevBtn || !nextBtn) return;
+
+    const screenshots = container.querySelectorAll(".screenshot");
+    if (screenshots.length <= 1) {
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        return;
+    }
+
+    let currentIndex = 0;
+
+    // Handle visibility of nav buttons
+    const updateNavButtons = () => {
+        prevBtn.style.opacity = currentIndex === 0 ? "0.5" : "1";
+        nextBtn.style.opacity =
+            currentIndex === screenshots.length - 1 ? "0.5" : "1";
+    };
+
+    // Navigate to specific screenshot
+    const goToScreenshot = (index) => {
+        if (index < 0 || index >= screenshots.length) return;
+        currentIndex = index;
+        container.scrollTo({
+            left: screenshots[index].offsetLeft,
+            behavior: "smooth",
+        });
+        updateNavButtons();
+    };
+
+    // Handle click events
+    prevBtn.addEventListener("click", () => goToScreenshot(currentIndex - 1));
+    nextBtn.addEventListener("click", () => goToScreenshot(currentIndex + 1));
+
+    // Handle scroll events
+    container.addEventListener("scroll", () => {
+        const scrollPosition = container.scrollLeft;
+        // Find closest screenshot to determine current index
+        let closestIndex = 0;
+        let minDistance = Infinity;
+
+        screenshots.forEach((screenshot, index) => {
+            const distance = Math.abs(screenshot.offsetLeft - scrollPosition);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = index;
+            }
+        });
+
+        currentIndex = closestIndex;
+        updateNavButtons();
+    });
+
+    // Initialize
+    updateNavButtons();
+}
+
+// Make the showGameDetails function available globally
+window.showGameDetails = showGameDetails;
 
 /**
  * @listens DOMContentLoaded

@@ -1,4 +1,4 @@
-import { loadGames } from "../services/GameDisplayService.js";
+import { loadGames } from "../services/GameService.js";
 import { createFilterParams } from "../services/FilterService.js";
 
 document.addEventListener("DOMContentLoaded", () => {

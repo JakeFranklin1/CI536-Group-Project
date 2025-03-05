@@ -21,7 +21,6 @@ body {
     padding-bottom: 80px; /* Add extra space for footer */
 }
 
-
 p,
 h1,
 h2,
@@ -40,7 +39,6 @@ a,
 .logo {
     filter: brightness(0) invert(1);
 }
-
 
 #current-section {
     font-family: "Poppins", sans-serif;
@@ -72,7 +70,6 @@ a,
 .no-games-message p {
     font-size: 18px;
 }
-
 
 @media (max-width: 1024px) {
     #current-section {

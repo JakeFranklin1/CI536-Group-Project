@@ -17,6 +17,7 @@
 @import url("components/side-cart.css");
 @import url("components/load-btn.css");
 @import url("components/footer.css");
+@import url("components/game-details.css");
 
 /* Utils */
 @import url("utils/toast.css");
@@ -25,13 +26,11 @@
 @import url("utils/game-card-loading.css");
 @import url("utils/search.css");
 
-/* Add this style for search results and other pages with minimal content */
 .search-error-full,
 .no-results-full {
-    min-height: 30vh; /* Ensure a minimum height for sparse content */
+    min-height: 30vh;
 }
 
-/* When no games are found, ensure a minimum height */
 .no-games-message {
     min-height: 30vh;
     margin-bottom: 10em;

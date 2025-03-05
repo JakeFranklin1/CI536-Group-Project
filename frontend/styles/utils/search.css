@@ -1,4 +1,3 @@
-
 .search-results {
     position: absolute;
     width: 100%;
@@ -12,7 +11,9 @@
     display: none;
     opacity: 0;
     transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 .search-results.visible {
@@ -20,7 +21,6 @@
     opacity: 1;
     transform: translateY(0);
 }
-
 
 .search-result-item {
     display: flex;
@@ -59,7 +59,6 @@
     margin: 0;
 }
 
-
 .view-all-results {
     padding: 12px;
     text-align: center;
@@ -86,7 +85,6 @@
     margin-right: 6px;
 }
 
-
 .search-loading,
 .search-error,
 .no-results {
@@ -99,7 +97,6 @@
 .search-error {
     color: #e53935;
 }
-
 
 .search-error-full,
 .no-results-full {

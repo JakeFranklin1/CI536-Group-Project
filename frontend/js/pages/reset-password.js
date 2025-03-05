@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const successDiv = document.createElement("div");
         successDiv.className = "success-message";
         successDiv.textContent = message;
-        successDiv.style.marginBottom = "0"; // Add this line
+        successDiv.style.marginBottom = "0";
 
         const existingSuccess = form.querySelector(".success-message");
         if (existingSuccess) {
