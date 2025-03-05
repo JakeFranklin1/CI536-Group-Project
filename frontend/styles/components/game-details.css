@@ -1,3 +1,4 @@
+
 #game-details-container {
     width: 100%;
     max-width: 1200px;
@@ -91,9 +92,7 @@
     justify-content: center;
     cursor: pointer;
     z-index: 2;
-    transition:
-        background 0.2s,
-        opacity 0.2s;
+    transition: background 0.2s, opacity 0.2s;
 }
 
 .screenshots-nav:hover {
@@ -203,45 +202,6 @@
     background: #3d9840;
 }
 
-.side-nav {
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-}
-
-.side-nav.hidden {
-    transform: translateX(-100%);
-    opacity: 0;
-    pointer-events: none;
-}
-
-#game-details-container {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
-#game-details-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.main-content {
-    transition: margin-left 0.3s ease-out;
-}
-
-.games-grid,
-.load-more-container,
-#current-section {
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-}
-
-.games-grid.fade-out,
-.load-more-container.fade-out,
-#current-section.fade-out {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-}
-
 /* Responsive styles */
 @media (max-width: 768px) {
     .game-info-header {
@@ -276,6 +236,75 @@
     }
 
     #game-details-container {
-        padding: 12px 16px;
+        padding: 0;
+        margin: 16px;
     }
+}
+
+
+/* Add these animation styles at the end of the file */
+
+/* Transition classes for fading elements */
+.fade-transition {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+/* Game details transitions */
+#game-details-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#game-details-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Side nav transitions */
+.side-nav {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.side-nav.hidden {
+    opacity: 0;
+    transform: translateX(-30px);
+    pointer-events: none;
+}
+
+/* Games grid transitions */
+.games-grid {
+    transition: opacity 0.3s ease;
+}
+
+.games-grid.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Additional elements that need to fade */
+.dropdown-menu,
+.load-more-container,
+#current-section,
+.choose-year-btn-container,
+.hamburger-menu {
+    transition: opacity 0.3s ease;
+}
+
+.dropdown-menu.fade-out,
+.load-more-container.fade-out,
+#current-section.fade-out,
+.choose-year-btn-container.fade-out,
+.hamburger-menu.fade-out {
+    opacity: 0;
+    pointer-events: none;
 }

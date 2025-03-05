@@ -867,7 +867,7 @@ function setupLoadMoreButton() {
 }
 
 /**
- * Shows detailed view for a game
+ * Shows detailed view for a game with smooth transitions
  * @param {Object} game - Game data object
  * @param {string} coverUrl - URL for the game cover image
  * @param {string} platforms - HTML for platform icons
@@ -877,42 +877,59 @@ function showGameDetails(game, coverUrl, platforms, price) {
     // Store current scroll position
     window.gameGridScrollPosition = window.scrollY;
 
-    // Hide side navigation
+    // Get elements for animation
     const sideNav = document.querySelector(".side-nav");
-    if (sideNav) {
-        sideNav.classList.add("hidden");
-        // Also hide hamburger menu on mobile
-        const hamburgerMenu = document.querySelector(".hamburger-menu");
-        if (hamburgerMenu) {
-            hamburgerMenu.classList.add("hidden");
-        }
-    }
-
+    const gamesGrid = document.querySelector(".games-grid");
+    const loadMoreContainer = document.querySelector(".load-more-container");
+    const currentSection = document.getElementById("current-section");
     const dropdownMenu = document.querySelector(".dropdown-menu");
     const chooseYearBtn = document.querySelector(".choose-year-btn-container");
+    const hamburgerMenu = document.querySelector(".hamburger-menu");
+    const footer = document.querySelector(".marketplace-footer");
 
+    // Step 1: Add fade-out class to all elements that need to be hidden
+    if (gamesGrid) gamesGrid.classList.add("fade-out");
+    if (loadMoreContainer) loadMoreContainer.classList.add("fade-out");
+    if (currentSection) currentSection.classList.add("fade-out");
     if (dropdownMenu) {
         window.dropdownMenuDisplayState = dropdownMenu.style.display;
-        dropdownMenu.style.display = "none";
+        dropdownMenu.classList.add("fade-out");
     }
-
     if (chooseYearBtn) {
         window.chooseYearBtnDisplayState = chooseYearBtn.style.display;
-        chooseYearBtn.style.display = "none";
+        chooseYearBtn.classList.add("fade-out");
     }
+    if (hamburgerMenu) hamburgerMenu.classList.add("fade-out");
+    if (sideNav) sideNav.classList.add("hidden");
+    if (footer) footer.classList.add("fade-out");
 
-    // Create game details container if it doesn't exist
-    let detailsContainer = document.getElementById("game-details-container");
-    if (!detailsContainer) {
-        detailsContainer = document.createElement("div");
-        detailsContainer.id = "game-details-container";
-        document.querySelector(".main-content").appendChild(detailsContainer);
-    }
+    // Step 2: After elements have faded out, create and prepare the details view
+    setTimeout(() => {
+        // Hide elements completely
+        if (gamesGrid) gamesGrid.style.display = "none";
+        if (loadMoreContainer) loadMoreContainer.style.display = "none";
+        if (currentSection) currentSection.style.display = "none";
+        if (dropdownMenu) dropdownMenu.style.display = "none";
+        if (chooseYearBtn) chooseYearBtn.style.display = "none";
 
-    // Get screenshots or use placeholder
-    const screenshots = game.screenshots || [];
-    const screenshotHtml =
-        screenshots.length > 0
+        // Create game details container if it doesn't exist
+        let detailsContainer = document.getElementById("game-details-container");
+        if (!detailsContainer) {
+            detailsContainer = document.createElement("div");
+            detailsContainer.id = "game-details-container";
+            document.querySelector(".main-content").appendChild(detailsContainer);
+        }
+
+        // Adjust the main content margin for full-width display
+        const mainContent = document.querySelector(".main-content");
+        if (mainContent) {
+            window.originalMainContentMargin = mainContent.style.marginLeft;
+            mainContent.style.marginLeft = "0";
+        }
+
+        // Get screenshots or use placeholder
+        const screenshots = game.screenshots || [];
+        const screenshotHtml = screenshots.length > 0
             ? screenshots
                   .map(
                       (s) =>
@@ -921,160 +938,185 @@ function showGameDetails(game, coverUrl, platforms, price) {
                   .join("")
             : `<div class="screenshot"><img src="${escapeHTML(coverUrl)}" alt="Cover"></div>`;
 
-    // Get formatted release date
-    let releaseDate = "Unknown release date";
-    if (game.first_release_date) {
-        const date = new Date(game.first_release_date * 1000);
-        releaseDate = date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
-    }
+        // Get formatted release date
+        let releaseDate = "Unknown release date";
+        if (game.first_release_date) {
+            const date = new Date(game.first_release_date * 1000);
+            releaseDate = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+        }
 
-    // Construct HTML for game details
-    detailsContainer.innerHTML = `
-    <div class="game-details-container">
-        <div class="game-details-header">
-            <button class="back-to-games">
-                <i class="fa fa-arrow-left"></i> Back to Games
-            </button>
-            <h1>${escapeHTML(game.name || "Game Details")}</h1>
-        </div>
-
-        <div class="game-details-content">
-            <div class="game-screenshots-container">
-                <div class="screenshots-nav prev">
-                    <i class="fa fa-chevron-left"></i>
-                </div>
-                <div class="screenshots-wrapper">
-                    ${screenshotHtml}
-                </div>
-                <div class="screenshots-nav next">
-                    <i class="fa fa-chevron-right"></i>
-                </div>
+        // Construct HTML for game details
+        detailsContainer.innerHTML = `
+        <div class="game-details-container">
+            <div class="game-details-header">
+                <button class="back-to-games">
+                    <i class="fa fa-arrow-left"></i> Back to Games
+                </button>
+                <h1>${escapeHTML(game.name || "Game Details")}</h1>
             </div>
 
-            <div class="game-info-container">
-                <div class="game-info-header">
-                    <div class="game-platforms">${platforms}</div>
-                    <div class="game-meta">
-                        <div class="game-rating">
-                            ${game.age_rating_string ? `<span class="age-rating">${escapeHTML(game.age_rating_string)}</span>` : ""}
-                            ${game.total_rating ? `<span class="score-rating">${Math.round(game.total_rating)}%</span>` : ""}
-                        </div>
-                        <div class="game-release-date">${escapeHTML(releaseDate)}</div>
+            <div class="game-details-content">
+                <div class="game-screenshots-container">
+                    <div class="screenshots-nav prev">
+                        <i class="fa fa-chevron-left"></i>
+                    </div>
+                    <div class="screenshots-wrapper">
+                        ${screenshotHtml}
+                    </div>
+                    <div class="screenshots-nav next">
+                        <i class="fa fa-chevron-right"></i>
                     </div>
                 </div>
 
-                <div class="game-description">
-                    <p>${escapeHTML(game.summary || "No description available.")}</p>
-                </div>
+                <div class="game-info-container">
+                    <div class="game-info-header">
+                        <div class="game-platforms">${platforms}</div>
+                        <div class="game-meta">
+                            <div class="game-rating">
+                                ${game.age_rating_string ? `<span class="age-rating">${escapeHTML(game.age_rating_string)}</span>` : ""}
+                                ${game.total_rating ? `<span class="score-rating">${Math.round(game.total_rating)}%</span>` : ""}
+                            </div>
+                            <div class="game-release-date">${escapeHTML(releaseDate)}</div>
+                        </div>
+                    </div>
 
-                <div class="game-purchase">
-                    <div class="game-price">£${escapeHTML(price)}</div>
-                    <button class="add-to-cart-btn">Add to Cart</button>
+                    <div class="game-description">
+                        <p>${escapeHTML(game.summary || "No description available.")}</p>
+                    </div>
+
+                    <div class="game-purchase">
+                        <div class="game-price">£${escapeHTML(price)}</div>
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    `;
+        `;
 
-    // Add event listeners for the back button
-    document
-        .querySelector(".back-to-games")
-        .addEventListener("click", hideGameDetails);
+        // Make the details container visible but without the visible class yet
+        detailsContainer.style.display = "block";
 
-    // Add event listener for the Add to Cart button in the details view
-    const addToCartBtn = detailsContainer.querySelector(".add-to-cart-btn");
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener("click", () => {
-            // Create a temporary game card object to leverage existing add to cart functionality
-            const tempCard = {
-                querySelector: (selector) => {
-                    if (selector === ".game-title")
-                        return { textContent: game.name };
-                    if (selector === ".price") return { textContent: price };
-                    if (selector === ".game-image") return { src: coverUrl };
-                    return null;
-                },
-            };
-            addItemToCart(tempCard);
-        });
+        // Add event listeners for the back button
+        document.querySelector(".back-to-games").addEventListener("click", hideGameDetails);
 
-        const mainContent = document.querySelector(".main-content");
-        if (mainContent) {
-            // Store original margin value to restore it later
-            window.originalMainContentMargin = mainContent.style.marginLeft;
-            mainContent.style.marginLeft = "0";
+        // Add event listener for the Add to Cart button in the details view
+        const addToCartBtn = detailsContainer.querySelector(".add-to-cart-btn");
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener("click", () => {
+                // Create a temporary game card object to leverage existing add to cart functionality
+                const tempCard = {
+                    querySelector: (selector) => {
+                        if (selector === ".game-title") return { textContent: game.name };
+                        if (selector === ".price") return { textContent: price };
+                        if (selector === ".game-image") return { src: coverUrl };
+                        return null;
+                    },
+                };
+
+                if (typeof window.addItemToCart === "function") {
+                    window.addItemToCart(tempCard);
+                }
+            });
         }
-    }
 
-    // Setup screenshot navigation
-    setupScreenshotNavigation();
+        // Setup screenshot navigation
+        setupScreenshotNavigation();
 
-    // Hide the games grid and show details
-    document.querySelector(".games-grid").style.display = "none";
-    document.querySelector(".load-more-container")?.classList.add("hidden");
-    document.getElementById("current-section").style.display = "none";
-    detailsContainer.style.display = "block";
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // Scroll to top of page
-    window.scrollTo(0, 0);
+        // Step 3: Fade in the details view after a short delay
+        setTimeout(() => {
+            detailsContainer.classList.add("visible");
+        }, 50);
+    }, 300); // Match the CSS transition duration
+
+
+    setTimeout(() => {
+        footer.style.display = "block";
+        footer.classList.remove("fade-out");}, 600); // Match the CSS transition duration
 }
 
 /**
- * Hides game details and shows the games grid
+ * Hides game details and shows the games grid with smooth transitions
  */
 function hideGameDetails() {
-    // Show side navigation again
+    // Get elements for animation
+    const detailsContainer = document.getElementById("game-details-container");
     const sideNav = document.querySelector(".side-nav");
-    if (sideNav) {
-        sideNav.classList.remove("hidden");
-        // Show hamburger menu again on mobile
-        const hamburgerMenu = document.querySelector(".hamburger-menu");
-        if (hamburgerMenu) {
-            hamburgerMenu.classList.remove("hidden");
-        }
-    }
-
-    // Restore dropdown and year button to their previous state
+    const gamesGrid = document.querySelector(".games-grid");
+    const loadMoreContainer = document.querySelector(".load-more-container");
+    const currentSection = document.getElementById("current-section");
     const dropdownMenu = document.querySelector(".dropdown-menu");
     const chooseYearBtn = document.querySelector(".choose-year-btn-container");
+    const hamburgerMenu = document.querySelector(".hamburger-menu");
 
-    if (dropdownMenu && window.dropdownMenuDisplayState !== undefined) {
-        dropdownMenu.style.display = window.dropdownMenuDisplayState;
-    }
+    // Step 1: Fade out the details view
+    if (detailsContainer) detailsContainer.classList.remove("visible");
 
-    if (chooseYearBtn && window.chooseYearBtnDisplayState !== undefined) {
-        chooseYearBtn.style.display = window.chooseYearBtnDisplayState;
-    }
+    // Step 2: After details have faded out, prepare to fade in grid elements
+    setTimeout(() => {
+        if (detailsContainer) detailsContainer.style.display = "none";
 
-    const detailsContainer = document.getElementById("game-details-container");
-    if (detailsContainer) {
-        detailsContainer.style.display = "none";
-    }
-
-    document.querySelector(".games-grid").style.display = "grid";
-    document.querySelector(".load-more-container")?.classList.remove("hidden");
-    document.getElementById("current-section").style.display = "block";
-
-    // Restore previous scroll position
-    if (window.gameGridScrollPosition) {
-        window.scrollTo(0, window.gameGridScrollPosition);
-    }
-
-    const mainContent = document.querySelector(".main-content");
-    if (mainContent && window.originalMainContentMargin !== undefined) {
-        mainContent.style.marginLeft = window.originalMainContentMargin;
-    } else if (mainContent) {
-        // Default margin for desktop if original wasn't stored
-        if (window.innerWidth > 768) {
-            mainContent.style.marginLeft = "245px";
-        } else {
-            mainContent.style.marginLeft = "0";
+        // Restore original main content margin
+        const mainContent = document.querySelector(".main-content");
+        if (mainContent && window.originalMainContentMargin !== undefined) {
+            mainContent.style.marginLeft = window.originalMainContentMargin;
+        } else if (mainContent) {
+            // Default margin for desktop if original wasn't stored
+            if (window.innerWidth > 768) {
+                mainContent.style.marginLeft = "245px";
+            } else {
+                mainContent.style.marginLeft = "0";
+            }
         }
-    }
+
+        // Make grid elements visible again but still faded
+        if (gamesGrid) {
+            gamesGrid.style.display = "grid";
+            gamesGrid.classList.add("fade-out");
+        }
+        if (loadMoreContainer) {
+            loadMoreContainer.style.display = "flex";
+            loadMoreContainer.classList.add("fade-out");
+        }
+        if (currentSection) {
+            currentSection.style.display = "block";
+            currentSection.classList.add("fade-out");
+        }
+
+        // Restore dropdown and year button visibility
+        if (dropdownMenu && window.dropdownMenuDisplayState !== undefined) {
+            dropdownMenu.style.display = window.dropdownMenuDisplayState;
+            dropdownMenu.classList.add("fade-out");
+        }
+
+        if (chooseYearBtn && window.chooseYearBtnDisplayState !== undefined) {
+            chooseYearBtn.style.display = window.chooseYearBtnDisplayState;
+            chooseYearBtn.classList.add("fade-out");
+        }
+
+        if (hamburgerMenu) hamburgerMenu.classList.add("fade-out");
+
+        // Step 3: After a short delay, fade in all elements
+        setTimeout(() => {
+            if (sideNav) sideNav.classList.remove("hidden");
+            if (gamesGrid) gamesGrid.classList.remove("fade-out");
+            if (loadMoreContainer) loadMoreContainer.classList.remove("fade-out");
+            if (currentSection) currentSection.classList.remove("fade-out");
+            if (dropdownMenu) dropdownMenu.classList.remove("fade-out");
+            if (chooseYearBtn) chooseYearBtn.classList.remove("fade-out");
+            if (hamburgerMenu) hamburgerMenu.classList.remove("fade-out");
+
+            // Restore previous scroll position with smooth behavior
+            if (window.gameGridScrollPosition) {
+                window.scrollTo({
+                    top: window.gameGridScrollPosition,
+                    behavior: "smooth"
+                });
+            }
+        }, 50);
+    }, 300); // Match the CSS transition duration
 }
 
 /**
