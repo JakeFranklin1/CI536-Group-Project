@@ -1,8 +1,27 @@
 body {
     background-color: #0d0d0d;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative; /* Create stacking context */
 }
 
-/* This horror is only temporary, until one of us adds a the theme toggle. */
+.page-layout {
+    flex: 1; /* Take all available space */
+    display: flex;
+    flex-direction: column;
+    padding-top: 84px;
+    position: relative;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 245px;
+    padding-bottom: 80px; /* Add extra space for footer */
+}
+
+
 p,
 h1,
 h2,
@@ -19,17 +38,9 @@ a,
 }
 
 .logo {
-    filter: brightness(0) invert(1); /* This will make the SVG white */
+    filter: brightness(0) invert(1);
 }
 
-.main-content {
-    margin-left: 245px;
-}
-
-.page-layout {
-    min-height: 100vh;
-    padding-top: 84px;
-}
 
 #current-section {
     font-family: "Poppins", sans-serif;
@@ -42,10 +53,38 @@ a,
     margin-bottom: 24px;
 }
 
-/* Responsive Design */
+.no-games-message {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    color: #888;
+    text-align: center;
+}
+
+.no-games-message i {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.no-games-message p {
+    font-size: 18px;
+}
+
+
 @media (max-width: 1024px) {
     #current-section {
         font-size: var(--font--size-huge);
+    }
+}
+
+/* Media queries */
+@media (min-width: 769px) {
+    /* Desktop specific */
+    .main-content {
+        min-height: unset; /* Remove fixed height constraints */
     }
 }
 
@@ -57,9 +96,20 @@ a,
         margin-right: auto;
     }
 
-    .main-content {
+    .page-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 84px);
+        padding-top: 84px;
         width: 100%;
+        overflow-x: hidden;
+    }
+
+    .main-content {
         margin-left: 0;
+        width: 100%;
+        min-height: 0; /* Remove fixed constraints */
+        padding-bottom: 20px;
     }
 }
 
@@ -68,5 +118,5 @@ a,
 }
 
 .example-game {
-    display: none; /* Hide example game */
+    display: none;
 }

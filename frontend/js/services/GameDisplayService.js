@@ -295,3 +295,5 @@ export async function loadGames(
         console.log("Games loading process completed.");
     }
 }
+
+export { getPlatformIcons, generateRandomPrice, createGameCard, displayGames };

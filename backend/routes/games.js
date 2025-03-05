@@ -31,12 +31,15 @@ const esrbToPegi = {
  * Route to get popular games.
  * @route GET /api/games
  * @group Games - Operations about games
+ * @param {number} limit.query.optional - Maximum number of results (default: 24)
+ * @param {number} offset.query.optional - Number of results to skip (default: 0)
  * @returns {Array.<Object>} 200 - An array of popular game objects
  * @returns {Error} 500 - Unexpected error
  */
 router.get("/", async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : 24;
+        const offset = req.query.offset ? parseInt(req.query.offset) : 0;
 
         // Extract filter parameters from the request
         const filters = {
@@ -45,7 +48,21 @@ router.get("/", async (req, res) => {
             sort: req.query.sort,
             timeframe: req.query.timeframe,
             year: req.query.year,
+            offset: offset, // Add offset to filters object
         };
+
+        // Validate limit and offset
+        if (isNaN(limit) || limit <= 0 || limit > 50) {
+            return res.status(400).json({
+                error: "Invalid limit parameter. Must be a number between 1 and 50.",
+            });
+        }
+
+        if (isNaN(offset) || offset < 0) {
+            return res.status(400).json({
+                error: "Invalid offset parameter. Must be a non-negative number.",
+            });
+        }
 
         // Pass filters to the getGames method
         const games = await igdbService.getGames(limit, filters);
@@ -71,7 +88,7 @@ router.get("/", async (req, res) => {
             ) {
                 // Only filter PEGI 18/ESRB AO if they also have adult themes
                 const hasAdultThemes = game.themes?.some((theme) =>
-                    EXCLUDED_CONTENT.THEMES.includes(theme.id)
+                    EXCLUDED_CONTENT?.THEMES?.includes(theme.id)
                 );
                 return !hasAdultThemes;
             }

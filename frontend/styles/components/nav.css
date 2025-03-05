@@ -109,10 +109,12 @@
     background-color: white;
 }
 
-
-.filter-section ul li.selected .icon-container img,
-.filter-section ul li.selected .icon-container i {
+.filter-section ul li.selected .icon-container img {
     filter: brightness(1) invert(0);
+}
+
+.filter-section ul li.selected .icon-container i {
+    color: rgb(0, 0, 0); /* Change icon color to black when selected */
 }
 
 /* Mobile Nav */
@@ -290,6 +292,9 @@
     }
     .filter-section:nth-child(4) {
         transition-delay: 0.5s;
+    }
+    .filter-section:nth-child(6) {
+        transition-delay: 0.6s;
     }
 
     /* Ensure page layout doesn't create horizontal scroll */

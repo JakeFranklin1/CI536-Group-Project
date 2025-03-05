@@ -11,9 +11,12 @@
 @import url("components/header.css");
 @import url("components/dropdown.css");
 @import url("components/modal.css");
+@import url("components/year-modal.css");
 @import url("components/nav.css");
 @import url("components/game-card.css");
 @import url("components/side-cart.css");
+@import url("components/load-btn.css");
+@import url("components/footer.css");
 
 /* Utils */
 @import url("utils/toast.css");

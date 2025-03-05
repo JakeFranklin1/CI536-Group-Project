@@ -8,8 +8,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Set default sort
     let currentSort = "popular";
-    sortGames(currentSort);
-    highlightSelected(currentSort); // Highlight the default selection
+
+    // Check if the dropdown should be hidden initially
+    const currentSection = document.getElementById("current-section");
+    const currentFilter = currentSection
+        ? currentSection.textContent
+        : "Popular in 2025";
+
+    if (currentFilter === "All Time" || currentFilter === "Popular in 2025") {
+        dropdownMenu.style.display = "none";
+    } else {
+        sortGames(currentSort);
+        highlightSelected(currentSort); // Highlight the default selection
+    }
 
     // Toggle dropdown
     dropdownBtn.addEventListener("click", () => {

@@ -9,8 +9,15 @@ import { updateCartCount, updateCartTotal } from "./components/SideCart.js";
 import { signOut, checkAuth } from "./services/auth-service.js";
 import { escapeHTML } from "./utils/sanitise.js";
 import supabase from "./supabase-client.js";
+import { showToast } from "./utils/toast.js";
 import { createFilterParams } from "./services/FilterService.js";
 import { loadGames } from "./services/GameDisplayService.js";
+import {
+    getPlatformIcons,
+    generateRandomPrice,
+    createGameCard,
+} from "./services/GameDisplayService.js";
+import { initializeSearchBar } from "./services/SearchService.js";
 
 /**
  * Global axios from CDN
@@ -22,6 +29,10 @@ const API_URL =
     window.location.hostname === "localhost"
         ? "http://localhost:3000"
         : "https://gamestore-backend-9v90.onrender.com";
+
+let currentPage = 1;
+let isLoading = false;
+let currentFilter = { timeframe: "Popular in 2025" };
 
 /**
  * @function handleSignOut
@@ -92,25 +103,6 @@ function handleBrandClick() {
 }
 
 /**
- * @function showToast
- * @description Displays a toast message.
- * @param {string} message - The message to display in the toast.
- */
-function showToast(message) {
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.add("show");
-    }, 100);
-    setTimeout(() => {
-        toast.classList.remove("show");
-        document.body.removeChild(toast);
-    }, 3000);
-}
-
-/**
  * @function setSelectedNavItem
  * @description Sets the selected state for navigation items based on current page
  */
@@ -131,28 +123,6 @@ function setSelectedNavItem() {
             .querySelector('a[href="profile.html"]')
             ?.parentElement.classList.add("selected");
     }
-
-    // Add click handlers for filter buttons
-    const filterButtons = document.querySelectorAll(".filter-section button");
-    filterButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            // Remove selected from ALL items across ALL filter sections
-            const allListItems =
-                document.querySelectorAll(".filter-section li");
-            allListItems.forEach((item) => item.classList.remove("selected"));
-
-            // Add selected to clicked item
-            button.parentElement.classList.add("selected");
-
-            // Get filter type and value
-            const filterSection = button.closest(".filter-section");
-            const filterType = getFilterTypeFromSection(filterSection);
-            const filterValue = button.textContent.trim();
-
-            // Update the marketplace content
-            handleFilterSelection(filterType, filterValue);
-        });
-    });
 }
 
 /**
@@ -193,6 +163,9 @@ function initializeMobileMenu() {
  * @param {string} filterValue - The specific value of the filter
  */
 function handleFilterSelection(filterType, filterValue) {
+    // Reset pagination variables when changing filters
+    currentPage = 1;
+
     // Update the page header to show the current filter
     const currentSectionHeader = document.getElementById("current-section");
     if (currentSectionHeader) {
@@ -202,9 +175,74 @@ function handleFilterSelection(filterType, filterValue) {
     // Create filter parameters using the service
     const filterParams = createFilterParams(filterType, filterValue);
 
+    // Store current filter for pagination
+    currentFilter = filterParams;
+
+    // Reset sort dropdown to "Most Popular" when filters change
+    resetSortDropdown();
+
+    // Show/hide the sort dropdown based on filter type
+    toggleSortDropdownVisibility(filterValue);
+
     // Load games with the specified filters using the GameDisplayService
     // Use full-screen loader for filter changes
     loadGames(filterParams, 12, true, addItemToCart);
+}
+
+function resetSortDropdown() {
+    // Reset text display
+    const filterChoice = document.getElementById("filter-choice");
+    if (filterChoice) {
+        filterChoice.textContent = "Most Popular";
+    }
+
+    // Reset checkmarks in dropdown
+    const dropdownButtons = document.querySelectorAll(
+        ".dropdown-content button"
+    );
+    dropdownButtons.forEach((button) => {
+        const checkmark = button.querySelector("i.fa-check");
+        if (button.dataset.sort === "popular") {
+            checkmark?.classList.remove("hidden");
+        } else {
+            checkmark?.classList.add("hidden");
+        }
+    });
+}
+
+/**
+ * Shows or hides the sort dropdown based on filter type
+ * @param {string} filterValue - The current filter value
+ */
+/**
+ * Shows or hides the sort dropdown based on filter type
+ * @param {string} filterValue - The current filter value
+ */
+function toggleSortDropdownVisibility(filterValue) {
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    const chooseYearBtn = document.querySelector(".choose-year-btn-container");
+
+    if (!dropdownMenu || !chooseYearBtn) return;
+
+    // For "Select a year" or when year is already selected (starts with "Games from"),
+    // hide dropdown and show choose year button
+    if (
+        filterValue === "Select a year" ||
+        filterValue.startsWith("Games from")
+    ) {
+        dropdownMenu.style.display = "none";
+        chooseYearBtn.style.display = "flex";
+        return;
+    }
+
+    // For other filters that don't need a dropdown
+    if (filterValue === "All Time" || filterValue === "Popular in 2025") {
+        dropdownMenu.style.display = "none";
+        chooseYearBtn.style.display = "none";
+    } else {
+        dropdownMenu.style.display = "flex";
+        chooseYearBtn.style.display = "none";
+    }
 }
 
 /**
@@ -265,15 +303,29 @@ function addItemToCart(gameCard) {
         const gamePrice = gameCard.querySelector(".price").textContent;
         const gameImage = gameCard.querySelector(".game-image").src;
 
+        // Check if the item already exists in cart
+        const existingItem = findExistingCartItem(gameTitle);
+
+        if (existingItem) {
+            // Increment quantity of existing item
+            const quantityValue = existingItem.querySelector(".quantity-value");
+            quantityValue.textContent = parseInt(quantityValue.textContent) + 1;
+            updateCartTotal();
+
+            // Show toast notification
+            showToast(`Increased quantity of ${gameTitle}`, "info");
+            return;
+        }
+
         const cartItemHTML = `
-            <div class="cart-item">
+            <div class="cart-item" data-game-title="${escapeHTML(gameTitle)}">
                 <div class="cart-item-details">
-                    <div class="cart-item-title">${gameTitle}</div>
+                    <div class="cart-item-title">${escapeHTML(gameTitle)}</div>
                     <div class="cart-item-info">
-                        <img src="${gameImage}" alt="${gameTitle}" class="cart-item-image">
+                        <img src="${escapeHTML(gameImage)}" alt="${escapeHTML(gameTitle)}" class="cart-item-image">
                         <div>
                             <div class="cart-item-platform">Platform</div>
-                            <div class="cart-item-price">${gamePrice}</div>
+                            <div class="cart-item-price">${escapeHTML(gamePrice)}</div>
                             <div class="cart-item-quantity">
                                 <label>Qty:</label>
                                 <div class="quantity-controls">
@@ -302,78 +354,514 @@ function addItemToCart(gameCard) {
         updateCartTotal();
         updateCartCount();
 
-        // Add event listener to the new remove button
-        const newRemoveButton = cartItemsContainer?.querySelector(
-            ".cart-item:last-child .cart-remove"
-        );
-        newRemoveButton?.addEventListener("click", function () {
-            this.closest(".cart-item").remove();
-            updateCartTotal();
-            updateCartCount();
-        });
-
-        // Add event listeners to new quantity buttons
-        const newIncrementButton = cartItemsContainer?.querySelector(
-            ".cart-item:last-child .quantity-increment"
-        );
-        newIncrementButton?.addEventListener("click", function () {
-            const quantityValue = this.previousElementSibling;
-            quantityValue.textContent = parseInt(quantityValue.textContent) + 1;
-            updateCartTotal();
-        });
-
-        const newDecrementButton = cartItemsContainer?.querySelector(
-            ".cart-item:last-child .quantity-decrement"
-        );
-        newDecrementButton?.addEventListener("click", function () {
-            const quantityValue = this.nextElementSibling;
-            if (parseInt(quantityValue.textContent) > 1) {
-                quantityValue.textContent =
-                    parseInt(quantityValue.textContent) - 1;
-                updateCartTotal();
-            }
-        });
+        // Show toast notification
+        showToast(`${gameTitle} added to cart`, "success");
     };
 }
+
 /**
- * Sets up event listeners for cart item controls
+ * Finds an existing cart item by game title
+ * @param {string} gameTitle - The title of the game to find
+ * @returns {HTMLElement|null} - The cart item element or null if not found
  */
-function setupCartItemEventListeners() {
-    // Add event listeners to quantity inputs and buttons
-    const quantityInputs = document.querySelectorAll(".quantity-input");
-    quantityInputs.forEach((input) => {
-        input.addEventListener("change", updateCartTotal);
-    });
+function findExistingCartItem(gameTitle) {
+    const cartItems = document.querySelectorAll(".cart-item");
+    for (const item of cartItems) {
+        const title = item.querySelector(".cart-item-title").textContent;
+        if (title === gameTitle) {
+            return item;
+        }
+    }
+    return null;
+}
 
-    const incrementButtons = document.querySelectorAll(".quantity-increment");
-    incrementButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            const input = this.previousElementSibling;
-            input.textContent = parseInt(input.textContent) + 1;
-            updateCartTotal();
+function initializeYearPicker() {
+    // Don't look for the specific year button here anymore
+    // We'll handle all button events in setupFilterButtonHandlers
+
+    const yearPickerModal = document.getElementById("year-picker-modal");
+    if (!yearPickerModal) {
+        console.error("Could not find year picker modal");
+        return;
+    }
+
+    const closeModalBtn = yearPickerModal.querySelector(".close-modal");
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", () => {
+            yearPickerModal.classList.add("hidden");
+        });
+    }
+
+    // Generate all year buttons for each decade
+    generateYearButtons();
+
+    // Handle decade tab clicks
+    const decadeTabs = document.querySelectorAll(".decade-tab");
+    decadeTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            // Update active tab
+            decadeTabs.forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            // Show corresponding decade grid
+            const decade = tab.dataset.decade;
+            document.querySelectorAll(".years-grid").forEach((grid) => {
+                grid.classList.remove("active");
+            });
+            document.getElementById(`decade-${decade}`).classList.add("active");
         });
     });
 
-    const decrementButtons = document.querySelectorAll(".quantity-decrement");
-    decrementButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            const input = this.nextElementSibling;
-            if (parseInt(input.textContent) > 1) {
-                input.textContent = parseInt(input.textContent) - 1;
-                updateCartTotal();
+    // Handle year button clicks - Re-query for buttons after generation
+    const yearBtns = document.querySelectorAll(".year-btn");
+    yearBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const year = btn.dataset.year;
+            selectGameYear(year);
+            yearPickerModal.classList.add("hidden");
+        });
+    });
+
+    // Handle custom year input
+    const applyCustomYearBtn = document.getElementById("apply-custom-year");
+    applyCustomYearBtn.addEventListener("click", () => {
+        const customYearInput = document.getElementById("custom-year");
+        const year = customYearInput.value;
+
+        if (year && year >= 1970 && year <= 2025) {
+            selectGameYear(year);
+            yearPickerModal.classList.add("hidden");
+        } else {
+            showToast(
+                "Please enter a valid year between 1970 and 2025",
+                "error"
+            );
+        }
+    });
+
+    // Close when clicking outside
+    yearPickerModal.addEventListener("click", (e) => {
+        if (e.target === yearPickerModal) {
+            yearPickerModal.classList.add("hidden");
+        }
+    });
+}
+
+function generateYearButtons() {
+    // Add error handling for each decade
+    try {
+        // Generate 2010s
+        const decade2010 = document.getElementById("decade-2010");
+        if (decade2010) {
+            for (let year = 2019; year >= 2010; year--) {
+                decade2010.innerHTML += `<button class="year-btn" data-year="${year}">${year}</button>`;
             }
-        });
-    });
+        } else {
+            console.warn("Missing decade-2010 element");
+        }
 
-    const removeButtons = document.querySelectorAll(".cart-remove");
-    removeButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            const cartItem = this.closest(".cart-item");
-            cartItem.remove();
-            updateCartTotal();
-            updateCartCount();
+        // Generate 2000s
+        const decade2000 = document.getElementById("decade-2000");
+        if (decade2000) {
+            for (let year = 2009; year >= 2000; year--) {
+                decade2000.innerHTML += `<button class="year-btn" data-year="${year}">${year}</button>`;
+            }
+        } else {
+            console.warn("Missing decade-2000 element");
+        }
+
+        // Generate 1990s
+        const decade1990 = document.getElementById("decade-1990");
+        if (decade1990) {
+            for (let year = 1999; year >= 1990; year--) {
+                decade1990.innerHTML += `<button class="year-btn" data-year="${year}">${year}</button>`;
+            }
+        } else {
+            console.warn("Missing decade-1990 element");
+        }
+
+        // Generate 1980s
+        const decade1980 = document.getElementById("decade-1980");
+        if (decade1980) {
+            for (let year = 1989; year >= 1980; year--) {
+                decade1980.innerHTML += `<button class="year-btn" data-year="${year}">${year}</button>`;
+            }
+        } else {
+            console.warn("Missing decade-1980 element");
+        }
+    } catch (error) {
+        console.error("Error generating year buttons:", error);
+    }
+}
+
+function selectGameYear(year) {
+    // Update the page header
+    const currentSectionHeader = document.getElementById("current-section");
+    if (currentSectionHeader) {
+        currentSectionHeader.textContent = `Games from ${year}`;
+    }
+
+    // Create filter params
+    const filterParams = { year: year };
+
+    // Keep the choose year button visible (modify this line)
+    // Don't call toggleSortDropdownVisibility here since we want to keep the button visible
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    const chooseYearBtn = document.querySelector(".choose-year-btn-container");
+
+    if (dropdownMenu) {
+        dropdownMenu.style.display = "none";
+    }
+    if (chooseYearBtn) {
+        chooseYearBtn.style.display = "flex";
+    }
+
+    // No need to call resetSortDropdown() since the dropdown is hidden
+
+    // Load the games for that year
+    loadGames(filterParams, 12, true, addItemToCart);
+
+    // Update selected state in sidebar
+    const allListItems = document.querySelectorAll(".filter-section li");
+    allListItems.forEach((item) => item.classList.remove("selected"));
+    document
+        .querySelector("button:has(.fa-calendar)")
+        ?.closest("li")
+        ?.classList.add("selected");
+
+    // Close the modal
+    const yearPickerModal = document.getElementById("year-picker-modal");
+    if (yearPickerModal) {
+        yearPickerModal.classList.add("hidden");
+    }
+}
+
+function setupFilterButtonHandlers() {
+    const filterButtons = document.querySelectorAll(".filter-section button");
+
+    filterButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            // Close mobile menu if it's open
+            const hamburger = document.querySelector(".hamburger-menu");
+            const sideNav = document.querySelector(".side-nav");
+
+            if (hamburger?.classList.contains("active")) {
+                hamburger.classList.remove("active");
+                sideNav?.classList.remove("active");
+                hamburger.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)"; // Restore default shadow
+            }
+
+            // Handle Specific Year button
+            if (button.textContent.trim() === "Specific Year") {
+                // Update selection state
+                const allListItems =
+                    document.querySelectorAll(".filter-section li");
+                allListItems.forEach((item) =>
+                    item.classList.remove("selected")
+                );
+                button.closest("li").classList.add("selected");
+
+                // Update the page header
+                const currentSectionHeader =
+                    document.getElementById("current-section");
+                if (currentSectionHeader) {
+                    currentSectionHeader.textContent = "Select a year";
+                }
+
+                // Hide sort dropdown and show choose year button
+                const dropdownMenu = document.querySelector(".dropdown-menu");
+                const chooseYearBtn = document.querySelector(
+                    ".choose-year-btn-container"
+                );
+
+                if (dropdownMenu) {
+                    dropdownMenu.style.display = "none";
+                }
+                if (chooseYearBtn) {
+                    chooseYearBtn.style.display = "flex";
+                }
+
+                // Clear the games grid and show a message
+                const gamesGrid = document.querySelector(".games-grid");
+                if (gamesGrid) {
+                    gamesGrid.innerHTML = `
+                        <div class="no-games-message">
+                            <i class="fa fa-calendar-o"></i>
+                            <p>Please choose a year to view games</p>
+                        </div>
+                    `;
+                }
+
+                return; // Important: Return early to prevent API call
+            }
+
+            // Handle other filter buttons
+            // Update selection state
+            const allListItems =
+                document.querySelectorAll(".filter-section li");
+            allListItems.forEach((item) => item.classList.remove("selected"));
+            button.closest("li").classList.add("selected");
+
+            // Get filter type and value
+            const buttonText = button.textContent.trim();
+            let filterType = "timeframe";
+
+            // Determine filter type based on button text
+            if (
+                [
+                    "PC",
+                    "PlayStation",
+                    "Xbox",
+                    "Nintendo",
+                    "Android",
+                    "Apple",
+                ].includes(buttonText)
+            ) {
+                filterType = "platform";
+            } else if (
+                ["Action", "Adventure", "RPG", "Strategy", "Sport"].includes(
+                    buttonText
+                )
+            ) {
+                filterType = "category";
+            } else if (["Recently Added"].includes(buttonText)) {
+                filterType = "community";
+            }
+
+            // Hide choose year button
+            const chooseYearBtn = document.querySelector(
+                ".choose-year-btn-container"
+            );
+            if (chooseYearBtn) {
+                chooseYearBtn.style.display = "none";
+            }
+
+            // Handle the filter selection
+            handleFilterSelection(filterType, buttonText);
         });
     });
+}
+
+/**
+ * Loads more games when the "Load More" button is clicked
+ * @function loadMoreGames
+ */
+async function loadMoreGames() {
+    // Don't load more if we're already loading
+    if (isLoading) return;
+
+    // Update button to show loading state
+    const loadMoreBtn = document.querySelector(".load-more-btn");
+    if (loadMoreBtn) {
+        document.getElementById("loading").classList.remove("hidden");
+    }
+
+    isLoading = true;
+    currentPage++;
+
+    try {
+        // Get the current filter from the header to maintain context
+        const currentSectionHeader = document.getElementById("current-section");
+        if (currentSectionHeader) {
+            const headerText = currentSectionHeader.textContent;
+
+            // Update the current filter based on the section header
+            if (headerText.startsWith("Games from")) {
+                const year = headerText.replace("Games from ", "");
+                currentFilter = { year };
+            } else if (
+                [
+                    "PC",
+                    "PlayStation",
+                    "Xbox",
+                    "Nintendo",
+                    "Android",
+                    "Apple",
+                ].includes(headerText)
+            ) {
+                currentFilter = { platforms: headerText };
+            } else if (
+                ["Action", "Adventure", "RPG", "Strategy", "Sport"].includes(
+                    headerText
+                )
+            ) {
+                currentFilter = { genres: headerText };
+            } else if (
+                ["Popular in 2025", "All Time", "Recently Added"].includes(
+                    headerText
+                )
+            ) {
+                currentFilter = { timeframe: headerText };
+            }
+        }
+
+        // Calculate offset for pagination (skip already loaded items)
+        const offset = (currentPage - 1) * 12;
+
+        // Fetch additional games
+        const games = await fetchFilteredGamesWithOffset(
+            currentFilter,
+            12,
+            offset
+        );
+
+        // Display the new games
+        appendGames(games);
+    } catch (error) {
+        console.error("Error loading more games:", error);
+        // Show error message
+        const container = document.querySelector(".load-more-container");
+        if (container) {
+            container.innerHTML =
+                '<div class="load-error">Failed to load more games. <button class="retry-btn">Try Again</button></div>';
+            document
+                .querySelector(".retry-btn")
+                ?.addEventListener("click", () => {
+                    container.innerHTML = "";
+                    setupLoadMoreButton();
+                    loadMoreGames();
+                });
+        }
+    } finally {
+        isLoading = false;
+        document.getElementById("loading")?.classList.add("hidden");
+        // Reset button state
+        if (loadMoreBtn) {
+            loadMoreBtn.innerHTML =
+                '<i class="fa fa-refresh"></i> Load More Games';
+        }
+    }
+}
+
+/**
+ * Fetches games with an offset for pagination
+ * @param {Object} filterParams - Filter parameters
+ * @param {number} limit - Number of games to fetch
+ * @param {number} offset - Number of games to skip
+ * @returns {Promise<Array>} Array of games
+ */
+async function fetchFilteredGamesWithOffset(
+    filterParams = {},
+    limit = 12,
+    offset = 0
+) {
+    try {
+        // Build the API URL with appropriate query parameters
+        let apiUrl = `${API_URL}/api/games?limit=${limit}&offset=${offset}`;
+
+        // Add platform filter
+        if (filterParams.platforms) {
+            apiUrl += `&platforms=${encodeURIComponent(filterParams.platforms)}`;
+        }
+
+        // Add genre/category filter
+        if (filterParams.genres) {
+            apiUrl += `&genres=${encodeURIComponent(filterParams.genres)}`;
+        }
+
+        // Add sorting options
+        if (filterParams.sort) {
+            apiUrl += `&sort=${encodeURIComponent(filterParams.sort)}`;
+        }
+
+        // Add timeframe filters
+        if (filterParams.timeframe) {
+            apiUrl += `&timeframe=${encodeURIComponent(filterParams.timeframe)}`;
+        }
+
+        // Add year filter
+        if (filterParams.year) {
+            apiUrl += `&year=${encodeURIComponent(filterParams.year)}`;
+        }
+
+        console.log(`LoadMore: Fetching additional games from: ${apiUrl}`);
+
+        // Make the API call
+        const response = await axios.get(apiUrl);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching more games:", error);
+        throw error;
+    }
+}
+
+/**
+ * Appends additional games to the existing games grid
+ * @param {Array} games - Array of game objects from API
+ */
+function appendGames(games) {
+    const gamesGrid = document.querySelector(".games-grid");
+    if (!gamesGrid) return;
+
+    // Handle case with no more games
+    if (!games || games.length === 0) {
+        const loadMoreContainer = document.querySelector(
+            ".load-more-container"
+        );
+        if (loadMoreContainer) {
+            loadMoreContainer.innerHTML =
+                '<div class="no-more-games">No more games to display</div>';
+        }
+        return;
+    }
+
+    // Generate cards for each additional game
+    games.forEach((game) => {
+        // Get cover URL with special cases for certain games
+        let coverUrl;
+        if (
+            game.name?.toLowerCase().includes("grand theft auto v") ||
+            game.name?.toLowerCase().includes("gta v") ||
+            game.name?.toLowerCase().includes("gta 5")
+        ) {
+            coverUrl = "../assets/images/gta5.webp";
+        } else {
+            // Use default IGDB cover for other games
+            coverUrl = game.cover?.url
+                ? game.cover.url
+                      .replace("t_thumb", "t_720p")
+                      .replace("t_cover_big", "t_720p")
+                      .replace("t_cover_big_2x", "t_720p")
+                      .replace("http:", "https:")
+                : "../assets/images/placeholder-game.webp";
+        }
+
+        // Get platform icons and price (reusing existing functionality)
+        const platforms = getPlatformIcons(game.platforms);
+        const price = generateRandomPrice();
+
+        // Create and append the game card (reusing existing functionality)
+        const gameCard = createGameCard(
+            game,
+            coverUrl,
+            platforms,
+            price,
+            addItemToCart
+        );
+        gamesGrid.appendChild(gameCard);
+    });
+}
+
+function setupLoadMoreButton() {
+    const gamesGrid = document.querySelector(".games-grid");
+    if (!gamesGrid) return;
+
+    // Remove any existing load more container
+    const existingContainer = document.querySelector(".load-more-container");
+    if (existingContainer) existingContainer.remove();
+
+    const container = document.createElement("div");
+    container.className = "load-more-container";
+
+    const loadMoreBtn = document.createElement("button");
+    loadMoreBtn.className = "load-more-btn";
+    loadMoreBtn.innerHTML = '<i class="fa fa-refresh"></i> Load More Games';
+    loadMoreBtn.addEventListener("click", loadMoreGames);
+
+    container.appendChild(loadMoreBtn);
+
+    // Insert after games grid
+    gamesGrid.parentNode.insertBefore(container, gamesGrid.nextSibling);
 }
 
 /**
@@ -383,20 +871,61 @@ function setupCartItemEventListeners() {
 document.addEventListener("DOMContentLoaded", async () => {
     initializeMarketplace();
 
+    // Check if choose-year-btn-container exists, if not create it
+    let chooseYearBtnContainer = document.querySelector(
+        ".choose-year-btn-container"
+    );
+    if (!chooseYearBtnContainer) {
+        // Get the element to insert after (the dropdown menu)
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        if (dropdownMenu) {
+            // Create the container and button
+            chooseYearBtnContainer = document.createElement("div");
+            chooseYearBtnContainer.className = "choose-year-btn-container";
+            chooseYearBtnContainer.style.display = "none"; // Hidden by default
+
+            chooseYearBtnContainer.innerHTML = `
+                <button id="choose-year-btn" class="choose-year-btn">
+                    <i class="fa fa-calendar"></i>
+                    Choose a Year
+                </button>
+            `;
+
+            // Insert after dropdown menu
+            dropdownMenu.parentNode.insertBefore(
+                chooseYearBtnContainer,
+                dropdownMenu.nextSibling
+            );
+        }
+    }
+
     // Load initial games using the GameDisplayService
-    // Pass the addItemToCart function as the callback for the "Add to Cart" button
     loadGames({ timeframe: "Popular in 2025" }, 24, false, addItemToCart);
 
+    // Setup the choose year button click handler (now working with possibly newly created button)
+    const chooseYearBtn = document.getElementById("choose-year-btn");
+    if (chooseYearBtn) {
+        chooseYearBtn.addEventListener("click", () => {
+            const yearPickerModal =
+                document.getElementById("year-picker-modal");
+            if (yearPickerModal) {
+                yearPickerModal.classList.remove("hidden");
+            }
+        });
+    }
+
+    // Initialize components in the correct order to avoid event handler conflicts
+    initializeYearPicker();
+    setupFilterButtonHandlers();
+    setupLoadMoreButton();
     initializeMobileMenu();
     setSelectedNavItem();
     updateCartCount();
+    initializeSearchBar();
 
     const brandContainer = document.querySelector(".brand-container");
     if (brandContainer) {
         brandContainer.addEventListener("click", handleBrandClick);
     }
-
-    // Add event listeners to existing cart items
-    setupCartItemEventListeners();
     window.addItemToCart = addItemToCart;
 });
