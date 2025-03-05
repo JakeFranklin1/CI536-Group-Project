@@ -913,11 +913,15 @@ function showGameDetails(game, coverUrl, platforms, price) {
         if (chooseYearBtn) chooseYearBtn.style.display = "none";
 
         // Create game details container if it doesn't exist
-        let detailsContainer = document.getElementById("game-details-container");
+        let detailsContainer = document.getElementById(
+            "game-details-container"
+        );
         if (!detailsContainer) {
             detailsContainer = document.createElement("div");
             detailsContainer.id = "game-details-container";
-            document.querySelector(".main-content").appendChild(detailsContainer);
+            document
+                .querySelector(".main-content")
+                .appendChild(detailsContainer);
         }
 
         // Adjust the main content margin for full-width display
@@ -929,20 +933,25 @@ function showGameDetails(game, coverUrl, platforms, price) {
 
         // Get screenshots or use placeholder
         const screenshots = game.screenshots || [];
-        const screenshotHtml = screenshots.length > 0
-            ? screenshots
-                  .map(
-                      (s) =>
-                          `<div class="screenshot"><img src="${escapeHTML(s.url.replace("t_thumb", "t_1080p").replace("http:", "https:"))}" alt="Screenshot"></div>`
-                  )
-                  .join("")
-            : `<div class="screenshot"><img src="${escapeHTML(coverUrl)}" alt="Cover"></div>`;
+        const screenshotHtml =
+            screenshots.length > 0
+                ? screenshots
+                      .map(
+                          (s) =>
+                              `<div class="screenshot"><img src="${escapeHTML(s.url.replace("t_thumb", "t_1080p").replace("http:", "https:"))}" alt="Screenshot"></div>`
+                      )
+                      .join("")
+                : `<div class="screenshot"><img src="${escapeHTML(coverUrl)}" alt="Cover"></div>`;
 
         // Get formatted release date
         let releaseDate = "Unknown release date";
         if (game.first_release_date) {
             const date = new Date(game.first_release_date * 1000);
-            releaseDate = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+            releaseDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
         }
 
         // Construct HTML for game details
@@ -997,7 +1006,9 @@ function showGameDetails(game, coverUrl, platforms, price) {
         detailsContainer.style.display = "block";
 
         // Add event listeners for the back button
-        document.querySelector(".back-to-games").addEventListener("click", hideGameDetails);
+        document
+            .querySelector(".back-to-games")
+            .addEventListener("click", hideGameDetails);
 
         // Add event listener for the Add to Cart button in the details view
         const addToCartBtn = detailsContainer.querySelector(".add-to-cart-btn");
@@ -1006,9 +1017,12 @@ function showGameDetails(game, coverUrl, platforms, price) {
                 // Create a temporary game card object to leverage existing add to cart functionality
                 const tempCard = {
                     querySelector: (selector) => {
-                        if (selector === ".game-title") return { textContent: game.name };
-                        if (selector === ".price") return { textContent: price };
-                        if (selector === ".game-image") return { src: coverUrl };
+                        if (selector === ".game-title")
+                            return { textContent: game.name };
+                        if (selector === ".price")
+                            return { textContent: price };
+                        if (selector === ".game-image")
+                            return { src: coverUrl };
                         return null;
                     },
                 };
@@ -1031,10 +1045,10 @@ function showGameDetails(game, coverUrl, platforms, price) {
         }, 50);
     }, 300); // Match the CSS transition duration
 
-
     setTimeout(() => {
         footer.style.display = "block";
-        footer.classList.remove("fade-out");}, 600); // Match the CSS transition duration
+        footer.classList.remove("fade-out");
+    }, 600); // Match the CSS transition duration
 }
 
 /**
@@ -1102,7 +1116,8 @@ function hideGameDetails() {
         setTimeout(() => {
             if (sideNav) sideNav.classList.remove("hidden");
             if (gamesGrid) gamesGrid.classList.remove("fade-out");
-            if (loadMoreContainer) loadMoreContainer.classList.remove("fade-out");
+            if (loadMoreContainer)
+                loadMoreContainer.classList.remove("fade-out");
             if (currentSection) currentSection.classList.remove("fade-out");
             if (dropdownMenu) dropdownMenu.classList.remove("fade-out");
             if (chooseYearBtn) chooseYearBtn.classList.remove("fade-out");
@@ -1112,7 +1127,7 @@ function hideGameDetails() {
             if (window.gameGridScrollPosition) {
                 window.scrollTo({
                     top: window.gameGridScrollPosition,
-                    behavior: "smooth"
+                    behavior: "smooth",
                 });
             }
         }, 50);

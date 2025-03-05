@@ -1,4 +1,3 @@
-
 #game-details-container {
     width: 100%;
     max-width: 1200px;
@@ -92,7 +91,9 @@
     justify-content: center;
     cursor: pointer;
     z-index: 2;
-    transition: background 0.2s, opacity 0.2s;
+    transition:
+        background 0.2s,
+        opacity 0.2s;
 }
 
 .screenshots-nav:hover {
@@ -241,12 +242,13 @@
     }
 }
 
-
 /* Add these animation styles at the end of the file */
 
 /* Transition classes for fading elements */
 .fade-transition {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 .fade-out {
@@ -262,7 +264,9 @@
 #game-details-container {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 #game-details-container.visible {
@@ -272,7 +276,9 @@
 
 /* Side nav transitions */
 .side-nav {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 .side-nav.hidden {
