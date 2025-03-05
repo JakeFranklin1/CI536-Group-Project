@@ -198,6 +198,7 @@ class IGDBService {
     async getGames(limit = 24, filters = {}) {
         try {
             let queryWhere = ["cover != null"];
+            const offset = filters.offset || 0; // Get offset from filters or default to 0
 
             // Add platform filter with mapping
             if (filters.platforms) {
@@ -274,7 +275,10 @@ class IGDBService {
             where ${queryWhere.join(" & ")};
             sort ${sortBy};
             limit ${limit};
-        `;
+            offset ${offset};
+            `;
+
+            console.log(`IGDB Query with offset ${offset}:`, query);
 
             const results = await this.executeRequest("/games", query);
 

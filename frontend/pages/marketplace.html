@@ -29,7 +29,7 @@
 
 <body>
 
-    <div class="loading" id="loading">
+    <div class="loading hidden" id="loading">
         <div class="spinner"></div>
     </div>
 
@@ -42,6 +42,45 @@
             <div class="modal-buttons">
                 <a href="login.html" class="modal-btn primary">Log In</a>
                 <a href="../index.html" class="modal-btn secondary">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal used for specific year filter -->
+    <div id="year-picker-modal" class="modal hidden">
+        <div class="modal-content year-picker-content">
+            <button class="close-modal">&times;</button>
+            <h2>Select Year</h2>
+
+            <div class="decade-tabs">
+                <button class="decade-tab active" data-decade="2020">2020s</button>
+                <button class="decade-tab" data-decade="2010">2010s</button>
+                <button class="decade-tab" data-decade="2000">2000s</button>
+                <button class="decade-tab" data-decade="1990">1990s</button>
+                <button class="decade-tab" data-decade="1980">1980s</button>
+            </div>
+
+            <div class="years-grid active" id="decade-2020">
+                <button class="year-btn" data-year="2025">2025</button>
+                <button class="year-btn" data-year="2024">2024</button>
+                <button class="year-btn" data-year="2023">2023</button>
+                <button class="year-btn" data-year="2022">2022</button>
+                <button class="year-btn" data-year="2021">2021</button>
+                <button class="year-btn" data-year="2020">2020</button>
+            </div>
+
+            <!-- ADD THESE MISSING DIVS WITH IDs -->
+            <div class="years-grid" id="decade-2010"></div>
+            <div class="years-grid" id="decade-2000"></div>
+            <div class="years-grid" id="decade-1990"></div>
+            <div class="years-grid" id="decade-1980"></div>
+
+            <div class="input-year-container">
+                <label for="custom-year">Or enter a specific year:</label>
+                <div class="custom-year-input">
+                    <input type="number" id="custom-year" min="1970" max="2025" placeholder="1995">
+                    <button id="apply-custom-year">Apply</button>
+                </div>
             </div>
         </div>
     </div>
@@ -215,7 +254,7 @@
                         <li>
                             <button type="button">
                                 <span class="icon-container"><i class="fa fa-trophy"></i></span>
-                                All time
+                                All Time
                             </button>
                         </li>
                         <li>
@@ -324,6 +363,8 @@
         <main class="main-content">
             <h1 id="current-section">Popular in 2025</h1>
 
+            <!-- Dropdown sorting menu -->
+
             <div class="dropdown-menu">
                 <button class="dropdown-btn">
                     <span>Sort by: <strong id="filter-choice">Most Popular</strong></span>
@@ -339,6 +380,15 @@
                     <button type="button" data-sort="name">Name: A to Z <i class="fa fa-check hidden"></i></button>
                 </div>
             </div>
+
+            <!-- Choose Year Button -->
+            <div class="choose-year-btn-container" style="display: none;">
+                <button id="choose-year-btn" class="choose-year-btn">
+                    <span><i class="fa fa-calendar"></i> Choose a Year</span>
+                </button>
+            </div>
+
+            <!-- This is where the games go -->
 
             <div class="games-grid">
                 <div class="game-card example-game">
@@ -359,7 +409,84 @@
                 </div>
             </div>
         </main>
+        <!-- Footer Section -->
+        <footer class="marketplace-footer">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h4>GameStore</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Store Locations</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Trade-In Program</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">EULA</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Payment Methods</h4>
+                    <div class="payment-icons">
+                        <i class="fa fa-cc-visa" aria-hidden="true"></i>
+                        <i class="fa fa-cc-mastercard" aria-hidden="true"></i>
+                        <i class="fa fa-cc-amex" aria-hidden="true"></i>
+                        <i class="fa fa-cc-paypal" aria-hidden="true"></i>
+                        <i class="fa fa-apple" aria-hidden="true"></i>
+                        <i class="fa fa-google" aria-hidden="true"></i>
+                    </div>
+
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="#" title="Twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" title="Facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" title="Instagram"><i class="fa fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fa fa-youtube-play"></i></a>
+                        <a href="#" title="Discord"><i class="fa fa-comments"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="platform-icons-footer">
+                    <img src="../assets/icons/windows.svg" alt="Windows" title="Windows">
+                    <img src="../assets/icons/playstation.svg" alt="PlayStation" title="PlayStation">
+                    <img src="../assets/icons/xbox.svg" alt="Xbox" title="Xbox">
+                    <img src="../assets/icons/nintendo.svg" alt="Nintendo" title="Nintendo">
+                    <img src="../assets/icons/android.svg" alt="Android" title="Android">
+                    <img src="../assets/icons/apple.svg" alt="Apple" title="Apple">
+                </div>
+                <p class="copyright">
+                    &copy; 2025 GameStore. All rights reserved. All trademarks are property of their respective owners
+                    in
+                    the UK and other countries.
+                    Games and cover images are for illustrative purposes only and may not represent actual gameplay.
+                </p>
+            </div>
+        </footer>
     </div>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
