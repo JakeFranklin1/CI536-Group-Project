@@ -877,6 +877,18 @@ function showGameDetails(game, coverUrl, platforms, price) {
     // Store current scroll position
     window.gameGridScrollPosition = window.scrollY;
 
+    // Force scroll to top with multiple approaches for cross-browser compatibility
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
+    // Ensure scroll happens even if DOM updates are delaying it
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 10);
+
     // Get elements for animation
     const sideNav = document.querySelector(".side-nav");
     const gamesGrid = document.querySelector(".games-grid");
@@ -1005,6 +1017,27 @@ function showGameDetails(game, coverUrl, platforms, price) {
         // Make the details container visible but without the visible class yet
         detailsContainer.style.display = "block";
 
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+
+        // Add a more aggressive scroll approach for mobile
+        if (window.innerWidth <= 768) {
+            document
+                .querySelector(".main-content")
+                .scrollIntoView({ block: "start", inline: "nearest" });
+
+            // Double-ensure scroll with repeated attempts for stubborn mobile browsers
+            const forceScrollInterval = setInterval(() => {
+                window.scrollTo(0, 0);
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }, 100);
+
+            // Stop the interval after a second
+            setTimeout(() => clearInterval(forceScrollInterval), 1000);
+        }
+
         // Add event listeners for the back button
         document
             .querySelector(".back-to-games")
@@ -1035,9 +1068,6 @@ function showGameDetails(game, coverUrl, platforms, price) {
 
         // Setup screenshot navigation
         setupScreenshotNavigation();
-
-        // Scroll to top smoothly
-        window.scrollTo({ top: 0, behavior: "smooth" });
 
         // Step 3: Fade in the details view after a short delay
         setTimeout(() => {

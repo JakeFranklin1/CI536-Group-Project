@@ -61,7 +61,7 @@ function positionSearchResults(searchBar, searchResults) {
     const searchBarRect = searchBar.getBoundingClientRect();
 
     // Position directly under the search bar and ensure minimum width of 400px
-    const width = Math.max(searchBarRect.width, 400);
+    const width = Math.max(searchBarRect.width, 398);
 
     searchResults.style.width = `${width}px`;
 
@@ -72,7 +72,8 @@ function positionSearchResults(searchBar, searchResults) {
             : searchBarRect.left;
 
     // Make sure the dropdown doesn't go off screen on the left
-    const finalLeft = Math.max(leftOffset, 10);
+    // Subtract 1 to move it 1px to the left
+    const finalLeft = Math.max(leftOffset - 1, 10); // Subtracting 1px here to center it
 
     searchResults.style.left = `${finalLeft}px`;
     searchResults.style.top = `${searchBarRect.bottom}px`;
