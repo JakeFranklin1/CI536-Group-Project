@@ -289,6 +289,164 @@
     }
 }
 
+/* Game Reviews Section */
+.game-reviews {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #333;
+}
+
+.game-reviews h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.reviews-summary {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    background: #252525;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.average-rating {
+    font-size: 36px;
+    font-weight: bold;
+    margin-right: 16px;
+    color: white;
+}
+
+.rating-stars {
+    color: #ffb400;
+    font-size: 18px;
+    margin-right: 16px;
+}
+
+.rating-count {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* Write Review Section */
+.write-review {
+    background: #252525;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.write-review h4 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.rating-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.rating-input span {
+    margin-right: 12px;
+    color: #ddd;
+}
+
+.star-rating {
+    display: flex;
+    gap: 4px;
+    font-size: 20px;
+    color: #ffb400;
+    cursor: pointer;
+}
+
+.review-text {
+    width: 100%;
+    min-height: 100px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 12px;
+    color: #ddd;
+    font-family: inherit;
+    margin-bottom: 16px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.submit-review-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-review-btn:hover {
+    background: #3d9840;
+}
+
+/* Reviews List */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.review-item {
+    background: #252525;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.reviewer-name {
+    font-weight: bold;
+    color: white;
+}
+
+.review-date {
+    color: #aaa;
+    font-size: 14px;
+}
+
+.reviewer-rating {
+    color: #ffb400;
+    font-size: 14px;
+}
+
+.review-content {
+    color: #ddd;
+    line-height: 1.5;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .reviews-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 /* Small phones */
 @media (max-width: 380px) {
     #game-details-container {
