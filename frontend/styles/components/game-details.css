@@ -52,7 +52,7 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    background: #00000000;
+    background: #000;
     margin-bottom: 16px;
 }
 
@@ -71,13 +71,14 @@
 .screenshot {
     flex: 0 0 100%;
     scroll-snap-align: start;
+    overflow-y: hidden;
 }
 
 .screenshot img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    max-height: 600px;
+    max-height: 690px;
 }
 
 .screenshots-nav {
