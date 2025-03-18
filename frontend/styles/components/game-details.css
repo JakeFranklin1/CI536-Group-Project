@@ -3,6 +3,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 16px 24px;
+    box-sizing: border-box;
 }
 
 .game-details-header {
@@ -54,6 +55,8 @@
     overflow: hidden;
     background: #000;
     margin-bottom: 16px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .screenshots-wrapper {
@@ -71,14 +74,18 @@
 .screenshot {
     flex: 0 0 100%;
     scroll-snap-align: start;
-    overflow-y: hidden;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    line-height: 0;
 }
 
 .screenshot img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     max-height: 690px;
+    display: block;
 }
 
 .screenshots-nav {
@@ -242,6 +249,7 @@
 
     .game-details-content {
         padding: 0;
+        width: 100%;
     }
 
     /* Game Info */
@@ -255,9 +263,10 @@
         margin: 0;
     }
 
-    /* Screenshots */
     .game-screenshots-container {
-        margin-bottom: 12px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
     }
 
     .screenshots-nav {
