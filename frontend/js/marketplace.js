@@ -1137,46 +1137,46 @@ function showGameDetails(game, coverUrl, platforms, price) {
         }, 50);
     }, 300); // Match the CSS transition duration
 
-
     setTimeout(() => {
         footer.style.display = "block";
         footer.classList.remove("fade-out");
     }, 600); // Match the CSS transition duration
 
-    const starRating = detailsContainer.querySelector('.star-rating');
+    const starRating = detailsContainer.querySelector(".star-rating");
     if (starRating) {
-        const stars = starRating.querySelectorAll('i');
+        const stars = starRating.querySelectorAll("i");
         let selectedRating = 0;
 
-        stars.forEach(star => {
-            star.addEventListener('mouseover', function() {
+        stars.forEach((star) => {
+            star.addEventListener("mouseover", function () {
                 const rating = parseInt(this.dataset.rating);
                 highlightStars(stars, rating);
             });
 
-            star.addEventListener('mouseout', function() {
+            star.addEventListener("mouseout", function () {
                 highlightStars(stars, selectedRating);
             });
 
-            star.addEventListener('click', function() {
+            star.addEventListener("click", function () {
                 selectedRating = parseInt(this.dataset.rating);
                 highlightStars(stars, selectedRating);
             });
         });
 
         // Submit review button handler
-        const submitReviewBtn = detailsContainer.querySelector('.submit-review-btn');
-        const reviewTextarea = detailsContainer.querySelector('.review-text');
+        const submitReviewBtn =
+            detailsContainer.querySelector(".submit-review-btn");
+        const reviewTextarea = detailsContainer.querySelector(".review-text");
 
         if (submitReviewBtn && reviewTextarea) {
-            submitReviewBtn.addEventListener('click', () => {
+            submitReviewBtn.addEventListener("click", () => {
                 if (selectedRating === 0) {
-                    showToast('Please select a rating', 'error');
+                    showToast("Please select a rating", "error");
                     return;
                 }
 
                 if (!reviewTextarea.value.trim()) {
-                    showToast('Please write a review', 'error');
+                    showToast("Please write a review", "error");
                     return;
                 }
 
@@ -1184,11 +1184,11 @@ function showGameDetails(game, coverUrl, platforms, price) {
                 addUserReview(game.name, selectedRating, reviewTextarea.value);
 
                 // Reset form
-                reviewTextarea.value = '';
+                reviewTextarea.value = "";
                 selectedRating = 0;
                 highlightStars(stars, 0);
 
-                showToast('Review submitted successfully!', 'success');
+                showToast("Review submitted successfully!", "success");
             });
         }
     }
@@ -1200,11 +1200,11 @@ function showGameDetails(game, coverUrl, platforms, price) {
 function highlightStars(stars, rating) {
     stars.forEach((star, index) => {
         if (index < rating) {
-            star.classList.remove('fa-star-o');
-            star.classList.add('fa-star');
+            star.classList.remove("fa-star-o");
+            star.classList.add("fa-star");
         } else {
-            star.classList.remove('fa-star');
-            star.classList.add('fa-star-o');
+            star.classList.remove("fa-star");
+            star.classList.add("fa-star-o");
         }
     });
 }
@@ -1213,30 +1213,30 @@ function highlightStars(stars, rating) {
  * Mock function to add a user review (would be replaced with API call later)
  */
 function addUserReview(gameName, rating, reviewText) {
-    console.log('Review submitted:', {
+    console.log("Review submitted:", {
         game: gameName,
         rating: rating,
         review: reviewText,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
     });
 
     // Mock adding the review to the UI
-    const reviewsList = document.querySelector('.reviews-list');
+    const reviewsList = document.querySelector(".reviews-list");
     if (reviewsList) {
-        const newReview = document.createElement('div');
-        newReview.className = 'review-item';
+        const newReview = document.createElement("div");
+        newReview.className = "review-item";
 
         const today = new Date();
-        const formattedDate = today.toLocaleDateString('en-US', {
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
+        const formattedDate = today.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
         });
 
         // Generate star HTML
-        let starsHtml = '';
+        let starsHtml = "";
         for (let i = 1; i <= 5; i++) {
-            starsHtml += `<i class="fa fa-${i <= rating ? 'star' : 'star-o'}"></i>`;
+            starsHtml += `<i class="fa fa-${i <= rating ? "star" : "star-o"}"></i>`;
         }
 
         newReview.innerHTML = `
