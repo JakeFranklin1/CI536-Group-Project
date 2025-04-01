@@ -9,7 +9,10 @@ import { loadGames } from "./services/GameService.js";
 
 // Import UI modules
 import { initializeUI, handleBrandClick } from "./modules/ui-initialiser.js";
-import { setupYearPickerButton, initializeYearPicker } from "./modules/year-picker.js";
+import {
+    setupYearPickerButton,
+    initializeYearPicker,
+} from "./modules/year-picker.js";
 import { setupLoadMoreButton } from "./modules/pagination.js";
 import { handleFilterSelection } from "./modules/filter-handler.js";
 import { addItemToCart } from "./modules/cart-handler.js";

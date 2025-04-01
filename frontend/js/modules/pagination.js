@@ -1,4 +1,8 @@
-import { createGameCard, getPlatformIcons, generateRandomPrice } from "../services/GameService.js";
+import {
+    createGameCard,
+    getPlatformIcons,
+    generateRandomPrice,
+} from "../services/GameService.js";
 import { escapeHTML } from "../utils/sanitise.js";
 
 const API_URL =
