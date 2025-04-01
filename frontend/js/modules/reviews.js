@@ -1,27 +1,35 @@
 import { showToast } from "../utils/toast.js";
 import { escapeHTML } from "../utils/sanitise.js";
+import supabase from "../supabase-client.js";
 
 /**
  * Initializes the review system for a specific game
  * @param {Object} game - Game data object
  * @param {HTMLElement} container - Container element for reviews
  */
-export function initializeReviewSystem(game, container) {
+export async function initializeReviewSystem(game, container) {
     if (!container) return;
+
+    console.log("Initializing reviews for game ID:", game.id);
+    const gameId = game.id;
 
     // Set up star rating functionality
     const starRating = container.querySelector(".star-rating");
     if (starRating) {
-        setupStarRating(starRating, game);
+        setupStarRating(starRating, game, gameId);
     }
+
+    // Load existing reviews from the database
+    await loadGameReviews(gameId, container);
 }
 
 /**
  * Sets up star rating functionality
  * @param {HTMLElement} starRating - Star rating container
  * @param {Object} game - Game object
+ * @param {string} gameUuid - Game UUID for database operations
  */
-function setupStarRating(starRating, game) {
+function setupStarRating(starRating, game, gameUuid) {
     const stars = starRating.querySelectorAll("i");
     let selectedRating = 0;
 
@@ -50,7 +58,7 @@ function setupStarRating(starRating, game) {
         .querySelector(".review-text");
 
     if (submitReviewBtn && reviewTextarea) {
-        submitReviewBtn.addEventListener("click", () => {
+        submitReviewBtn.addEventListener("click", async () => {
             if (selectedRating === 0) {
                 showToast("Please select a rating", "error");
                 return;
@@ -61,15 +69,36 @@ function setupStarRating(starRating, game) {
                 return;
             }
 
-            // Mock adding the review (would connect to database in real implementation)
-            addUserReview(game.name, selectedRating, reviewTextarea.value);
+            try {
+                // Get current user session
+                const { data: { session } } = await supabase.auth.getSession();
 
-            // Reset form
-            reviewTextarea.value = "";
-            selectedRating = 0;
-            highlightStars(stars, 0);
+                if (!session) {
+                    showToast("You must be logged in to submit a review", "error");
+                    return;
+                }
 
-            showToast("Review submitted successfully!", "success");
+                // Submit the review to the database using the UUID
+                await addUserReview(
+                    gameUuid, // Use the UUID format
+                    session.user.id,
+                    selectedRating,
+                    reviewTextarea.value
+                );
+
+                // Reset form
+                reviewTextarea.value = "";
+                selectedRating = 0;
+                highlightStars(stars, 0);
+
+                // Reload reviews to show the new review
+                await loadGameReviews(gameUuid, starRating.closest(".game-reviews"));
+
+                showToast("Review submitted successfully!", "success");
+            } catch (error) {
+                console.error("Error submitting review:", error);
+                showToast("Failed to submit review. Please try again.", "error");
+            }
         });
     }
 }
@@ -92,54 +121,195 @@ function highlightStars(stars, rating) {
 }
 
 /**
- * Mock function to add a user review (would be replaced with API call later)
- * @param {string} gameName - Name of the game
+ * Adds a user review to the database
+ * @param {string|number} gameId - ID of the game from IGDB
+ * @param {string} userId - ID of the user
  * @param {number} rating - User rating (1-5)
  * @param {string} reviewText - Review content
+ * @returns {Promise} - Promise that resolves when the review is added
  */
-export function addUserReview(gameName, rating, reviewText) {
-    console.log("Review submitted:", {
-        game: gameName,
-        rating: rating,
-        review: reviewText,
-        date: new Date().toISOString(),
-    });
+export async function addUserReview(gameId, userId, rating, reviewText) {
+    try {
+        console.log("Adding review with gameId:", gameId);
 
-    // Mock adding the review to the UI
-    const reviewsList = document.querySelector(".reviews-list");
-    if (reviewsList) {
-        const newReview = document.createElement("div");
-        newReview.className = "review-item";
+        const { data, error } = await supabase
+            .from('game_reviews')
+            .insert([
+                {
+                    game_id: gameId,
+                    user_id: userId,
+                    rating: rating,
+                    review_text: reviewText
+                }
+            ]);
 
-        const today = new Date();
-        const formattedDate = today.toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-        });
+        if (error) throw error;
+        return data;
+    } catch (error) {
+        console.error("Error adding review to database:", error);
+        throw error;
+    }
+}
 
-        // Generate star HTML
-        let starsHtml = "";
-        for (let i = 1; i <= 5; i++) {
-            starsHtml += `<i class="fa fa-${i <= rating ? "star" : "star-o"}"></i>`;
+/**
+ * Loads game reviews from the database
+ * @param {string} gameId - ID of the game (in UUID format)
+ * @param {HTMLElement} container - Container element to update with reviews
+ */
+export async function loadGameReviews(gameId, container) {
+    try {
+        console.log("Loading reviews for gameId:", gameId);
+
+        // Explicitly define the join relationship
+        const { data: reviews, error } = await supabase
+            .from('game_reviews')
+            .select(`
+                *,
+                users!user_id (id, first_name, last_name, email)
+            `)
+            .eq('game_id', gameId)
+            .order('date_of_review', { ascending: false });
+
+        if (error) throw error;
+
+        console.log("Reviews loaded:", reviews?.length || 0);
+
+        // Calculate average rating
+        let averageRating = 0;
+        if (reviews && reviews.length > 0) {
+            const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+            averageRating = (sum / reviews.length).toFixed(1);
         }
 
-        newReview.innerHTML = `
-            <div class="review-header">
-                <div class="reviewer-name">You</div>
-                <div class="review-date">${formattedDate}</div>
-                <div class="reviewer-rating">
-                    ${starsHtml}
-                </div>
-            </div>
-            <div class="review-content">
-                ${escapeHTML(reviewText)}
-            </div>
-        `;
+        // Update review summary
+        updateReviewSummary(container, averageRating, reviews?.length || 0);
 
-        // Add to the beginning of the list
-        reviewsList.insertBefore(newReview, reviewsList.firstChild);
+        // Update reviews list
+        const reviewsList = container.querySelector(".reviews-list");
+        if (reviewsList && reviews) {
+            // Clear existing reviews except the write review form
+            reviewsList.innerHTML = '';
+
+            if (reviews.length === 0) {
+                reviewsList.innerHTML = '<div class="no-reviews" style="color: white">No reviews yet. Be the first to review!</div>';
+                return;
+            }
+
+            // Add each review to the list
+            reviews.forEach(review => {
+                const reviewElement = createReviewElement(review);
+                reviewsList.appendChild(reviewElement);
+            });
+        }
+
+    } catch (error) {
+        console.error("Error loading reviews:", error);
+        showToast("Failed to load reviews", "error");
+
+        // Show error in the reviews list
+        const reviewsList = container.querySelector(".reviews-list");
+        if (reviewsList) {
+            reviewsList.innerHTML = '<div class="error-message">Unable to load reviews. Please try again later.</div>';
+        }
     }
+}
+
+/**
+ * Creates a review element from review data
+ * @param {Object} review - Review data from database
+ * @returns {HTMLElement} - Review element
+ */
+function createReviewElement(review) {
+    const reviewItem = document.createElement("div");
+    reviewItem.className = "review-item";
+
+    const formattedDate = new Date(review.date_of_review).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    });
+
+    // Generate star HTML
+    const starsHtml = generateStarHTML(review.rating);
+
+    // Get display name (use first_name and last_name, fallback to email)
+    let displayName = "Anonymous";
+    if (review.users) {
+        if (review.users.first_name || review.users.last_name) {
+            displayName = `${review.users.first_name || ""} ${review.users.last_name || ""}`.trim();
+        } else if (review.users.email) {
+            const email = review.users.email;
+            const atIndex = email.indexOf('@');
+            if (atIndex > 0) {
+                displayName = email.substring(0, atIndex);
+            }
+        }
+    }
+
+    reviewItem.innerHTML = `
+        <div class="review-header">
+            <div class="reviewer-name">${escapeHTML(displayName)}</div>
+            <div class="review-date">${formattedDate}</div>
+            <div class="reviewer-rating">
+                ${starsHtml}
+            </div>
+        </div>
+        <div class="review-content">
+            ${escapeHTML(review.review_text)}
+        </div>
+    `;
+
+    return reviewItem;
+}
+
+/**
+ * Updates the review summary section
+ * @param {HTMLElement} container - The game reviews container
+ * @param {number} averageRating - Average rating
+ * @param {number} reviewCount - Number of reviews
+ */
+function updateReviewSummary(container, averageRating, reviewCount) {
+    const summaryElement = container.querySelector(".reviews-summary");
+    if (!summaryElement) return;
+
+    const ratingElement = summaryElement.querySelector(".average-rating");
+    const countElement = summaryElement.querySelector(".rating-count");
+    const starsElement = summaryElement.querySelector(".rating-stars");
+
+    if (ratingElement) ratingElement.textContent = averageRating || "0.0";
+    if (countElement) countElement.textContent = `Based on ${reviewCount || 0} reviews`;
+    if (starsElement && averageRating) {
+        starsElement.innerHTML = generateStarHTML(parseFloat(averageRating));
+    }
+}
+
+/**
+ * Generates HTML for star ratings
+ * @param {number} rating - Rating value
+ * @returns {string} - HTML for stars
+ */
+function generateStarHTML(rating) {
+    let starsHtml = "";
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+
+    // Add full stars
+    for (let i = 1; i <= fullStars; i++) {
+        starsHtml += `<i class="fa fa-star"></i>`;
+    }
+
+    // Add half star if applicable
+    if (hasHalfStar) {
+        starsHtml += `<i class="fa fa-star-half-o"></i>`;
+    }
+
+    // Add empty stars
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    for (let i = 1; i <= emptyStars; i++) {
+        starsHtml += `<i class="fa fa-star-o"></i>`;
+    }
+
+    return starsHtml;
 }
 
 /**
@@ -152,15 +322,15 @@ export function renderReviewsHTML(game) {
         <div class="game-reviews">
             <h3>Player Reviews</h3>
             <div class="reviews-summary">
-                <div class="average-rating">4.2</div>
+                <div class="average-rating">0.0</div>
                 <div class="rating-stars">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-half-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
                 </div>
-                <div class="rating-count">Based on 24 reviews</div>
+                <div class="rating-count">Based on 0 reviews</div>
             </div>
 
             <div class="write-review">
@@ -180,39 +350,8 @@ export function renderReviewsHTML(game) {
             </div>
 
             <div class="reviews-list">
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-name">Sarah J.</div>
-                        <div class="review-date">March 5, 2025</div>
-                        <div class="reviewer-rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        Absolutely incredible gameplay and story. One of the best games I've played this year!
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-name">Alex M.</div>
-                        <div class="review-date">February 22, 2025</div>
-                        <div class="reviewer-rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                            <i class="fa fa-star-o"></i>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        Great graphics but the controls feel clunky at times. Story is decent but not groundbreaking.
-                    </div>
-                </div>
+                <!-- Reviews will be loaded here -->
+                <div class="loading-reviews">Loading reviews...</div>
             </div>
         </div>
     `;
