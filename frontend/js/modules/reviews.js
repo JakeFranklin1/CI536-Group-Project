@@ -71,10 +71,15 @@ function setupStarRating(starRating, game, gameUuid) {
 
             try {
                 // Get current user session
-                const { data: { session } } = await supabase.auth.getSession();
+                const {
+                    data: { session },
+                } = await supabase.auth.getSession();
 
                 if (!session) {
-                    showToast("You must be logged in to submit a review", "error");
+                    showToast(
+                        "You must be logged in to submit a review",
+                        "error"
+                    );
                     return;
                 }
 
@@ -92,12 +97,18 @@ function setupStarRating(starRating, game, gameUuid) {
                 highlightStars(stars, 0);
 
                 // Reload reviews to show the new review
-                await loadGameReviews(gameUuid, starRating.closest(".game-reviews"));
+                await loadGameReviews(
+                    gameUuid,
+                    starRating.closest(".game-reviews")
+                );
 
                 showToast("Review submitted successfully!", "success");
             } catch (error) {
                 console.error("Error submitting review:", error);
-                showToast("Failed to submit review. Please try again.", "error");
+                showToast(
+                    "Failed to submit review. Please try again.",
+                    "error"
+                );
             }
         });
     }
@@ -132,16 +143,14 @@ export async function addUserReview(gameId, userId, rating, reviewText) {
     try {
         console.log("Adding review with gameId:", gameId);
 
-        const { data, error } = await supabase
-            .from('game_reviews')
-            .insert([
-                {
-                    game_id: gameId,
-                    user_id: userId,
-                    rating: rating,
-                    review_text: reviewText
-                }
-            ]);
+        const { data, error } = await supabase.from("game_reviews").insert([
+            {
+                game_id: gameId,
+                user_id: userId,
+                rating: rating,
+                review_text: reviewText,
+            },
+        ]);
 
         if (error) throw error;
         return data;
@@ -162,13 +171,15 @@ export async function loadGameReviews(gameId, container) {
 
         // Explicitly define the join relationship
         const { data: reviews, error } = await supabase
-            .from('game_reviews')
-            .select(`
+            .from("game_reviews")
+            .select(
+                `
                 *,
                 users!user_id (id, first_name, last_name, email)
-            `)
-            .eq('game_id', gameId)
-            .order('date_of_review', { ascending: false });
+            `
+            )
+            .eq("game_id", gameId)
+            .order("date_of_review", { ascending: false });
 
         if (error) throw error;
 
@@ -188,20 +199,20 @@ export async function loadGameReviews(gameId, container) {
         const reviewsList = container.querySelector(".reviews-list");
         if (reviewsList && reviews) {
             // Clear existing reviews except the write review form
-            reviewsList.innerHTML = '';
+            reviewsList.innerHTML = "";
 
             if (reviews.length === 0) {
-                reviewsList.innerHTML = '<div class="no-reviews" style="color: white">No reviews yet. Be the first to review!</div>';
+                reviewsList.innerHTML =
+                    '<div class="no-reviews" style="color: white">No reviews yet. Be the first to review!</div>';
                 return;
             }
 
             // Add each review to the list
-            reviews.forEach(review => {
+            reviews.forEach((review) => {
                 const reviewElement = createReviewElement(review);
                 reviewsList.appendChild(reviewElement);
             });
         }
-
     } catch (error) {
         console.error("Error loading reviews:", error);
         showToast("Failed to load reviews", "error");
@@ -209,7 +220,8 @@ export async function loadGameReviews(gameId, container) {
         // Show error in the reviews list
         const reviewsList = container.querySelector(".reviews-list");
         if (reviewsList) {
-            reviewsList.innerHTML = '<div class="error-message">Unable to load reviews. Please try again later.</div>';
+            reviewsList.innerHTML =
+                '<div class="error-message">Unable to load reviews. Please try again later.</div>';
         }
     }
 }
@@ -223,11 +235,14 @@ function createReviewElement(review) {
     const reviewItem = document.createElement("div");
     reviewItem.className = "review-item";
 
-    const formattedDate = new Date(review.date_of_review).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-    });
+    const formattedDate = new Date(review.date_of_review).toLocaleDateString(
+        "en-US",
+        {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        }
+    );
 
     // Generate star HTML
     const starsHtml = generateStarHTML(review.rating);
@@ -236,10 +251,11 @@ function createReviewElement(review) {
     let displayName = "Anonymous";
     if (review.users) {
         if (review.users.first_name || review.users.last_name) {
-            displayName = `${review.users.first_name || ""} ${review.users.last_name || ""}`.trim();
+            displayName =
+                `${review.users.first_name || ""} ${review.users.last_name || ""}`.trim();
         } else if (review.users.email) {
             const email = review.users.email;
-            const atIndex = email.indexOf('@');
+            const atIndex = email.indexOf("@");
             if (atIndex > 0) {
                 displayName = email.substring(0, atIndex);
             }
@@ -277,7 +293,8 @@ function updateReviewSummary(container, averageRating, reviewCount) {
     const starsElement = summaryElement.querySelector(".rating-stars");
 
     if (ratingElement) ratingElement.textContent = averageRating || "0.0";
-    if (countElement) countElement.textContent = `Based on ${reviewCount || 0} reviews`;
+    if (countElement)
+        countElement.textContent = `Based on ${reviewCount || 0} reviews`;
     if (starsElement && averageRating) {
         starsElement.innerHTML = generateStarHTML(parseFloat(averageRating));
     }
