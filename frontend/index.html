@@ -56,7 +56,7 @@
                 </div>
                 <div class="form-group">
                     <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" required
+                    <input type="date" id="dob" placeholder="Your date of birth" name="dob" required
                         aria-label="Date of Birth" />
                 </div>
                 <div class="form-group">
@@ -87,7 +87,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
     <script type="module" src="./js/form-validation.js" defer></script>
-    <script type="module" src="./js/page-transition.js" defer></script>
+    <script type="module" src="./js/utils/page-transition.js" defer></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             if (window.innerWidth > 768) {
@@ -101,13 +101,13 @@
             }
         });
     </script>
-    <!-- <script type="module">
+    <script type="module">
         import { checkAuthAndRedirect } from "./js/services/auth-service.js";
 
         document.addEventListener("DOMContentLoaded", async () => {
             await checkAuthAndRedirect("./pages/marketplace.html");
         });
-    </script> -->
+    </script>
 </body>
 
 </html>

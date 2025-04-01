@@ -1,7 +1,6 @@
 /* layouts */
 @import url("layouts/landing.css");
 @import url("layouts/marketplace.css");
-@import url("layouts/about.css");
 
 /* Resets */
 @import url("resets/normalize.css");
@@ -14,8 +13,10 @@
 @import url("components/modal.css");
 @import url("components/nav.css");
 @import url("components/game-card.css");
+@import url("components/side-cart.css");
 
 /* Utils */
 @import url("utils/toast.css");
-@import url("utils/loading.css");
+/* @import url("utils/loading.css"); */
 @import url("utils/general.css");
+@import url("utils/game-card-loading.css");

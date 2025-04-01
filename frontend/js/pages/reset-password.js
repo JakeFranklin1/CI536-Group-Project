@@ -1,4 +1,4 @@
-import supabase from "./supabase-client.js";
+import supabase from "../supabase-client.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".signup-form");
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const successDiv = document.createElement("div");
         successDiv.className = "success-message";
         successDiv.textContent = message;
-        successDiv.style.marginBottom = "0"; // Add this line
+        successDiv.style.marginBottom = "0";
 
         const existingSuccess = form.querySelector(".success-message");
         if (existingSuccess) {

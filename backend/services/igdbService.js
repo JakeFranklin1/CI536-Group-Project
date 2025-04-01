@@ -1,6 +1,25 @@
 const axios = require("axios");
 require("dotenv").config();
 
+// Platform name mappings for IGDB API compatibility
+const platformMappings = {
+    PC: "Windows",
+    PlayStation: "PlayStation 5",
+    Xbox: "Xbox Series X",
+    Nintendo: "Nintendo Switch",
+    Android: "Android",
+    Apple: "iOS",
+};
+
+// Genre name mappings for IGDB API compatibility
+const genreMappings = {
+    Action: "Shooter",
+    Adventure: "Adventure",
+    RPG: "Role-playing (RPG)",
+    Strategy: "Strategy",
+    Sports: "Sport",
+};
+
 /**
  * IGDBService class to interact with the IGDB API.
  * This class handles authentication, token management, and API requests.
@@ -175,6 +194,114 @@ class IGDBService {
      * @returns {Promise<Array>} Array of popular game objects
      * @throws {Error} If the request fails
      */
+
+    async getGames(limit = 24, filters = {}) {
+        try {
+            let queryWhere = ["cover != null"];
+            const offset = filters.offset || 0; // Get offset from filters or default to 0
+
+            // Add platform filter with mapping
+            if (filters.platforms) {
+                const platformValue =
+                    platformMappings[filters.platforms] || filters.platforms;
+
+                // Special handling for Xbox and PC which may need ID-based filtering
+                if (filters.platforms === "Xbox") {
+                    // Use platform IDs for Xbox (169 = Xbox Series X)
+                    queryWhere.push(`platforms = 169`);
+                } else if (filters.platforms === "PC") {
+                    // Use platform IDs for PC (6 = Windows)
+                    queryWhere.push(`platforms = 6`);
+                } else {
+                    queryWhere.push(`platforms.name = "${platformValue}"`);
+                }
+            }
+
+            // Add genre filter with mapping
+            if (filters.genres) {
+                const genreValue =
+                    genreMappings[filters.genres] || filters.genres;
+                queryWhere.push(`genres.name = "${genreValue}"`);
+            }
+
+            // Special handling for "Popular in 2025"
+            if (filters.timeframe === "Popular in 2025") {
+                const startDate = new Date(2024, 9, 1).getTime() / 1000; // Oct 2024
+                const endDate = new Date(2025, 11, 31).getTime() / 1000; // Dec 2025
+                queryWhere.push(
+                    `first_release_date >= ${startDate} & first_release_date <= ${endDate}`
+                );
+                queryWhere.push("total_rating > 70");
+            }
+
+            // Add year filter (for other year-specific filters)
+            else if (filters.year) {
+                const year = parseInt(filters.year);
+                const startDate = new Date(year, 0, 1).getTime() / 1000;
+                const endDate = new Date(year, 11, 31).getTime() / 1000;
+                queryWhere.push(
+                    `first_release_date >= ${startDate} & first_release_date <= ${endDate}`
+                );
+            }
+
+            // Determine sort order
+            let sortBy = "total_rating_count desc";
+            if (filters.sort) {
+                switch (filters.sort) {
+                    case "newest":
+                        sortBy = "first_release_date desc";
+                        break;
+                    case "name":
+                        sortBy = "name asc";
+                        break;
+                }
+            }
+
+            const query = `
+            fields
+                name,
+                summary,
+                platforms.name,
+                cover.url,
+                age_ratings.category,
+                age_ratings.rating,
+                rating,
+                total_rating,
+                total_rating_count,
+                first_release_date,
+                screenshots.game,
+                screenshots.url,
+                genres.name;
+            where ${queryWhere.join(" & ")};
+            sort ${sortBy};
+            limit ${limit};
+            offset ${offset};
+            `;
+
+            console.log(`IGDB Query with offset ${offset}:`, query);
+
+            const results = await this.executeRequest("/games", query);
+
+            // Transform the results as before
+            return results.map((game) => ({
+                ...game,
+                cover: game.cover
+                    ? {
+                          ...game.cover,
+                          url: game.cover.url
+                              ? game.cover.url
+                                    .replace("t_thumb", "t_cover_big")
+                                    .replace("http:", "https:")
+                              : null,
+                      }
+                    : null,
+            }));
+        } catch (error) {
+            console.error("Error getting games:", error);
+            throw error;
+        }
+    }
+
     async getPopularGames(limit = 12) {
         try {
             const results = await this.executeRequest(
@@ -185,6 +312,8 @@ class IGDBService {
                 summary,
                 platforms.name,
                 cover.url,
+                age_ratings.category,
+                age_ratings.rating,
                 rating,
                 total_rating,
                 total_rating_count,

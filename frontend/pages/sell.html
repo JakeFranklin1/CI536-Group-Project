@@ -5,10 +5,9 @@
     <!-- Meta's -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GameStore Marketplace</title>
+    <title>GameStore</title>
     <meta name="description" content="Sign up to GameStore today!" />
     <meta name="theme-color" content="#000000" />
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; img-src 'self' https: data:;"> -->
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="../assets/favicons/favicon-96x96.png" sizes="96x96" />
@@ -29,11 +28,6 @@
 
 <body>
 
-    <div class="loading hidden" id="loading">
-        <div class="spinner"></div>
-    </div>
-
-
     <!-- Modal for users who aren't signed in -->
     <div id="auth-modal" class="modal hidden">
         <div class="modal-content">
@@ -42,45 +36,6 @@
             <div class="modal-buttons">
                 <a href="login.html" class="modal-btn primary">Log In</a>
                 <a href="../index.html" class="modal-btn secondary">Sign Up</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal used for specific year filter -->
-    <div id="year-picker-modal" class="modal hidden">
-        <div class="modal-content year-picker-content">
-            <button class="close-modal">&times;</button>
-            <h2>Select Year</h2>
-
-            <div class="decade-tabs">
-                <button class="decade-tab active" data-decade="2020">2020s</button>
-                <button class="decade-tab" data-decade="2010">2010s</button>
-                <button class="decade-tab" data-decade="2000">2000s</button>
-                <button class="decade-tab" data-decade="1990">1990s</button>
-                <button class="decade-tab" data-decade="1980">1980s</button>
-            </div>
-
-            <div class="years-grid active" id="decade-2020">
-                <button class="year-btn" data-year="2025">2025</button>
-                <button class="year-btn" data-year="2024">2024</button>
-                <button class="year-btn" data-year="2023">2023</button>
-                <button class="year-btn" data-year="2022">2022</button>
-                <button class="year-btn" data-year="2021">2021</button>
-                <button class="year-btn" data-year="2020">2020</button>
-            </div>
-
-            <!-- ADD THESE MISSING DIVS WITH IDs -->
-            <div class="years-grid" id="decade-2010"></div>
-            <div class="years-grid" id="decade-2000"></div>
-            <div class="years-grid" id="decade-1990"></div>
-            <div class="years-grid" id="decade-1980"></div>
-
-            <div class="input-year-container">
-                <label for="custom-year">Or enter a specific year:</label>
-                <div class="custom-year-input">
-                    <input type="number" id="custom-year" min="1970" max="2025" placeholder="1995">
-                    <button id="apply-custom-year">Apply</button>
-                </div>
             </div>
         </div>
     </div>
@@ -104,7 +59,7 @@
             </div>
 
             <div class="cart-container">
-                <button id="open-cart-btn" class="cart-btn" type="button" title="View cart">
+                <button class="cart-btn" type="button" title="View cart">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
             </div>
@@ -193,7 +148,6 @@
         </button>
         <aside class="side-nav">
             <nav class="side-nav-content">
-
                 <div class="filter-section">
                     <h3>Settings</h3>
                     <ul>
@@ -224,25 +178,14 @@
                     </ul>
                 </div>
 
+
                 <div class="filter-section">
                     <h3>Community</h3>
                     <ul>
                         <li>
                             <a href="sell.html">
-                                <span class="icon-container"><i class="fa fa-tag"></i></span>
+                                <span class="icon-container"><i class="fa fa-exchange"></i></span>
                                 List a Game
-                            </a>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-clock-o"></i></span>
-                                Recently Added
-                            </button>
-                        </li>
-                        <li>
-                            <a href="sell.html">
-                                <span class="icon-container"><i class="fa fa-list"></i></span>
-                                Manage Listings
                             </a>
                         </li>
                     </ul>
@@ -254,7 +197,7 @@
                         <li>
                             <button type="button">
                                 <span class="icon-container"><i class="fa fa-trophy"></i></span>
-                                All Time
+                                All time
                             </button>
                         </li>
                         <li>
@@ -283,40 +226,32 @@
                         </li>
                         <li>
                             <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/playstation.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-gamepad"></i></span>
                                 PlayStation
                             </button>
                         </li>
                         <li>
                             <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/xbox.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-gamepad"></i></span>
                                 Xbox
                             </button>
                         </li>
                         <li>
                             <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/nintendo.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-gamepad"></i></span>
                                 Nintendo
                             </button>
                         </li>
                         <li>
                             <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/android.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><i class="fa fa-android"></i></span>
                                 Android
                             </button>
                         </li>
                         <li>
                             <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/apple.svg"
-                                        title="playstation"></span>
-                                Apple
+                                <span class="icon-container"><i class="fa fa-apple"></i></span>
+                                iOS
                             </button>
                         </li>
                     </ul>
@@ -352,7 +287,7 @@
                         <li>
                             <button type="button">
                                 <span class="icon-container"><i class="fa fa-futbol-o"></i></span>
-                                Sport
+                                Sports
                             </button>
                         </li>
                     </ul>
@@ -361,140 +296,25 @@
         </aside>
 
         <main class="main-content">
-            <h1 id="current-section">Popular in 2025</h1>
-
-            <!-- Dropdown sorting menu -->
-
-            <div class="dropdown-menu">
-                <button class="dropdown-btn">
-                    <span>Sort by: <strong id="filter-choice">Most Popular</strong></span>
-                    <i class="fa fa-chevron-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <button type="button" data-sort="popular">Most Popular <i class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="newest">Newest First <i class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="price-low">Price: Low to High <i
-                            class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="price-high">Price: High to Low <i
-                            class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="name">Name: A to Z <i class="fa fa-check hidden"></i></button>
-                </div>
-            </div>
-
-            <!-- Choose Year Button -->
-            <div class="choose-year-btn-container" style="display: none;">
-                <button id="choose-year-btn" class="choose-year-btn">
-                    <span><i class="fa fa-calendar"></i> Choose a Year</span>
-                </button>
-            </div>
-
-            <!-- This is where the games go -->
-
-            <div class="games-grid">
-                <div class="game-card example-game">
-                    <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Example Game" class="game-image">
-                    <div class="game-details">
-                        <div class="purchase-row">
-                            <span class="add-to-cart">Add to Cart</span>
-                            <span class="price">$59.99</span>
-                        </div>
-                        <div class="platform-icons">
-                            <img src="../assets/icons/windows.svg" title="Windows logo">
-                            <img src="../assets/icons/playstation.svg" title="Windows logo">
-                            <img src="../assets/icons/nintendo.svg" title="Windows logo">
-                        </div>
-                        <h2 class="game-title">Example Game Title</h2>
-                        <p class="game-age-rating">Age rating: M</p>
-                    </div>
+            <h1 id="current-section">About GameStore</h1>
+            <div class="about-section">
+                <!-- Talk about what the website is and its purpose here
+                 Also talk about the resourcesused, which are: IGDB, Font Awesome, Google Fonts
+                 I made an about.css (located in styles/layouts) which you can use for the CSS styling. -->
+                <div style="text-align: left; margin-top: 10em;">
+                    <a href="marketplace.html"
+                        style="font-size: 1.5em; color: rgb(255, 0, 0); text-decoration: none;">GO
+                        BACK</a>
                 </div>
             </div>
         </main>
-        <!-- Footer Section -->
-        <footer class="marketplace-footer">
-            <div class="footer-container">
-                <div class="footer-column">
-                    <h4>GameStore</h4>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="">Careers</a></li>
-                        <li><a href="">Press</a></li>
-                        <li><a href="">Blog</a></li>
-                        <li><a href="">Store Locations</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="">Help Center</a></li>
-                        <li><a href="">Contact Us</a></li>
-                        <li><a href="">Return Policy</a></li>
-                        <li><a href="">Order Status</a></li>
-                        <li><a href="">Trade-In Program</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="">Terms of Service</a></li>
-                        <li><a href="">Privacy Policy</a></li>
-                        <li><a href="">Cookie Policy</a></li>
-                        <li><a href="">EULA</a></li>
-                        <li><a href="">Accessibility</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Payment Methods</h4>
-                    <div class="payment-icons">
-                        <i class="fa fa-cc-visa" aria-hidden="true"></i>
-                        <i class="fa fa-cc-mastercard" aria-hidden="true"></i>
-                        <i class="fa fa-cc-amex" aria-hidden="true"></i>
-                        <i class="fa fa-cc-paypal" aria-hidden="true"></i>
-                        <i class="fa fa-apple" aria-hidden="true"></i>
-                        <i class="fa fa-google" aria-hidden="true"></i>
-                    </div>
-
-                    <h4>Connect With Us</h4>
-                    <div class="social-icons">
-                        <a href="" title="Twitter"><i class="fa fa-twitter"></i></a>
-                        <a href="" title="Facebook"><i class="fa fa-facebook"></i></a>
-                        <a href="" title="Instagram"><i class="fa fa-instagram"></i></a>
-                        <a href="" title="YouTube"><i class="fa fa-youtube-play"></i></a>
-                        <a href="" title="Discord"><i class="fa fa-comments"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div class="platform-icons-footer">
-                    <img src="../assets/icons/windows.svg" alt="Windows" title="Windows">
-                    <img src="../assets/icons/playstation.svg" alt="PlayStation" title="PlayStation">
-                    <img src="../assets/icons/xbox.svg" alt="Xbox" title="Xbox">
-                    <img src="../assets/icons/nintendo.svg" alt="Nintendo" title="Nintendo">
-                    <img src="../assets/icons/android.svg" alt="Android" title="Android">
-                    <img src="../assets/icons/apple.svg" alt="Apple" title="Apple">
-                </div>
-                <p class="copyright">
-                    &copy; 2025 GameStore. All rights reserved. All trademarks are property of their respective owners
-                    in
-                    the UK and other countries.
-                    Games and cover images are for illustrative purposes only and may not represent actual gameplay. The
-                    games displayed on this website cannot be purchased, and all prices are randomly generated.
-                </p>
-            </div>
-        </footer>
     </div>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="../js/utils/page-transition.js"></script>
     <script type="module" src="../js/components/SideCart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
-    <script type="module" src="../js/utils/dropdown.js"></script>
 </body>
 
 </html>

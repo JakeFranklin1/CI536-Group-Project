@@ -45,6 +45,7 @@
     /* Use these for your text sizes */
     --font--size-huge: clamp(36px, 5.14vw, 5.14vw);
     --font--size-large: clamp(26px, 3.81vw, 3.81vw);
+    --font--size-large2: clamp(22px, 3.81vw, 3.81vw);
     --font--size-medium: 26px;
     --font--size-regular: 16px;
     --font--size-small: 14px;

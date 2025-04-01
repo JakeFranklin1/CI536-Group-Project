@@ -24,17 +24,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="../js/page-transition.js"></script>
-    <script type="module" src="../js/marketplace.js"></script>
-    <script type="module" src="../js/dropdown.js"></script>
 </head>
 
 <body>
-
-    <div class="loading" id="loading">Loading...</div>
 
     <!-- Modal for users who aren't signed in -->
     <div id="auth-modal" class="modal hidden">
@@ -73,6 +65,78 @@
             </div>
         </div>
     </header>
+
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Side cart -->
+    <div class="side-cart">
+        <div class="side-cart-header">
+            <button type="button" id="close-cart-btn" class="closebtn">&times;</button>
+            <h3>Shopping Cart</h3>
+        </div>
+
+        <div class="cart-items">
+
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">Example Game</div>
+                    <div class="cart-item-info">
+                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
+                            class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">PlayStation 5</div>
+                            <div class="cart-item-price">£59.99</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">Example Game</div>
+                    <div class="cart-item-info">
+                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
+                            class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">PlayStation 5</div>
+                            <div class="cart-item-price">£59.99</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="total-cost">$129.98</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
 
     <div class="page-layout">
         <button class="hamburger-menu" aria-label="Toggle navigation menu">
@@ -225,14 +289,18 @@
                  Also talk about the resourcesused, which are: IGDB, Font Awesome, Google Fonts
                  I made an about.css (located in styles/layouts) which you can use for the CSS styling. -->
                 <div style="text-align: center; margin-top: 10em;">
-                    <a href="marketplace.html" style="font-size: 1.5em; color: rgb(255, 0, 0); text-decoration: none;">GO
+                    <a href="marketplace.html"
+                        style="font-size: 1.5em; color: rgb(255, 0, 0); text-decoration: none;">GO
                         BACK</a>
                 </div>
             </div>
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/utils/page-transition.js"></script>
+    <script type="module" src="../js/components/SideCart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
 </body>
 
