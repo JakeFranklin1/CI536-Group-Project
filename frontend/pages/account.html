@@ -5,8 +5,8 @@
     <!-- Meta's -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GameStore Marketplace</title>
-    <meta name="description" content="Sign up to GameStore today!" />
+    <title>Account Settings - GameStore</title>
+    <meta name="description" content="Manage your GameStore account settings" />
     <meta name="theme-color" content="#000000" />
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; img-src 'self' https: data:;"> -->
 
@@ -19,7 +19,7 @@
     <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../styles/marketplace-main.css" />
+    <link rel="stylesheet" href="../styles/account-settings.css" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
@@ -114,7 +114,7 @@
     <div id="cart-overlay" class="cart-overlay"></div>
 
     <!-- Side cart -->
-    <div class="side-cart">
+    <!-- <div class="side-cart">
         <div class="side-cart-header">
             <button type="button" id="close-cart-btn" class="closebtn">&times;</button>
             <h3>Shopping Cart</h3>
@@ -181,7 +181,7 @@
             </div>
             <button class="checkout-btn">Checkout</button>
         </div>
-    </div>
+    </div> -->
 
     <div class="page-layout">
         <button class="hamburger-menu" aria-label="Toggle navigation menu">
@@ -198,7 +198,7 @@
                     <h3>Settings</h3>
                     <ul>
                         <li>
-                            <a href="account.html">
+                            <a href="account.html" class="active">
                                 <span class="icon-container"><i class="fa fa-user"></i></span>
                                 Profile
                             </a>
@@ -292,8 +292,7 @@
                         <li>
                             <button type="button">
 
-                                <span class="icon-container"><img src="../assets/icons/xbox.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><img src="../assets/icons/xbox.svg" title="xbox"></span>
                                 Xbox
                             </button>
                         </li>
@@ -301,21 +300,20 @@
                             <button type="button">
 
                                 <span class="icon-container"><img src="../assets/icons/nintendo.svg"
-                                        title="playstation"></span>
+                                        title="nintendo"></span>
                                 Nintendo
                             </button>
                         </li>
                         <li>
                             <button type="button">
                                 <span class="icon-container"><img src="../assets/icons/android.svg"
-                                        title="playstation"></span>
+                                        title="android"></span>
                                 Android
                             </button>
                         </li>
                         <li>
                             <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/apple.svg"
-                                        title="playstation"></span>
+                                <span class="icon-container"><img src="../assets/icons/apple.svg" title="apple"></span>
                                 Apple
                             </button>
                         </li>
@@ -361,55 +359,125 @@
         </aside>
 
         <main class="main-content">
-            <h1 id="current-section">Popular in 2025</h1>
+            <h1 id="current-section">Account Settings</h1>
 
-            <!-- Dropdown sorting menu -->
+            <!-- Replace the games grid with account settings content -->
+            <div class="account-container">
+                <!-- Left sidebar with profile summary -->
+                <div class="profile-sidebar">
+                    <div class="profile-picture-container">
+                        <div id="profile-picture" class="profile-picture">
+                            <!-- Initials will be inserted here by JS -->
+                        </div>
+                        <button id="upload-photo-btn" class="btn-secondary">
+                            <i class="fa fa-camera"></i> Change Photo
+                        </button>
+                    </div>
 
-            <div class="dropdown-menu">
-                <button class="dropdown-btn">
-                    <span>Sort by: <strong id="filter-choice">Most Popular</strong></span>
-                    <i class="fa fa-chevron-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <button type="button" data-sort="popular">Most Popular <i class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="newest">Newest First <i class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="price-low">Price: Low to High <i
-                            class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="price-high">Price: High to Low <i
-                            class="fa fa-check hidden"></i></button>
-                    <button type="button" data-sort="name">Name: A to Z <i class="fa fa-check hidden"></i></button>
+                    <div class="profile-summary">
+                        <h2 id="profile-name">Loading...</h2>
+                        <p id="profile-email">Loading...</p>
+
+                        <div class="balance-container">
+                            <h3>Account Balance</h3>
+                            <div class="balance-amount" id="user-balance">$0.00</div>
+                            <button id="add-funds-btn" class="btn-primary">Add Funds</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Choose Year Button -->
-            <div class="choose-year-btn-container" style="display: none;">
-                <button id="choose-year-btn" class="choose-year-btn">
-                    <span><i class="fa fa-calendar"></i> Choose a Year</span>
-                </button>
-            </div>
+                <!-- Right side with tabs and forms -->
+                <div class="settings-content">
+                    <div class="tabs">
+                        <button class="tab-button active" data-tab="personal-info">Personal Information</button>
+                        <button class="tab-button" data-tab="security">Security</button>
+                        <button class="tab-button" data-tab="preferences">Preferences</button>
+                    </div>
 
-            <!-- This is where the games go -->
+                    <!-- Personal Information Tab -->
+                    <div class="tab-content active" id="personal-info">
+                        <h3>Personal Information</h3>
+                        <form id="personal-info-form">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" name="first_name" required>
+                            </div>
 
-            <div class="games-grid">
-                <div class="game-card example-game">
-                    <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Example Game" class="game-image">
-                    <div class="game-details">
-                        <div class="purchase-row">
-                            <span class="add-to-cart">Add to Cart</span>
-                            <span class="price">$59.99</span>
-                        </div>
-                        <div class="platform-icons">
-                            <img src="../assets/icons/windows.svg" title="Windows logo">
-                            <img src="../assets/icons/playstation.svg" title="Windows logo">
-                            <img src="../assets/icons/nintendo.svg" title="Windows logo">
-                        </div>
-                        <h2 class="game-title">Example Game Title</h2>
-                        <p class="game-age-rating">Age rating: M</p>
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" name="last_name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required disabled>
+                                <small>To change your email address, please contact support.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="date-of-birth">Date of Birth</label>
+                                <input type="date" id="date-of-birth" name="dob">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div class="tab-content" id="security">
+                        <h3>Security Settings</h3>
+                        <form id="password-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" name="current_password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" name="new_password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" name="confirm_password" required>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Preferences Tab -->
+                    <div class="tab-content" id="preferences">
+                        <h3>Preferences</h3>
+                        <form id="preferences-form">
+                            <div class="form-group">
+                                <label for="dark-mode">Dark Mode</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="dark-mode" name="dark_mode">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email-notifications">Email Notifications</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="email-notifications" name="email_notifications" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Save Preferences</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </main>
-        
         <!-- Footer Section -->
         <footer class="marketplace-footer">
             <div class="footer-container">
@@ -496,6 +564,7 @@
     <script type="module" src="../js/components/SideCart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
     <script type="module" src="../js/utils/dropdown.js"></script>
+    <script type="module" src="../js/pages/account-settings.js"></script>
 </body>
 
 </html>

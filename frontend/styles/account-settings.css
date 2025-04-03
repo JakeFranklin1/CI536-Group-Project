@@ -11,28 +11,13 @@
 @import url("components/header.css");
 @import url("components/dropdown.css");
 @import url("components/modal.css");
-@import url("components/year-modal.css");
 @import url("components/nav.css");
-@import url("components/game-card.css");
-@import url("components/side-cart.css");
-@import url("components/load-btn.css");
 @import url("components/footer.css");
-@import url("components/game-details.css");
 
 /* Utils */
 @import url("utils/toast.css");
 @import url("utils/loading.css");
 @import url("utils/general.css");
-@import url("utils/game-card-loading.css");
-@import url("utils/search.css");
 
-
-.search-error-full,
-.no-results-full {
-    min-height: 30vh;
-}
-
-.no-games-message {
-    min-height: 30vh;
-    margin-bottom: 10em;
-}
+/* Account specific styling */
+@import url("layouts/account.css");
