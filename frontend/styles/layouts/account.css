@@ -1,28 +1,47 @@
-Account Settings Page Styles
+/* Account Settings Page Styles */
 
-.main-content {
-    padding: 2rem;
+#account-settings-container {
+    width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 30px auto;
+    padding: 16px 24px;
+    box-sizing: border-box;
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    min-height: calc(
+        100vh - 120px
+    ); /* This ensures content fills most of viewport */
+}
+
+#account-settings-container.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .account-container {
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 2rem;
-    margin: 2rem auto; /* Changed from margin-top and margin-right to center it */
-    max-width: 1000px; 
-    background-color: var(--background-color);
+    margin: 2rem auto;
+    background-color: #1a1a1a;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #3e3e3e;
 }
 
 /* Profile Sidebar Styles */
 .profile-sidebar {
     padding: 1.5rem;
-    background-color: #f7f8f9;
-    border-right: 1px solid #eaeaea;
+    background-color: #252525; /* Dark gray background */
+    border-right: 1px solid #333; /* Darker border */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,19 +54,22 @@ Account Settings Page Styles
     margin-bottom: 1.5rem;
 }
 
+/* Update profile picture styling to use a solid background color instead of gradient */
 .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background-color: var(--accent-color);
-    color: white;
+    /* Remove the gradient background */
+    /* background: linear-gradient(135deg, #333, #1a1a1a); */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    overflow: hidden;
+    font-size: 48px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+    border: 3px solid #444; /* Lighter border */
+    transition: background-color 0.3s ease; /* Add transition for smooth color change */
 }
 
 .profile-picture img {
@@ -60,6 +82,12 @@ Account Settings Page Styles
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
     border-radius: 20px;
+    color: white;
+    background-color: #333; /* Darker background */
+}
+
+#upload-photo-btn:hover {
+    background-color: #444; /* Lighter on hover */
 }
 
 .profile-summary {
@@ -69,129 +97,145 @@ Account Settings Page Styles
 
 .profile-summary h2 {
     margin: 0.5rem 0;
-    color: var(--text-color);
+    color: white; /* White text */
     font-weight: 700;
 }
 
 .profile-summary p {
-    color: var(--secondary-text-color);
+    color: #aaa; /* Light gray text */
     margin-bottom: 1.5rem;
 }
 
 .balance-container {
-    background-color: white;
+    background-color: #252525;
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     margin-top: 1.5rem;
+    border: 1px solid #333;
 }
 
 .balance-container h3 {
     margin-top: 0;
-    color: var(--text-color);
+    color: white;
     font-size: 1.1rem;
 }
 
 .balance-amount {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--accent-color);
+    color: hsl(159, 80%, 45%);
     margin: 1rem 0;
 }
 
 #add-funds-btn {
     width: 100%;
+    background: linear-gradient(135deg, #6b00ff, #8f00ff);
+    color: white;
+    border: none;
 }
 
 /* Settings Content Styles */
 .settings-content {
     padding: 1.5rem;
     flex: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Tabs */
 .tabs {
     display: flex;
-    border-bottom: 1px solid #eaeaea;
-    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    margin-bottom: 24px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .tab-button {
-    background: none;
+    background: transparent;
     border: none;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--secondary-text-color);
+    color: #999;
+    padding: 12px 24px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
     position: relative;
-    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    color: #ccc; /* Lighter text on hover */
 }
 
 .tab-button.active {
-    color: var(--accent-color);
+    color: white;
 }
 
 .tab-button.active::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -1px;
     left: 0;
     width: 100%;
-    height: 3px;
-    background-color: var(--accent-color);
+    height: 2px;
+    background: linear-gradient(135deg, #6b00ff, #8f00ff);
 }
 
 /* Tab Content */
 .tab-content {
     display: none;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .tab-content.active {
     display: block;
+    width: 100%;
 }
 
 .tab-content h3 {
     margin-top: 0;
     margin-bottom: 1.5rem;
-    color: var(--text-color);
+    color: white; /* White text */
 }
 
 /* Forms */
 .form-group {
     margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+    padding: 12px;
+    border-radius: 4px;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: var(--text-color);
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="date"],
-.form-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border 0.3s ease;
+    color: white; /* White text */
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: var(--accent-color);
+    border-color: #6b00ff; /* Purple color */
     outline: none;
 }
 
 .form-group small {
     display: block;
     margin-top: 0.5rem;
-    color: var(--secondary-text-color);
+    color: #aaa; /* Light gray text */
     font-size: 0.85rem;
 }
 
@@ -220,8 +264,8 @@ Account Settings Page Styles
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
+    background-color: #333; /* Darker background */
+    transition: 0.4s;
 }
 
 .slider:before {
@@ -232,15 +276,15 @@ Account Settings Page Styles
     left: 4px;
     bottom: 4px;
     background-color: white;
-    transition: .4s;
+    transition: 0.4s;
 }
 
 input:checked + .slider {
-    background-color: var(--accent-color);
+    background-color: #4caf50; /* Green from marketplace */
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px var(--accent-color);
+    box-shadow: 0 0 1px #4caf50;
 }
 
 input:checked + .slider:before {
@@ -258,6 +302,9 @@ input:checked + .slider:before {
 /* Add Funds Modal */
 #add-funds-modal .modal-content {
     max-width: 500px;
+    background-color: #252525; /* Dark background */
+    color: white; /* White text */
+    border: 1px solid #333;
 }
 
 .amount-input {
@@ -269,43 +316,47 @@ input:checked + .slider:before {
 .currency-symbol {
     position: absolute;
     left: 12px;
-    color: var(--secondary-text-color);
+    color: #aaa; /* Light gray text */
     font-weight: bold;
 }
 
 .amount-input input {
     padding-left: 30px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
 }
 
 /* Buttons */
 .btn-primary {
-    background-color: var(--accent-color);
+    background: linear-gradient(135deg, #6b00ff, #8f00ff);
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 12px 24px;
     border-radius: 4px;
-    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
-    background-color: #0049cc; /* Darker shade of accent color */
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: white;
-    color: var(--accent-color);
-    border: 1px solid var(--accent-color);
-    padding: 0.75rem 1.5rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
     border-radius: 4px;
-    font-weight: 600;
     cursor: pointer;
+    font-size: 14px;
     transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #f0f5ff;
+    background-color: #444;
 }
 
 /* Modal */
@@ -318,7 +369,7 @@ input:checked + .slider:before {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
     align-items: center;
     justify-content: center;
 }
@@ -328,22 +379,24 @@ input:checked + .slider:before {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #252525; /* Dark background */
     margin: auto;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     position: relative;
     width: 90%;
     max-width: 600px;
     animation: modalFadeIn 0.3s;
+    color: white; /* White text */
+    border: 1px solid #333;
 }
 
 .close {
     position: absolute;
     right: 20px;
     top: 20px;
-    color: #888;
+    color: #aaa; /* Light gray text */
     font-size: 1.8rem;
     font-weight: bold;
     cursor: pointer;
@@ -351,8 +404,31 @@ input:checked + .slider:before {
 }
 
 .close:hover {
-    color: var(--text-color);
+    color: white; /* White on hover */
 }
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    min-width: 250px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    animation: toastIn 0.3s;
+}
+
+/* Maintain existing animations and media queries */
 
 @keyframes modalFadeIn {
     from {
@@ -387,7 +463,7 @@ input:checked + .slider:before {
 }
 
 .toast-success {
-    background-color: #4CAF50;
+    background-color: #4caf50;
 }
 
 .toast-error {
@@ -424,4 +500,80 @@ input:checked + .slider:before {
         border-right: none;
         border-bottom: 1px solid #eaeaea;
     }
+}
+
+/* Account Settings Component Styles */
+
+#account-settings-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+#account-settings-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Account Settings Header Styles - Match game-details */
+.account-settings-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    width: 100%;
+    padding: 12px 0;
+}
+
+.account-settings-header h1 {
+    font-size: 36px;
+    margin: 16px 0 0;
+    width: 100%;
+    line-height: 1.3;
+    color: white;
+}
+
+.back-to-marketplace {
+    background: #333;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.back-to-marketplace:hover {
+    background: #444;
+}
+
+.back-to-marketplace i {
+    margin-right: 8px;
+}
+#account-settings-container {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+#account-settings-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-out {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
 }
