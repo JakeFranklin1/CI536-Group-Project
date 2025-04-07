@@ -61,20 +61,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         brandContainer.addEventListener("click", handleBrandClick);
     }
 
-    const profileLink = document.querySelector(
-        '.side-nav-content a[href="account.html"]'
-    );
+    // Find the profile button using the settings-btn class instead of :has() selector
+    const profileButton = document.querySelector('.settings-btn');
 
-    if (profileLink) {
-        // Remove the href attribute to prevent navigation
-        profileLink.removeAttribute("href");
-
-        // Add custom data attribute to identify it
-        profileLink.setAttribute("data-action", "show-account");
-
-        // Add click event listener
-        profileLink.addEventListener("click", function (e) {
-            e.preventDefault();
+    // If the profile button exists, add click event listener
+    if (profileButton) {
+        profileButton.addEventListener("click", function() {
             showAccountSettings();
         });
     }
