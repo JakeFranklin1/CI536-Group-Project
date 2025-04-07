@@ -20,3 +20,5 @@
 /* @import url("utils/loading.css"); */
 @import url("utils/general.css");
 @import url("utils/game-card-loading.css");
+
+@import url("components/account.css");

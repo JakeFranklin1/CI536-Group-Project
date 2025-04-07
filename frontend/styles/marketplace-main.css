@@ -1,14 +1,13 @@
 /* layouts */
 @import url("layouts/landing.css");
 @import url("layouts/marketplace.css");
-@import url("layouts/account.css");
+
 
 /* Resets */
 @import url("resets/normalize.css");
 @import url("resets/variables.css");
 
 /* Components */
-/* @import url("components/form.css"); */
 @import url("components/header.css");
 @import url("components/dropdown.css");
 @import url("components/modal.css");
@@ -19,7 +18,7 @@
 @import url("components/load-btn.css");
 @import url("components/footer.css");
 @import url("components/game-details.css");
-/* @import url("components/account.css"); */
+@import url("components/account.css");
 
 /* Utils */
 @import url("utils/toast.css");
