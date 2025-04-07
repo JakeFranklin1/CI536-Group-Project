@@ -17,6 +17,7 @@ import { setupLoadMoreButton } from "./modules/pagination.js";
 import { handleFilterSelection } from "./modules/filter-handler.js";
 import { addItemToCart } from "./modules/cart-handler.js";
 import { showGameDetails } from "./modules/game-details.js";
+import { showAccountSettings } from "./modules/account-settings.js";
 
 /**
  * @function initializeMarketplace
@@ -58,6 +59,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     const brandContainer = document.querySelector(".brand-container");
     if (brandContainer) {
         brandContainer.addEventListener("click", handleBrandClick);
+    }
+
+    const profileLink = document.querySelector(
+        '.side-nav-content a[href="account.html"]'
+    );
+
+    if (profileLink) {
+        // Remove the href attribute to prevent navigation
+        profileLink.removeAttribute("href");
+
+        // Add custom data attribute to identify it
+        profileLink.setAttribute("data-action", "show-account");
+
+        // Add click event listener
+        profileLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            showAccountSettings();
+        });
     }
 
     // Make essential functions available globally for HTML event handlers

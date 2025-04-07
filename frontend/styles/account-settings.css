@@ -1,0 +1,23 @@
+/* layouts */
+@import url("layouts/landing.css");
+@import url("layouts/marketplace.css");
+
+/* Resets */
+@import url("resets/normalize.css");
+@import url("resets/variables.css");
+
+/* Components */
+@import url("components/form.css");
+@import url("components/header.css");
+@import url("components/dropdown.css");
+@import url("components/modal.css");
+@import url("components/nav.css");
+@import url("components/footer.css");
+
+/* Utils */
+@import url("utils/toast.css");
+@import url("utils/loading.css");
+@import url("utils/general.css");
+
+/* Account specific styling */
+@import url("layouts/account.css");
