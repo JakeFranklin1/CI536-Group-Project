@@ -60,20 +60,19 @@ function positionSearchResults(searchBar, searchResults) {
 
     const searchBarRect = searchBar.getBoundingClientRect();
 
-    // Position directly under the search bar and ensure minimum width of 400px
+
     const width = Math.max(searchBarRect.width, 398);
 
     searchResults.style.width = `${width}px`;
 
-    // Calculate left position to center the dropdown if it's wider than the search bar
+    // Calculate left position to center the dropdown
     const leftOffset =
         searchBarRect.width < width
             ? searchBarRect.left - (width - searchBarRect.width) / 2
             : searchBarRect.left;
 
     // Make sure the dropdown doesn't go off screen on the left
-    // Subtract 1 to move it 1px to the left
-    const finalLeft = Math.max(leftOffset - 1, 10); // Subtracting 1px here to center it
+    const finalLeft = Math.max(leftOffset, 10);
 
     searchResults.style.left = `${finalLeft}px`;
     searchResults.style.top = `${searchBarRect.bottom}px`;
@@ -202,7 +201,7 @@ export async function searchGames(query, limit = 12, isPreview = false) {
         }
 
         // Build API URL
-        const apiUrl = `${API_URL}/api/games/search/${encodeURIComponent(query)}?limit=${limit}`;
+        const apiUrl = `${API_URL}/api/games/search/${encodeURIComponent(query)}?limit=${limit}&fields=screenshots,cover,name,summary,platforms,first_release_date,age_ratings,total_rating`;
 
         // Make the API call
         const response = await fetch(apiUrl);

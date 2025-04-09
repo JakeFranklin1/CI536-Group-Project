@@ -36,3 +36,21 @@
     min-height: 30vh;
     margin-bottom: 10em;
 }
+
+/* prevent double tap zoom on mobile */
+.game-card,
+.search-result-item,
+.dropdown-btn,
+.year-btn,
+.back-to-games,
+.add-to-cart-btn,
+.quantity-controls button,
+.quantity-increment,
+.quantity-decrement,
+.cart-remove,
+.tab-button,
+.filter-section button,
+button,
+a {
+    touch-action: manipulation;
+}
