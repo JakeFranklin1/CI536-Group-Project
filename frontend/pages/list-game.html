@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Meta's -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List a Game - GameStore</title>
+    <meta name="description" content="List your game for sale on GameStore" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="../assets/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicons/favicon.svg" />
+    <link rel="shortcut icon" href="../assets/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="GameStore" />
+    <link rel="manifest" href="../assets/favicons/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/marketplace-main.css" />
+    <link rel="stylesheet" href="../styles/components/game-listing-form.css" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+    <div class="loading hidden" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header Content -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="brand-container">
+                <div class="brand-content">
+                    <img src="../assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
+                    <span class="brand-name">GameStore</span>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Search for games..." />
+                <button class="search-btn" type="button" title="Search for games">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+            <div class="cart-container">
+                <button id="open-cart-btn" class="cart-btn" type="button" title="View cart">
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Side cart (similar to marketplace.html) -->
+    <!-- ... Cart HTML would go here ... -->
+
+    <div class="page-layout">
+        <!-- Hamburger menu for mobile -->
+        <button class="hamburger-menu" aria-label="Toggle navigation menu">
+            <div class="hamburger-lines">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+                <span class="line line3"></span>
+            </div>
+        </button>
+
+        <!-- Side Navigation -->
+        <aside class="side-nav">
+            <nav class="side-nav-content">
+                <!-- Same sidebar content as marketplace.html -->
+                <!-- ... Sidebar HTML would go here ... -->
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="game-listing-container">
+                <div class="back-button-container">
+                    <a href="marketplace.html" class="back-to-marketplace">
+                        <i class="fa fa-arrow-left"></i> Back to Marketplace
+                    </a>
+                </div>
+
+                <h1>List Your Game</h1>
+
+                <div id="listing-form-container" class="form-container">
+                    <!-- Multi-step form -->
+                    <div class="form-progress">
+                        <div class="progress-step active" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-label">Basic Info</span>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-label">Media</span>
+                        </div>
+                        <div class="progress-step" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-label">Pricing</span>
+                        </div>
+                        <div class="progress-step" data-step="4">
+                            <span class="step-number">4</span>
+                            <span class="step-label">Review</span>
+                        </div>
+                    </div>
+
+                    <form id="game-listing-form" class="game-listing-form">
+                        <!-- Step 1: Basic Info -->
+                        <div class="form-step active" data-step="1">
+                            <h2>Game Information</h2>
+
+                            <div class="form-group">
+                                <label for="game-title">Game Title<span class="required">*</span></label>
+                                <input type="text" id="game-title" name="title" required>
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="game-description">Description<span class="required">*</span></label>
+                                <textarea id="game-description" name="description" rows="6" required></textarea>
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="release-date">Release Date</label>
+                                <input type="date" id="release-date" name="release_date">
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-next">Continue to Media <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Media (Cover & Screenshots) -->
+                        <div class="form-step" data-step="2">
+                            <h2>Game Media</h2>
+
+                            <div class="form-group">
+                                <label for="cover-image">Cover Image<span class="required">*</span></label>
+                                <div class="image-upload-container" id="cover-upload-container">
+                                    <div class="image-upload-box">
+                                        <i class="fa fa-cloud-upload"></i>
+                                        <p>Drag & drop or click to upload</p>
+                                        <p class="file-requirements">Recommended size: 600x900px. Max size: 5MB</p>
+                                        <input type="file" id="cover-image" name="cover_image" accept="image/*" class="file-input" required>
+                                    </div>
+                                    <div class="image-preview" id="cover-preview"></div>
+                                </div>
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="screenshots">Screenshots (up to 5)</label>
+                                <div class="image-upload-container" id="screenshots-upload-container">
+                                    <div class="image-upload-box">
+                                        <i class="fa fa-picture-o"></i>
+                                        <p>Drag & drop or click to upload</p>
+                                        <p class="file-requirements">Recommended size: 1920x1080px. Max size: 5MB each</p>
+                                        <input type="file" id="screenshots" name="screenshots" accept="image/*" class="file-input" multiple>
+                                    </div>
+                                    <div class="screenshots-preview" id="screenshots-preview"></div>
+                                </div>
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-prev"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn-next">Continue to Pricing <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Pricing -->
+                        <div class="form-step" data-step="3">
+                            <h2>Game Pricing</h2>
+
+                            <div class="form-group">
+                                <label for="game-price">Price (£)<span class="required">*</span></label>
+                                <input type="number" id="game-price" name="price" min="0.01" step="0.01" required>
+                                <div class="error-message"></div>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-prev"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn-next">Review Listing <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Review -->
+                        <div class="form-step" data-step="4">
+                            <h2>Review Your Listing</h2>
+
+                            <div class="listing-preview">
+                                <div class="preview-section">
+                                    <h3>Game Information</h3>
+                                    <div class="preview-row">
+                                        <span class="preview-label">Title:</span>
+                                        <span class="preview-value" id="preview-title"></span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">Description:</span>
+                                        <span class="preview-value" id="preview-description"></span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">Release Date:</span>
+                                        <span class="preview-value" id="preview-release-date"></span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">Price:</span>
+                                        <span class="preview-value" id="preview-price"></span>
+                                    </div>
+                                </div>
+
+                                <div class="preview-section">
+                                    <h3>Media Preview</h3>
+                                    <div class="preview-media">
+                                        <div class="preview-cover" id="preview-cover"></div>
+                                        <div class="preview-screenshots" id="preview-screenshots"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn-prev"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="submit" class="btn-submit">List Game <i class="fa fa-check"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Section (same as marketplace.html) -->
+        <footer class="marketplace-footer">
+            <!-- ... Footer HTML would go here ... -->
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/utils/page-transition.js"></script>
+    <script type="module" src="../js/components/SideCart.js"></script>
+    <script type="module" src="../js/modules/game-listing.js"></script>
+</body>
+
+</html>
