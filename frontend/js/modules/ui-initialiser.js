@@ -29,7 +29,9 @@ export function initializeMobileMenu() {
  * Sets up event handlers for filter buttons in the side navigation
  */
 export function setupFilterButtonHandlers() {
-    const filterButtons = document.querySelectorAll(".filter-section button:not(.settings-btn)");
+    const filterButtons = document.querySelectorAll(
+        ".filter-section button:not(.settings-btn)"
+    );
 
     filterButtons.forEach((button) => {
         button.addEventListener("click", (e) => {

@@ -4,27 +4,27 @@
  * @param {string} type - The type of toast (success, error, info, warning)
  * @param {number} duration - Duration in milliseconds
  */
-export function showToast(message, type = 'info', duration = 3000) {
+export function showToast(message, type = "info", duration = 3000) {
     // Remove any existing toasts
-    const existingToasts = document.querySelectorAll('.toast');
-    existingToasts.forEach(toast => {
+    const existingToasts = document.querySelectorAll(".toast");
+    existingToasts.forEach((toast) => {
         toast.remove();
     });
 
     // Create toast element
-    const toast = document.createElement('div');
+    const toast = document.createElement("div");
     toast.className = `toast toast-${type}`;
 
     // Add icon based on type
-    let icon = '';
-    switch(type) {
-        case 'success':
+    let icon = "";
+    switch (type) {
+        case "success":
             icon = '<i class="fa fa-check-circle"></i>';
             break;
-        case 'error':
+        case "error":
             icon = '<i class="fa fa-exclamation-circle"></i>';
             break;
-        case 'warning':
+        case "warning":
             icon = '<i class="fa fa-exclamation-triangle"></i>';
             break;
         default:
@@ -45,12 +45,12 @@ export function showToast(message, type = 'info', duration = 3000) {
 
     // Trigger animation
     setTimeout(() => {
-        toast.classList.add('show');
+        toast.classList.add("show");
     }, 10);
 
     // Auto-remove after duration
     setTimeout(() => {
-        toast.classList.remove('show');
+        toast.classList.remove("show");
         setTimeout(() => {
             toast.remove();
         }, 300); // match transition duration
