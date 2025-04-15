@@ -312,12 +312,14 @@ document.addEventListener("DOMContentLoaded", async function() {
      * @param {number} step - The step number to validate
      * @returns {boolean} Whether the step is valid
      */
-    function validateStep(step) {
+        function validateStep(step) {
         let isValid = true;
 
-        // Clear previous error messages
+        // Clear previous error messages and ensure they're visible
         document.querySelectorAll(`.form-step[data-step="${step}"] .error-message`).forEach(el => {
             el.textContent = "";
+            // Remove display:none if it exists
+            el.style.display = "block";
         });
 
         // Step 1: Basic Info
@@ -326,12 +328,16 @@ document.addEventListener("DOMContentLoaded", async function() {
             const description = document.getElementById("game-description").value.trim();
 
             if (!title) {
-                document.querySelector('#game-title + .error-message').textContent = "Game title is required";
+                const errorEl = document.querySelector('#game-title + .error-message');
+                errorEl.textContent = "Game title is required";
+                errorEl.style.display = "block";
                 isValid = false;
             }
 
             if (!description) {
-                document.querySelector('#game-description + .error-message').textContent = "Game description is required";
+                const errorEl = document.querySelector('#game-description + .error-message');
+                errorEl.textContent = "Game description is required";
+                errorEl.style.display = "block";
                 isValid = false;
             }
         }
@@ -339,7 +345,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Step 2: Media
         else if (step === 2) {
             if (!coverImageFile) {
-                document.querySelector('#cover-upload-container + .error-message').textContent = "Cover image is required";
+                const errorEl = document.querySelector('#cover-upload-container + .error-message');
+                errorEl.textContent = "Cover image is required";
+                errorEl.style.display = "block";
                 isValid = false;
             }
         }
@@ -349,14 +357,16 @@ document.addEventListener("DOMContentLoaded", async function() {
             const price = document.getElementById("game-price").value;
 
             if (!price || parseFloat(price) <= 0) {
-                document.querySelector('#game-price + .error-message').textContent = "Please enter a valid price";
+                const errorEl = document.querySelector('#game-price + .error-message');
+                errorEl.textContent = "Please enter a valid price";
+                errorEl.style.display = "block";
                 isValid = false;
             }
         }
 
         return isValid;
     }
-
+    
     /**
      * Populates the review step with form data
      */

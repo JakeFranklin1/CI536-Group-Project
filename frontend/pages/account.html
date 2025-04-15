@@ -8,18 +8,19 @@
     <title>Account Settings - GameStore</title>
     <meta name="description" content="Manage your GameStore account settings" />
     <meta name="theme-color" content="#000000" />
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; img-src 'self' https: data:;"> -->
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" href="../assets/favicons/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="../assets/favicons/favicon.svg" />
     <link rel="shortcut icon" href="../assets/favicons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <meta name="apple-mobile-web-app-title" content="GameStore" />
     <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="../styles/account-settings.css" />
+    <link rel="stylesheet" href="../styles/marketplace-main.css" />
+    <link rel="stylesheet" href="../styles/components/account.css" />
+    <link rel="stylesheet" href="../styles/layouts/special-pages.css" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
@@ -27,18 +28,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 
-<body>
-
+<body class="special-page">
     <div class="loading hidden" id="loading">
         <div class="spinner"></div>
     </div>
 
-
-    <!-- Modal for users who aren't signed in -->
+    <!-- Authentication Modal -->
     <div id="auth-modal" class="modal hidden">
         <div class="modal-content">
             <h2>Authentication Required</h2>
-            <p>You need to be signed in to access the marketplace.</p>
+            <p>You need to be signed in to access your account settings.</p>
             <div class="modal-buttons">
                 <a href="login.html" class="modal-btn primary">Log In</a>
                 <a href="../index.html" class="modal-btn secondary">Sign Up</a>
@@ -46,47 +45,7 @@
         </div>
     </div>
 
-    <!-- Modal used for specific year filter -->
-    <div id="year-picker-modal" class="modal hidden">
-        <div class="modal-content year-picker-content">
-            <button class="close-modal">&times;</button>
-            <h2>Select Year</h2>
-
-            <div class="decade-tabs">
-                <button class="decade-tab active" data-decade="2020">2020s</button>
-                <button class="decade-tab" data-decade="2010">2010s</button>
-                <button class="decade-tab" data-decade="2000">2000s</button>
-                <button class="decade-tab" data-decade="1990">1990s</button>
-                <button class="decade-tab" data-decade="1980">1980s</button>
-            </div>
-
-            <div class="years-grid active" id="decade-2020">
-                <button class="year-btn" data-year="2025">2025</button>
-                <button class="year-btn" data-year="2024">2024</button>
-                <button class="year-btn" data-year="2023">2023</button>
-                <button class="year-btn" data-year="2022">2022</button>
-                <button class="year-btn" data-year="2021">2021</button>
-                <button class="year-btn" data-year="2020">2020</button>
-            </div>
-
-            <!-- ADD THESE MISSING DIVS WITH IDs -->
-            <div class="years-grid" id="decade-2010"></div>
-            <div class="years-grid" id="decade-2000"></div>
-            <div class="years-grid" id="decade-1990"></div>
-            <div class="years-grid" id="decade-1980"></div>
-
-            <div class="input-year-container">
-                <label for="custom-year">Or enter a specific year:</label>
-                <div class="custom-year-input">
-                    <input type="number" id="custom-year" min="1970" max="2025" placeholder="1995">
-                    <button id="apply-custom-year">Apply</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Header Content -->
-
     <header class="main-header">
         <div class="header-content">
             <div class="brand-container">
@@ -114,7 +73,7 @@
     <div id="cart-overlay" class="cart-overlay"></div>
 
     <!-- Side cart -->
-    <!-- <div class="side-cart">
+    <div class="side-cart">
         <div class="side-cart-header">
             <button type="button" id="close-cart-btn" class="closebtn">&times;</button>
             <h3>Shopping Cart</h3>
@@ -181,9 +140,12 @@
             </div>
             <button class="checkout-btn">Checkout</button>
         </div>
-    </div> -->
+    </div>
+
+    </div>
 
     <div class="page-layout">
+        <!-- Hamburger menu for mobile -->
         <button class="hamburger-menu" aria-label="Toggle navigation menu">
             <div class="hamburger-lines">
                 <span class="line line1"></span>
@@ -191,14 +153,15 @@
                 <span class="line line3"></span>
             </div>
         </button>
+
+
         <aside class="side-nav">
             <nav class="side-nav-content">
-
                 <div class="filter-section">
                     <h3>Settings</h3>
                     <ul>
                         <li>
-                            <a href="account.html" class="active">
+                            <a href="account.html" class="selected">
                                 <span class="icon-container"><i class="fa fa-user"></i></span>
                                 Profile
                             </a>
@@ -223,343 +186,240 @@
                         </li>
                     </ul>
                 </div>
-
                 <div class="filter-section">
                     <h3>Community</h3>
                     <ul>
                         <li>
-                            <a href="sell.html">
-                                <span class="icon-container"><i class="fa fa-tag"></i></span>
+                            <a href="list-game.html">
+                                <span class="icon-container"><i class="fa fa-plus"></i></span>
                                 List a Game
                             </a>
                         </li>
                         <li>
                             <button type="button">
-                                <span class="icon-container"><i class="fa fa-clock-o"></i></span>
-                                Recently Added
+                                <span class="icon-container"><i class="fa fa-users"></i></span>
+                                Community Games
                             </button>
                         </li>
                         <li>
-                            <a href="sell.html">
+                            <a href="manage-listings.html">
                                 <span class="icon-container"><i class="fa fa-list"></i></span>
                                 Manage Listings
                             </a>
                         </li>
                     </ul>
                 </div>
-
-                <div class="filter-section">
-                    <h3>Top Games</h3>
-                    <ul>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-trophy"></i></span>
-                                All Time
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-calendar"></i></span>
-                                Specific Year
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-star"></i></span>
-                                Popular in 2025
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Platforms</h3>
-                    <ul>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-windows"></i></span>
-                                PC
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/playstation.svg"
-                                        title="playstation"></span>
-                                PlayStation
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/xbox.svg" title="xbox"></span>
-                                Xbox
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-
-                                <span class="icon-container"><img src="../assets/icons/nintendo.svg"
-                                        title="nintendo"></span>
-                                Nintendo
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/android.svg"
-                                        title="android"></span>
-                                Android
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><img src="../assets/icons/apple.svg" title="apple"></span>
-                                Apple
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="filter-section">
-                    <h3>Categories</h3>
-                    <ul>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-bolt"></i></span>
-                                Action
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-compass"></i></span>
-                                Adventure
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-shield"></i></span>
-                                RPG
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-puzzle-piece"></i></span>
-                                Strategy
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-futbol-o"></i></span>
-                                Sport
-                            </button>
-                        </li>
-                    </ul>
-                </div>
             </nav>
         </aside>
 
-        <main class="main-content">
-            <h1 id="current-section">Account Settings</h1>
-
-            <!-- Replace the games grid with account settings content -->
-            <div class="account-container">
-                <!-- Left sidebar with profile summary -->
-                <div class="profile-sidebar">
-                    <div class="profile-picture-container">
-                        <div id="profile-picture" class="profile-picture">
-                            <!-- Initials will be inserted here by JS -->
-                        </div>
-                        <button id="upload-photo-btn" class="btn-secondary">
-                            <i class="fa fa-camera"></i> Change Photo
-                        </button>
-                    </div>
-
-                    <div class="profile-summary">
-                        <h2 id="profile-name">Loading...</h2>
-                        <p id="profile-email">Loading...</p>
-
-                        <div class="balance-container">
-                            <h3>Account Balance</h3>
-                            <div class="balance-amount" id="user-balance">$0.00</div>
-                            <button id="add-funds-btn" class="btn-primary">Add Funds</button>
-                        </div>
-                    </div>
+        <main class="main-content full-width">
+            <div id="account-settings-container">
+                <div class="account-details-header">
+                    <a href="marketplace.html" class="back-to-marketplace">
+                        <i class="fa fa-arrow-left"></i> Back to Marketplace
+                    </a>
+                    <h1>Account Settings</h1>
                 </div>
 
-                <!-- Right side with tabs and forms -->
-                <div class="settings-content">
-                    <div class="tabs">
-                        <button class="tab-button active" data-tab="personal-info">Personal Information</button>
-                        <button class="tab-button" data-tab="security">Security</button>
-                        <button class="tab-button" data-tab="preferences">Preferences</button>
-                    </div>
-
-                    <!-- Personal Information Tab -->
-                    <div class="tab-content active" id="personal-info">
-                        <h3>Personal Information</h3>
-                        <form id="personal-info-form">
-                            <div class="form-group">
-                                <label for="first-name">First Name</label>
-                                <input type="text" id="first-name" name="first_name" required>
+                <div class="account-details-content">
+                    <div class="account-container">
+                        <!-- Left sidebar with profile summary -->
+                        <div class="profile-sidebar">
+                            <div class="profile-picture-container">
+                                <div id="profile-picture" class="profile-picture">
+                                    <!-- Initials will be added by JS -->
+                                </div>
+                                <button id="upload-photo-btn" class="btn-secondary">
+                                    <i class="fa fa-camera"></i> Change Photo
+                                </button>
                             </div>
 
-                            <div class="form-group">
-                                <label for="last-name">Last Name</label>
-                                <input type="text" id="last-name" name="last_name" required>
+                            <div class="profile-summary">
+                                <h2 id="profile-name">Loading...</h2>
+                                <p id="profile-email">Loading...</p>
+
+                                <div class="balance-container">
+                                    <h3>Account Balance</h3>
+                                    <div class="balance-amount" id="user-balance">$0.00</div>
+                                    <button id="add-funds-btn" class="btn-primary">Add Funds</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right side with tabs and forms -->
+                        <div class="settings-content">
+                            <div class="tabs">
+                                <button class="tab-button active" data-tab="personal-info">Personal Information</button>
+                                <button class="tab-button" data-tab="security">Security</button>
+                                <button class="tab-button" data-tab="preferences">Preferences</button>
                             </div>
 
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" name="email" required disabled>
-                                <small>To change your email address, please contact support.</small>
+                            <!-- Personal Information Tab -->
+                            <div class="tab-content active" id="personal-info">
+                                <h3>Personal Information</h3>
+                                <form id="personal-info-form">
+                                    <div class="form-group">
+                                        <label for="first-name">First Name</label>
+                                        <input type="text" id="first-name" name="first_name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="last-name">Last Name</label>
+                                        <input type="text" id="last-name" name="last_name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" name="email" required disabled>
+                                        <small>To change your email address, please contact support.</small>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
                             </div>
 
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Save Changes</button>
-                            </div>
-                        </form>
-                    </div>
+                            <!-- Security Tab -->
+                            <div class="tab-content" id="security">
+                                <h3>Security Settings</h3>
+                                <form id="password-form">
+                                    <div class="form-group">
+                                        <label for="current-password">Current Password</label>
+                                        <input type="password" id="current-password" name="current_password" required>
+                                    </div>
 
-                    <!-- Security Tab -->
-                    <div class="tab-content" id="security">
-                        <h3>Security Settings</h3>
-                        <form id="password-form">
-                            <div class="form-group">
-                                <label for="current-password">Current Password</label>
-                                <input type="password" id="current-password" name="current_password" required>
-                            </div>
+                                    <div class="form-group">
+                                        <label for="new-password">New Password</label>
+                                        <input type="password" id="new-password" name="new_password" required>
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="new-password">New Password</label>
-                                <input type="password" id="new-password" name="new_password" required>
-                            </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password">Confirm New Password</label>
+                                        <input type="password" id="confirm-password" name="confirm_password" required>
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="confirm-password">Confirm New Password</label>
-                                <input type="password" id="confirm-password" name="confirm_password" required>
-                            </div>
-
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Update Password</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Preferences Tab -->
-                    <div class="tab-content" id="preferences">
-                        <h3>Preferences</h3>
-                        <form id="preferences-form">
-                            <div class="form-group">
-                                <label for="dark-mode">Dark Mode</label>
-                                <label class="switch">
-                                    <input type="checkbox" id="dark-mode" name="dark_mode">
-                                    <span class="slider round"></span>
-                                </label>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">Update Password</button>
+                                    </div>
+                                </form>
                             </div>
 
-                            <div class="form-group">
-                                <label for="email-notifications">Email Notifications</label>
-                                <label class="switch">
-                                    <input type="checkbox" id="email-notifications" name="email_notifications" checked>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
+                            <!-- Preferences Tab -->
+                            <div class="tab-content" id="preferences">
+                                <h3>Preferences</h3>
+                                <form id="preferences-form">
+                                    <div class="form-group">
+                                        <label for="dark-mode">Dark Mode</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="dark-mode" name="dark_mode">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
 
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Save Preferences</button>
+                                    <div class="form-group">
+                                        <label for="email-notifications">Email Notifications</label>
+                                        <label class="switch">
+                                            <input type="checkbox" id="email-notifications" name="email_notifications" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-primary">Save Preferences</button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
-        <!-- Footer Section -->
-        <footer class="marketplace-footer">
-            <div class="footer-container">
-                <div class="footer-column">
-                    <h4>GameStore</h4>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="">Careers</a></li>
-                        <li><a href="">Press</a></li>
-                        <li><a href="">Blog</a></li>
-                        <li><a href="">Store Locations</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Customer Service</h4>
-                    <ul>
-                        <li><a href="">Help Center</a></li>
-                        <li><a href="">Contact Us</a></li>
-                        <li><a href="">Return Policy</a></li>
-                        <li><a href="">Order Status</a></li>
-                        <li><a href="">Trade-In Program</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="">Terms of Service</a></li>
-                        <li><a href="">Privacy Policy</a></li>
-                        <li><a href="">Cookie Policy</a></li>
-                        <li><a href="">EULA</a></li>
-                        <li><a href="">Accessibility</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Payment Methods</h4>
-                    <div class="payment-icons">
-                        <i class="fa fa-cc-visa" aria-hidden="true"></i>
-                        <i class="fa fa-cc-mastercard" aria-hidden="true"></i>
-                        <i class="fa fa-cc-amex" aria-hidden="true"></i>
-                        <i class="fa fa-cc-paypal" aria-hidden="true"></i>
-                        <i class="fa fa-apple" aria-hidden="true"></i>
-                        <i class="fa fa-google" aria-hidden="true"></i>
-                    </div>
-
-                    <h4>Connect With Us</h4>
-                    <div class="social-icons">
-                        <a href="" title="Twitter"><i class="fa fa-twitter"></i></a>
-                        <a href="" title="Facebook"><i class="fa fa-facebook"></i></a>
-                        <a href="" title="Instagram"><i class="fa fa-instagram"></i></a>
-                        <a href="" title="YouTube"><i class="fa fa-youtube-play"></i></a>
-                        <a href="" title="Discord"><i class="fa fa-comments"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div class="platform-icons-footer">
-                    <img src="../assets/icons/windows.svg" alt="Windows" title="Windows">
-                    <img src="../assets/icons/playstation.svg" alt="PlayStation" title="PlayStation">
-                    <img src="../assets/icons/xbox.svg" alt="Xbox" title="Xbox">
-                    <img src="../assets/icons/nintendo.svg" alt="Nintendo" title="Nintendo">
-                    <img src="../assets/icons/android.svg" alt="Android" title="Android">
-                    <img src="../assets/icons/apple.svg" alt="Apple" title="Apple">
-                </div>
-                <p class="copyright">
-                    &copy; 2025 GameStore. All rights reserved. All trademarks are property of their respective owners
-                    in
-                    the UK and other countries.
-                    Games and cover images are for illustrative purposes only and may not represent actual gameplay. The
-                    games displayed on this website cannot be purchased, and all prices are randomly generated.
-                </p>
-            </div>
-        </footer>
     </div>
 
+    <footer class="marketplace-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>GameStore</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="">Careers</a></li>
+                    <li><a href="">Press</a></li>
+                    <li><a href="">Blog</a></li>
+                    <li><a href="">Store Locations</a></li>
+                </ul>
+            </div>
 
+            <div class="footer-column">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="">Help Center</a></li>
+                    <li><a href="">Contact Us</a></li>
+                    <li><a href="">Return Policy</a></li>
+                    <li><a href="">Order Status</a></li>
+                    <li><a href="">Trade-In Program</a></li>
+                </ul>
+            </div>
 
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="">Terms of Service</a></li>
+                    <li><a href="">Privacy Policy</a></li>
+                    <li><a href="">Cookie Policy</a></li>
+                    <li><a href="">EULA</a></li>
+                    <li><a href="">Accessibility</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Payment Methods</h4>
+                <div class="payment-icons">
+                    <i class="fa fa-cc-visa" aria-hidden="true"></i>
+                    <i class="fa fa-cc-mastercard" aria-hidden="true"></i>
+                    <i class="fa fa-cc-amex" aria-hidden="true"></i>
+                    <i class="fa fa-cc-paypal" aria-hidden="true"></i>
+                    <i class="fa fa-apple" aria-hidden="true"></i>
+                    <i class="fa fa-google" aria-hidden="true"></i>
+                </div>
+
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="" title="Facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="" title="Instagram"><i class="fa fa-instagram"></i></a>
+                    <a href="" title="YouTube"><i class="fa fa-youtube-play"></i></a>
+                    <a href="" title="Discord"><i class="fa fa-comments"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="platform-icons-footer">
+                <img src="../assets/icons/windows.svg" alt="Windows" title="Windows">
+                <img src="../assets/icons/playstation.svg" alt="PlayStation" title="PlayStation">
+                <img src="../assets/icons/xbox.svg" alt="Xbox" title="Xbox">
+                <img src="../assets/icons/nintendo.svg" alt="Nintendo" title="Nintendo">
+                <img src="../assets/icons/android.svg" alt="Android" title="Android">
+                <img src="../assets/icons/apple.svg" alt="Apple" title="Apple">
+            </div>
+            <p class="copyright">
+                &copy; 2025 GameStore. All rights reserved. All trademarks are property of their respective owners
+                in
+                the UK and other countries.
+                Games and cover images are for illustrative purposes only and may not represent actual gameplay. The
+                games displayed on this website cannot be purchased, and all prices are randomly generated.
+            </p>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="../js/utils/page-transition.js"></script>
-    <script type="module" src="../js/components/SideCart.js"></script>
-    <script type="module" src="../js/marketplace.js"></script>
-    <script type="module" src="../js/utils/dropdown.js"></script>
-    <script type="module" src="../js/pages/account-settings.js"></script>
+    <script type="module" src="../js/pages/account-page.js"></script>
 </body>
 
 </html>

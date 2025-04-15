@@ -1,20 +1,13 @@
-/* Account Settings Page Styles */
-
 #account-settings-container {
     width: 100%;
     max-width: 1200px;
     margin: 30px auto;
     padding: 16px 24px;
     box-sizing: border-box;
-    display: none;
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
-    min-height: calc(
-        100vh - 120px
-    ); /* This ensures content fills most of viewport */
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    min-height: calc(100vh - 120px);
 }
 
 #account-settings-container.visible {

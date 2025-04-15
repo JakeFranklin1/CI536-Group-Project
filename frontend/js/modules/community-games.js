@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 url: screenshot.screenshot_url
             })) || [],
             platforms: [{ name: "PC" }], // Default platform
-            age_rating_string: "Not Rated"
+            age_rating_string: "PEGI 12"
         };
 
         // If we have the global showGameDetails function, use it
