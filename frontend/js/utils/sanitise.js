@@ -8,7 +8,6 @@ export function escapeHTML(str) {
         .replace(/'/g, "&#039;");
 }
 
-
 /**
  * Escapes HTML special characters to prevent XSS
  * @param {string} unsafeText - Text that may contain HTML special characters

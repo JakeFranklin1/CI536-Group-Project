@@ -20,8 +20,6 @@
     margin-left: 0;
 }
 
-
-
 .listings-stats {
     display: flex;
     gap: 1.5rem;
@@ -357,33 +355,6 @@
     }
 }
 
-.back-button-container {
-    margin-bottom: 20px;
-}
-
-.back-to-marketplace {
-    width: fit-content;
-    background: #333;
-    border: none;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s;
-}
-
-.back-to-marketplace:hover {
-    background: #444;
-}
-
-.back-to-marketplace i {
-    margin-right: 8px;
-}
-
-/* Update button styling for better positioning */
 .add-game-container {
     display: flex;
     justify-content: left;
@@ -406,8 +377,8 @@
     padding: 20px 0;
 }
 
-.main-header .header-content {
+/* .main-header .header-content {
     max-width: 1500px;
     width: 90%;
     margin: 0 auto;
-}
+} */
