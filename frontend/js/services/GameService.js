@@ -7,7 +7,10 @@
 import { escapeHTML } from "../utils/sanitise.js";
 import { showToast } from "../utils/toast.js";
 import { fetchFilteredGames } from "./FilterService.js";
-import { isCommunityGamesFilter, fetchCommunityGames } from "./FilterService.js";
+import {
+    isCommunityGamesFilter,
+    fetchCommunityGames,
+} from "./FilterService.js";
 
 const API_URL =
     window.location.hostname === "localhost"
@@ -60,7 +63,6 @@ function positionSearchResults(searchBar, searchResults) {
     if (!searchBar || !searchResults) return;
 
     const searchBarRect = searchBar.getBoundingClientRect();
-
 
     const width = Math.max(searchBarRect.width, 398);
 
@@ -679,9 +681,7 @@ export function displayGames(games, gamesGrid, addToCartCallback) {
             ? '<img src="../assets/icons/windows.svg" alt="PC" class="platform-icon" title="PC">'
             : getPlatformIcons(game.platforms);
 
-        const price = game.isCommunityGame
-            ? game.price
-            : generateRandomPrice();
+        const price = game.isCommunityGame ? game.price : generateRandomPrice();
 
         // Create and append the game card
         const gameCard = createGameCard(
@@ -725,7 +725,8 @@ export async function loadGames(
         // Check if this is a community games filter
         if (filterParams.timeframe === "Community Games") {
             // Update the section header
-            const currentSectionHeader = document.getElementById("current-section");
+            const currentSectionHeader =
+                document.getElementById("current-section");
             if (currentSectionHeader) {
                 currentSectionHeader.textContent = "Community Games";
             }

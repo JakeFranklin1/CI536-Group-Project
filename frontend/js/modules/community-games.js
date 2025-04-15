@@ -3,9 +3,11 @@ import { escapeHTML } from "../utils/sanitise.js";
 import supabase from "../supabase-client.js";
 import { addItemToCart } from "./cart-handler.js";
 
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     // Check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
     if (!session) {
         window.location.href = "login.html";
         return;
@@ -47,13 +49,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
 
         // Clear grid and show loading message
-        gamesGrid.innerHTML = '<div class="loading-placeholder">Loading community games...</div>';
+        gamesGrid.innerHTML =
+            '<div class="loading-placeholder">Loading community games...</div>';
 
         try {
             // Build the query based on sort order
-            let query = supabase
-                .from("game_listings")
-                .select(`
+            let query = supabase.from("game_listings").select(`
                     *,
                     users!user_id (id, first_name, last_name, email),
                     game_screenshots(id, screenshot_url)
@@ -84,7 +85,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             // Display the games
             displayCommunityGames(games, gamesGrid);
-
         } catch (error) {
             console.error("Error loading community games:", error);
             gamesGrid.innerHTML = `
@@ -97,9 +97,11 @@ document.addEventListener("DOMContentLoaded", async function() {
             `;
 
             // Add retry functionality
-            document.querySelector(".retry-btn")?.addEventListener("click", () => {
-                loadCommunityGames(sortOrder);
-            });
+            document
+                .querySelector(".retry-btn")
+                ?.addEventListener("click", () => {
+                    loadCommunityGames(sortOrder);
+                });
         }
     }
 
@@ -128,7 +130,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
 
         // Create a card for each game
-        games.forEach(game => {
+        games.forEach((game) => {
             const gameCard = createCommunityGameCard(game);
             gamesGrid.appendChild(gameCard);
         });
@@ -152,7 +154,9 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // Create game image
         const img = document.createElement("img");
-        img.src = escapeHTML(game.cover_image || "../assets/images/placeholder-game.webp");
+        img.src = escapeHTML(
+            game.cover_image || "../assets/images/placeholder-game.webp"
+        );
         img.alt = escapeHTML(game.title);
         img.className = "game-image";
         img.loading = "lazy";
@@ -170,7 +174,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const addToCart = document.createElement("span");
         addToCart.className = "add-to-cart";
         addToCart.textContent = "Add to Cart";
-        addToCart.addEventListener("click", function(e) {
+        addToCart.addEventListener("click", function (e) {
             e.stopPropagation();
             addItemToCart(card);
         });
@@ -194,9 +198,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Creator name
         const creator = document.createElement("p");
         creator.className = "game-age-rating";
-        const authorName = game.users?.first_name && game.users?.last_name
-            ? `${game.users.first_name} ${game.users.last_name}`
-            : "Anonymous User";
+        const authorName =
+            game.users?.first_name && game.users?.last_name
+                ? `${game.users.first_name} ${game.users.last_name}`
+                : "Anonymous User";
         creator.textContent = `Created by: ${escapeHTML(authorName)}`;
         details.appendChild(creator);
 
@@ -204,7 +209,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         card.appendChild(details);
 
         // Make the card clickable to show game details
-        card.addEventListener("click", function(e) {
+        card.addEventListener("click", function (e) {
             if (!e.target.closest(".add-to-cart")) {
                 showCommunityGameDetails(game);
             }
@@ -223,11 +228,14 @@ document.addEventListener("DOMContentLoaded", async function() {
             id: game.id,
             name: game.title,
             summary: game.description || "No description available",
-            first_release_date: game.release_date ? new Date(game.release_date).getTime() / 1000 : null,
+            first_release_date: game.release_date
+                ? new Date(game.release_date).getTime() / 1000
+                : null,
             cover: { url: game.cover_image },
-            screenshots: game.game_screenshots?.map(screenshot => ({
-                url: screenshot.screenshot_url
-            })) || [],
+            screenshots:
+                game.game_screenshots?.map((screenshot) => ({
+                    url: screenshot.screenshot_url,
+                })) || [],
             platforms: [{ name: "PC" }], // Default platform
             age_rating_string: "PEGI 12"
         };
@@ -253,23 +261,28 @@ document.addEventListener("DOMContentLoaded", async function() {
         const dropdownBtn = document.querySelector(".dropdown-btn");
         const dropdownContent = document.querySelector(".dropdown-content");
         const filterChoice = document.getElementById("filter-choice");
-        const sortButtons = document.querySelectorAll(".dropdown-content button");
+        const sortButtons = document.querySelectorAll(
+            ".dropdown-content button"
+        );
 
         // Toggle dropdown visibility
-        dropdownBtn?.addEventListener("click", function() {
+        dropdownBtn?.addEventListener("click", function () {
             dropdownContent.classList.toggle("active");
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener("click", function(e) {
-            if (!dropdownBtn?.contains(e.target) && !dropdownContent?.contains(e.target)) {
+        document.addEventListener("click", function (e) {
+            if (
+                !dropdownBtn?.contains(e.target) &&
+                !dropdownContent?.contains(e.target)
+            ) {
                 dropdownContent?.classList.remove("active");
             }
         });
 
         // Handle sort selection
-        sortButtons.forEach(button => {
-            button.addEventListener("click", function() {
+        sortButtons.forEach((button) => {
+            button.addEventListener("click", function () {
                 const sortType = this.dataset.sort;
 
                 // Update filter choice text
@@ -293,7 +306,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
 
                 // Update check icons
-                sortButtons.forEach(btn => {
+                sortButtons.forEach((btn) => {
                     btn.querySelector("i").classList.add("hidden");
                 });
                 this.querySelector("i").classList.remove("hidden");
@@ -309,6 +322,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 });
 
 // Make functions available globally
-window.showCommunityGames = function() {
+window.showCommunityGames = function () {
     window.location.href = "community.html";
 };

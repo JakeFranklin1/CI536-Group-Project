@@ -5,9 +5,11 @@ import supabase from "../supabase-client.js";
 /**
  * Initializes the game listing form with dynamic functionality
  */
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     // Check authentication first
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
     if (!session) {
         window.location.href = "login.html"; // Redirect to login if not authenticated
         return;
@@ -42,16 +44,22 @@ document.addEventListener("DOMContentLoaded", async function() {
         try {
             // Just check if we can access the bucket
             const { data, error } = await supabase.storage
-                .from('game-assets')
+                .from("game-assets")
                 .list();
 
             if (error) {
                 console.error("Error accessing storage bucket:", error);
-                showToast("Unable to access storage. Please contact an administrator.", "error");
+                showToast(
+                    "Unable to access storage. Please contact an administrator.",
+                    "error"
+                );
             }
         } catch (error) {
             console.error("Error checking storage buckets:", error);
-            showToast("There was an issue with storage configuration.", "error");
+            showToast(
+                "There was an issue with storage configuration.",
+                "error"
+            );
         }
     }
 
@@ -60,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async function() {
      */
     function initFormNavigation() {
         // Next button handlers
-        nextBtns.forEach(btn => {
+        nextBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
                 // Validate current step before proceeding
                 if (validateStep(currentStep)) {
@@ -76,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
 
         // Previous button handlers
-        prevBtns.forEach(btn => {
+        prevBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
                 goToStep(currentStep - 1);
             });
@@ -93,8 +101,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
 
         // Update active step classes
-        steps.forEach(step => step.classList.remove("active"));
-        progressSteps.forEach(step => {
+        steps.forEach((step) => step.classList.remove("active"));
+        progressSteps.forEach((step) => {
             step.classList.remove("active");
 
             const stepNum = parseInt(step.dataset.step);
@@ -108,11 +116,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
 
         // Show the target step
-        document.querySelector(`.form-step[data-step="${stepNumber}"]`).classList.add("active");
+        document
+            .querySelector(`.form-step[data-step="${stepNumber}"]`)
+            .classList.add("active");
         currentStep = stepNumber;
 
         // Scroll to top of form
-        document.querySelector(".form-container").scrollIntoView({ behavior: "smooth" });
+        document
+            .querySelector(".form-container")
+            .scrollIntoView({ behavior: "smooth" });
     }
 
     /**
@@ -121,13 +133,19 @@ document.addEventListener("DOMContentLoaded", async function() {
     function initImageUploads() {
         // Cover image upload
         const coverInput = document.getElementById("cover-image");
-        const coverUploadBox = document.querySelector("#cover-upload-container .image-upload-box");
+        const coverUploadBox = document.querySelector(
+            "#cover-upload-container .image-upload-box"
+        );
         const coverPreview = document.getElementById("cover-preview");
 
         // Screenshot uploads
         const screenshotInput = document.getElementById("screenshots");
-        const screenshotUploadBox = document.querySelector("#screenshots-upload-container .image-upload-box");
-        const screenshotPreview = document.getElementById("screenshots-preview");
+        const screenshotUploadBox = document.querySelector(
+            "#screenshots-upload-container .image-upload-box"
+        );
+        const screenshotPreview = document.getElementById(
+            "screenshots-preview"
+        );
 
         // Cover image click handler
         coverUploadBox.addEventListener("click", () => {
@@ -168,7 +186,7 @@ document.addEventListener("DOMContentLoaded", async function() {
      * @param {Function} callback - Function to call with the dropped files
      */
     function setupDragDrop(element, callback) {
-        ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
             element.addEventListener(eventName, preventDefaults, false);
         });
 
@@ -177,13 +195,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             e.stopPropagation();
         }
 
-        ["dragenter", "dragover"].forEach(eventName => {
+        ["dragenter", "dragover"].forEach((eventName) => {
             element.addEventListener(eventName, () => {
                 element.classList.add("dragover");
             });
         });
 
-        ["dragleave", "drop"].forEach(eventName => {
+        ["dragleave", "drop"].forEach((eventName) => {
             element.addEventListener(eventName, () => {
                 element.classList.remove("dragover");
             });
@@ -224,11 +242,13 @@ document.addEventListener("DOMContentLoaded", async function() {
             document.getElementById("cover-preview").innerHTML = previewHtml;
 
             // Add remove handler
-            document.querySelector('.remove-image[data-type="cover"]').addEventListener("click", () => {
-                document.getElementById("cover-preview").innerHTML = "";
-                document.getElementById("cover-image").value = "";
-                coverImageFile = null;
-            });
+            document
+                .querySelector('.remove-image[data-type="cover"]')
+                .addEventListener("click", () => {
+                    document.getElementById("cover-preview").innerHTML = "";
+                    document.getElementById("cover-image").value = "";
+                    coverImageFile = null;
+                });
         };
         reader.readAsDataURL(file);
     }
@@ -250,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
 
         // Process each file
-        files.forEach(file => {
+        files.forEach((file) => {
             if (validateImageFile(file, "screenshot")) {
                 // Store file for later upload
                 screenshotFiles.push(file);
@@ -267,17 +287,26 @@ document.addEventListener("DOMContentLoaded", async function() {
                             </button>
                         </div>
                     `;
-                    document.getElementById("screenshots-preview").insertAdjacentHTML("beforeend", previewHtml);
+                    document
+                        .getElementById("screenshots-preview")
+                        .insertAdjacentHTML("beforeend", previewHtml);
 
                     // Add remove handler
-                    document.querySelector(`.remove-image[data-screenshot-id="${screenshotId}"]`).addEventListener("click", (e) => {
-                        const screenshotElement = document.getElementById(screenshotId);
-                        const index = Array.from(screenshotElement.parentNode.children).indexOf(screenshotElement);
+                    document
+                        .querySelector(
+                            `.remove-image[data-screenshot-id="${screenshotId}"]`
+                        )
+                        .addEventListener("click", (e) => {
+                            const screenshotElement =
+                                document.getElementById(screenshotId);
+                            const index = Array.from(
+                                screenshotElement.parentNode.children
+                            ).indexOf(screenshotElement);
 
-                        // Remove from DOM and array
-                        screenshotElement.remove();
-                        screenshotFiles.splice(index, 1);
-                    });
+                            // Remove from DOM and array
+                            screenshotElement.remove();
+                            screenshotFiles.splice(index, 1);
+                        });
                 };
                 reader.readAsDataURL(file);
             }
@@ -292,8 +321,11 @@ document.addEventListener("DOMContentLoaded", async function() {
      */
     function validateImageFile(file, type) {
         // Check file type
-        if (!file.type.match('image.*')) {
-            showToast("Please upload image files only (JPEG, PNG, etc.)", "error");
+        if (!file.type.match("image.*")) {
+            showToast(
+                "Please upload image files only (JPEG, PNG, etc.)",
+                "error"
+            );
             return false;
         }
 
@@ -325,7 +357,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Step 1: Basic Info
         if (step === 1) {
             const title = document.getElementById("game-title").value.trim();
-            const description = document.getElementById("game-description").value.trim();
+            const description = document
+                .getElementById("game-description")
+                .value.trim();
 
             if (!title) {
                 const errorEl = document.querySelector('#game-title + .error-message');
@@ -366,7 +400,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         return isValid;
     }
-    
+
     /**
      * Populates the review step with form data
      */
@@ -379,9 +413,14 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // Update preview
         document.getElementById("preview-title").textContent = title;
-        document.getElementById("preview-description").textContent = description;
-        document.getElementById("preview-release-date").textContent = releaseDate ? new Date(releaseDate).toLocaleDateString() : "Not specified";
-        document.getElementById("preview-price").textContent = `£${parseFloat(price).toFixed(2)}`;
+        document.getElementById("preview-description").textContent =
+            description;
+        document.getElementById("preview-release-date").textContent =
+            releaseDate
+                ? new Date(releaseDate).toLocaleDateString()
+                : "Not specified";
+        document.getElementById("preview-price").textContent =
+            `£${parseFloat(price).toFixed(2)}`;
 
         // Show cover image preview
         if (coverImageFile) {
@@ -396,15 +435,20 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // Show screenshot previews
         if (screenshotFiles.length > 0) {
-            const previewScreenshots = document.getElementById("preview-screenshots");
+            const previewScreenshots = document.getElementById(
+                "preview-screenshots"
+            );
             previewScreenshots.innerHTML = "";
 
             screenshotFiles.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    previewScreenshots.insertAdjacentHTML("beforeend", `
+                    previewScreenshots.insertAdjacentHTML(
+                        "beforeend",
+                        `
                         <img src="${e.target.result}" alt="Screenshot ${index + 1}">
-                    `);
+                    `
+                    );
                 };
                 reader.readAsDataURL(file);
             });
@@ -425,7 +469,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             // Show loading state
             const submitBtn = document.querySelector(".btn-submit");
             const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.innerHTML =
+                '<i class="fa fa-spinner fa-spin"></i> Submitting...';
             submitBtn.disabled = true;
 
             // Show full page loading spinner
@@ -433,7 +478,9 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             try {
                 // Get current user session
-                const { data: { session } } = await supabase.auth.getSession();
+                const {
+                    data: { session },
+                } = await supabase.auth.getSession();
 
                 if (!session) {
                     showToast("You must be logged in to list a game", "error");
@@ -442,16 +489,23 @@ document.addEventListener("DOMContentLoaded", async function() {
 
                 // Get form data
                 const title = document.getElementById("game-title").value;
-                const description = document.getElementById("game-description").value;
-                const releaseDate = document.getElementById("release-date").value || null;
-                const price = parseFloat(document.getElementById("game-price").value);
+                const description =
+                    document.getElementById("game-description").value;
+                const releaseDate =
+                    document.getElementById("release-date").value || null;
+                const price = parseFloat(
+                    document.getElementById("game-price").value
+                );
 
                 // 1. Upload cover image to storage
-                const coverImagePath = await uploadFile(coverImageFile, 'covers');
+                const coverImagePath = await uploadFile(
+                    coverImageFile,
+                    "covers"
+                );
 
                 // 2. Create game listing in database
                 const { data: gameListing, error: gameError } = await supabase
-                    .from('game_listings')
+                    .from("game_listings")
                     .insert([
                         {
                             user_id: session.user.id,
@@ -459,8 +513,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                             description: description,
                             release_date: releaseDate,
                             cover_image: coverImagePath,
-                            price: price
-                        }
+                            price: price,
+                        },
                     ])
                     .select()
                     .single();
@@ -471,18 +525,21 @@ document.addEventListener("DOMContentLoaded", async function() {
                 if (screenshotFiles.length > 0) {
                     const screenshotUploads = await Promise.all(
                         screenshotFiles.map(async (file) => {
-                            const screenshotPath = await uploadFile(file, 'screenshots');
+                            const screenshotPath = await uploadFile(
+                                file,
+                                "screenshots"
+                            );
 
                             return {
                                 game_listing_id: gameListing.id,
-                                screenshot_url: screenshotPath
+                                screenshot_url: screenshotPath,
                             };
                         })
                     );
 
                     // Insert screenshot records
                     const { error: screenshotsError } = await supabase
-                        .from('game_screenshots')
+                        .from("game_screenshots")
                         .insert(screenshotUploads);
 
                     if (screenshotsError) throw screenshotsError;
@@ -490,10 +547,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 
                 // Show success message and reset form
                 showSuccessMessage();
-
             } catch (error) {
-                console.error('Error submitting game listing:', error);
-                showToast("Failed to submit your game listing. Please try again.", "error");
+                console.error("Error submitting game listing:", error);
+                showToast(
+                    "Failed to submit your game listing. Please try again.",
+                    "error"
+                );
             } finally {
                 // Restore button state and hide loading spinner
                 submitBtn.innerHTML = originalBtnText;
@@ -509,32 +568,35 @@ document.addEventListener("DOMContentLoaded", async function() {
      * @param {string} folder - The storage folder name
      * @returns {Promise<string>} The file path
      */
-        async function uploadFile(file, folder) {
+    async function uploadFile(file, folder) {
         try {
-            const fileExt = file.name.split('.').pop();
+            const fileExt = file.name.split(".").pop();
             const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
             const filePath = `${folder}/${fileName}`;
 
             // Skip bucket creation attempts - we created it manually
             // Just upload directly to the bucket
             const { data, error } = await supabase.storage
-                .from('game-assets')
+                .from("game-assets")
                 .upload(filePath, file, {
-                    cacheControl: '3600',
-                    upsert: true // Set to true to overwrite files with same name
+                    cacheControl: "3600",
+                    upsert: true, // Set to true to overwrite files with same name
                 });
 
             if (error) throw error;
 
             // Get public URL
             const { data: urlData } = supabase.storage
-                .from('game-assets')
+                .from("game-assets")
                 .getPublicUrl(filePath);
 
             return urlData.publicUrl;
         } catch (error) {
             console.error(`Error uploading ${folder} file:`, error);
-            showToast(`Failed to upload: ${error.message || 'Unknown error'}`, "error");
+            showToast(
+                `Failed to upload: ${error.message || "Unknown error"}`,
+                "error"
+            );
             throw error;
         }
     }
@@ -564,9 +626,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         formContainer.appendChild(successMessage);
 
         // Add event listener for "List Another" button
-        document.getElementById("list-another").addEventListener("click", () => {
-            location.reload();
-        });
+        document
+            .getElementById("list-another")
+            .addEventListener("click", () => {
+                location.reload();
+            });
 
         // Show toast notification
         showToast("Game successfully listed!", "success");
@@ -584,7 +648,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         const coverPreview = document.getElementById("cover-preview");
         if (coverPreview) coverPreview.innerHTML = "";
 
-        const screenshotsPreview = document.getElementById("screenshots-preview");
+        const screenshotsPreview = document.getElementById(
+            "screenshots-preview"
+        );
         if (screenshotsPreview) screenshotsPreview.innerHTML = "";
 
         goToStep(1);

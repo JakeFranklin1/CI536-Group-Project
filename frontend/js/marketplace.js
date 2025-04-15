@@ -62,11 +62,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Find the profile button using the settings-btn class instead of :has() selector
-    const profileButton = document.querySelector('.settings-btn');
+    const profileButton = document.querySelector(".settings-btn");
 
     // If the profile button exists, add click event listener
     if (profileButton) {
-        profileButton.addEventListener("click", function() {
+        profileButton.addEventListener("click", function () {
             showAccountSettings();
         });
     }

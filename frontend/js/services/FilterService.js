@@ -66,9 +66,7 @@ export function isCommunityGamesFilter(filter) {
 export async function fetchCommunityGames(sortOrder = "recent") {
     try {
         // Build the query based on sort order
-        let query = supabase
-            .from("game_listings")
-            .select(`
+        let query = supabase.from("game_listings").select(`
                 *,
                 users!user_id (id, first_name, last_name, email),
                 game_screenshots(id, screenshot_url)
@@ -98,24 +96,28 @@ export async function fetchCommunityGames(sortOrder = "recent") {
         if (error) throw error;
 
         // Format the games to match the structure expected by the marketplace
-        return games.map(game => ({
+        return games.map((game) => ({
             id: game.id,
             name: game.title,
             summary: game.description || "No description available",
-            first_release_date: game.release_date ? new Date(game.release_date).getTime() / 1000 : null,
+            first_release_date: game.release_date
+                ? new Date(game.release_date).getTime() / 1000
+                : null,
             cover: {
-                url: game.cover_image
+                url: game.cover_image,
             },
-            screenshots: game.game_screenshots?.map(screenshot => ({
-                url: screenshot.screenshot_url
-            })) || [],
+            screenshots:
+                game.game_screenshots?.map((screenshot) => ({
+                    url: screenshot.screenshot_url,
+                })) || [],
             platforms: [{ name: "PC" }],
             age_rating_string: "Not Rated",
             price: game.price,
             isCommunityGame: true,
-            creator: game.users?.first_name && game.users?.last_name
-                ? `${game.users.first_name} ${game.users.last_name}`
-                : "Anonymous User"
+            creator:
+                game.users?.first_name && game.users?.last_name
+                    ? `${game.users.first_name} ${game.users.last_name}`
+                    : "Anonymous User",
         }));
     } catch (error) {
         console.error("Error fetching community games:", error);
