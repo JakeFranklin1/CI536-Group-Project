@@ -52,8 +52,6 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    /* Remove the gradient background */
-    /* background: linear-gradient(135deg, #333, #1a1a1a); */
     display: flex;
     align-items: center;
     justify-content: center;
