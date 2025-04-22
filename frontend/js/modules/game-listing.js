@@ -344,15 +344,17 @@ document.addEventListener("DOMContentLoaded", async function () {
      * @param {number} step - The step number to validate
      * @returns {boolean} Whether the step is valid
      */
-        function validateStep(step) {
+    function validateStep(step) {
         let isValid = true;
 
         // Clear previous error messages and ensure they're visible
-        document.querySelectorAll(`.form-step[data-step="${step}"] .error-message`).forEach(el => {
-            el.textContent = "";
-            // Remove display:none if it exists
-            el.style.display = "block";
-        });
+        document
+            .querySelectorAll(`.form-step[data-step="${step}"] .error-message`)
+            .forEach((el) => {
+                el.textContent = "";
+                // Remove display:none if it exists
+                el.style.display = "block";
+            });
 
         // Step 1: Basic Info
         if (step === 1) {
@@ -362,14 +364,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                 .value.trim();
 
             if (!title) {
-                const errorEl = document.querySelector('#game-title + .error-message');
+                const errorEl = document.querySelector(
+                    "#game-title + .error-message"
+                );
                 errorEl.textContent = "Game title is required";
                 errorEl.style.display = "block";
                 isValid = false;
             }
 
             if (!description) {
-                const errorEl = document.querySelector('#game-description + .error-message');
+                const errorEl = document.querySelector(
+                    "#game-description + .error-message"
+                );
                 errorEl.textContent = "Game description is required";
                 errorEl.style.display = "block";
                 isValid = false;
@@ -379,7 +385,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Step 2: Media
         else if (step === 2) {
             if (!coverImageFile) {
-                const errorEl = document.querySelector('#cover-upload-container + .error-message');
+                const errorEl = document.querySelector(
+                    "#cover-upload-container + .error-message"
+                );
                 errorEl.textContent = "Cover image is required";
                 errorEl.style.display = "block";
                 isValid = false;
@@ -391,7 +399,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             const price = document.getElementById("game-price").value;
 
             if (!price || parseFloat(price) <= 0) {
-                const errorEl = document.querySelector('#game-price + .error-message');
+                const errorEl = document.querySelector(
+                    "#game-price + .error-message"
+                );
                 errorEl.textContent = "Please enter a valid price";
                 errorEl.style.display = "block";
                 isValid = false;

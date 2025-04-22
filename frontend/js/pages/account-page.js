@@ -3,7 +3,7 @@ import { showToast } from "../utils/toast.js";
 import { getUserData } from "../services/auth-service.js";
 import { initializeMobileMenu } from "../modules/ui-initialiser.js";
 
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     // Initialize mobile menu
     initializeMobileMenu();
 
@@ -45,7 +45,6 @@ async function loadUserData() {
 
         // Add event listeners for forms
         setupEventListeners(data, currentUser);
-
     } catch (error) {
         console.error("Error loading user data:", error);
         showToast("Failed to load account information", "error");
@@ -53,9 +52,12 @@ async function loadUserData() {
         // Hide loading indicator
         const loadingEl = document.getElementById("loading");
         if (loadingEl) loadingEl.classList.add("hidden");
-        document.getElementById("account-settings-container").style.display = "block";
-document.getElementById("account-settings-container").style.opacity = "1";
-document.getElementById("account-settings-container").style.transform = "translateY(0)";
+        document.getElementById("account-settings-container").style.display =
+            "block";
+        document.getElementById("account-settings-container").style.opacity =
+            "1";
+        document.getElementById("account-settings-container").style.transform =
+            "translateY(0)";
     }
 }
 
@@ -90,7 +92,9 @@ function updateProfileUI(userData) {
 
     // Set profile picture with initials
     const initials = getInitials(userData.first_name, userData.last_name);
-    const profileColor = generateColorFromName(userData.first_name + userData.last_name);
+    const profileColor = generateColorFromName(
+        userData.first_name + userData.last_name
+    );
     const profilePicture = document.getElementById("profile-picture");
     profilePicture.textContent = initials;
     profilePicture.style.backgroundColor = profileColor;
@@ -112,7 +116,9 @@ function setupTabNavigation() {
             button.classList.add("active");
 
             // Show selected tab content
-            tabContents.forEach((content) => content.classList.remove("active"));
+            tabContents.forEach((content) =>
+                content.classList.remove("active")
+            );
             document.getElementById(tabId).classList.add("active");
         });
     });
@@ -157,9 +163,11 @@ function setupEventListeners(userData, currentUser) {
     passwordForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const currentPassword = document.getElementById("current-password").value;
+        const currentPassword =
+            document.getElementById("current-password").value;
         const newPassword = document.getElementById("new-password").value;
-        const confirmPassword = document.getElementById("confirm-password").value;
+        const confirmPassword =
+            document.getElementById("confirm-password").value;
 
         if (newPassword !== confirmPassword) {
             showToast("New passwords do not match", "error");
