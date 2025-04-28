@@ -1,6 +1,6 @@
 # Tools Currently Being Used
 
-- [Render](https://render.com/)- Hosts the backend
+- [Render](https://render.com/) - Hosts the backend
 - [Supabase](https://supabase.com/) - Authentication and Database
 - [Netlify](https://www.netlify.com/) - Hosting
 
