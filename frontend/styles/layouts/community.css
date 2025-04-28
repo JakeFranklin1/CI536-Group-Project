@@ -1,0 +1,85 @@
+.create-game-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.create-game-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.create-game-btn:hover {
+    background-color: #3d9140;
+}
+
+.create-game-btn i {
+    margin-right: 8px;
+}
+
+.community-game-card {
+    position: relative;
+}
+
+.community-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: rgba(76, 175, 80, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    color: #aaa;
+}
+
+.empty-state i {
+    font-size: 64px;
+    margin-bottom: 24px;
+    color: #555;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #ddd;
+}
+
+.empty-state p {
+    font-size: 16px;
+    margin-bottom: 24px;
+    max-width: 600px;
+}
+
+.empty-state .create-game-btn {
+    padding: 14px 28px;
+    font-size: 18px;
+}
+
+.loading-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 0;
+    color: #aaa;
+    font-size: 18px;
+}

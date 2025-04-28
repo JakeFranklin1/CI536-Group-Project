@@ -1,0 +1,570 @@
+#account-settings-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 16px 24px;
+    box-sizing: border-box;
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    min-height: calc(100vh - 120px);
+}
+
+#account-settings-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.account-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin: 2rem auto;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #3e3e3e;
+}
+
+/* Profile Sidebar Styles */
+.profile-sidebar {
+    padding: 1.5rem;
+    background-color: #252525; /* Dark gray background */
+    border-right: 1px solid #333; /* Darker border */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-picture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Update profile picture styling to use a solid background color instead of gradient */
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+    border: 3px solid #444; /* Lighter border */
+    transition: background-color 0.3s ease; /* Add transition for smooth color change */
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#upload-photo-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+    background-color: #333; /* Darker background */
+}
+
+#upload-photo-btn:hover {
+    background-color: #444; /* Lighter on hover */
+}
+
+.profile-summary {
+    width: 100%;
+    text-align: center;
+}
+
+.profile-summary h2 {
+    margin: 0.5rem 0;
+    color: white; /* White text */
+    font-weight: 700;
+}
+
+.profile-summary p {
+    color: #aaa; /* Light gray text */
+    margin-bottom: 1.5rem;
+}
+
+.balance-container {
+    background-color: #252525;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 1.5rem;
+    border: 1px solid #333;
+}
+
+.balance-container h3 {
+    margin-top: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.balance-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: hsl(159, 80%, 45%);
+    margin: 1rem 0;
+}
+
+#add-funds-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #6b00ff, #8f00ff);
+    color: white;
+    border: none;
+}
+
+/* Settings Content Styles */
+.settings-content {
+    padding: 1.5rem;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #333;
+    margin-bottom: 24px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background: transparent;
+    border: none;
+    color: #999;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    position: relative;
+}
+
+.tab-button:hover {
+    color: #ccc; /* Lighter text on hover */
+}
+
+.tab-button.active {
+    color: white;
+}
+
+.tab-button.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, #6b00ff, #8f00ff);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tab-content.active {
+    display: block;
+    width: 100%;
+}
+
+.tab-content h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: white; /* White text */
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: white; /* White text */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6b00ff; /* Purple color */
+    outline: none;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.5rem;
+    color: #aaa; /* Light gray text */
+    font-size: 0.85rem;
+}
+
+.form-actions {
+    margin-top: 2rem;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333; /* Darker background */
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #4caf50; /* Green from marketplace */
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #4caf50;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Add Funds Modal */
+#add-funds-modal .modal-content {
+    max-width: 500px;
+    background-color: #252525; /* Dark background */
+    color: white; /* White text */
+    border: 1px solid #333;
+}
+
+.amount-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 12px;
+    color: #aaa; /* Light gray text */
+    font-weight: bold;
+}
+
+.amount-input input {
+    padding-left: 30px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #6b00ff, #8f00ff);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #444;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #252525; /* Dark background */
+    margin: auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    animation: modalFadeIn 0.3s;
+    color: white; /* White text */
+    border: 1px solid #333;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    color: #aaa; /* Light gray text */
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: white; /* White on hover */
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    min-width: 250px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    animation: toastIn 0.3s;
+}
+
+/* Maintain existing animations and media queries */
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    min-width: 250px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    animation: toastIn 0.3s;
+}
+
+.toast-success {
+    background-color: #4caf50;
+}
+
+.toast-error {
+    background-color: #f44336;
+}
+
+.toast-info {
+    background-color: var(--accent-color);
+}
+
+.toast-icon {
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+@keyframes toastIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .account-container {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #eaeaea;
+    }
+}
+
+/* Account Settings Component Styles */
+
+#account-settings-container {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+#account-settings-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Account Settings Header Styles - Match game-details */
+.account-settings-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    width: 100%;
+    padding: 12px 0;
+}
+
+.account-settings-header h1 {
+    font-size: 36px;
+    margin: 16px 0 0;
+    width: 100%;
+    line-height: 1.3;
+    color: white;
+}
+
+.back-to-marketplace {
+    background: #333;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.back-to-marketplace:hover {
+    background: #444;
+}
+
+.back-to-marketplace i {
+    margin-right: 8px;
+}
+#account-settings-container {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+#account-settings-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-out {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+}

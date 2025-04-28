@@ -1,0 +1,384 @@
+/* Manage Listings page styles */
+
+.listings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#wrapper {
+    max-width: 1500px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.main-content {
+    margin-left: 0;
+}
+
+.listings-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat-box {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 0.25rem;
+}
+
+.listings-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.listings-container {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.listings-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.listings-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+.listings-table th {
+    text-align: left;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #333;
+    color: #aaa;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    background-color: #1a1a1a;
+    z-index: 1;
+}
+
+.listings-table td {
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #333;
+    vertical-align: middle;
+}
+
+.listings-table tr:hover {
+    background-color: #222;
+}
+
+.listing-cover {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.listing-details {
+    max-width: 400px;
+}
+
+.listing-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.listing-description {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.listing-date {
+    color: #777;
+    font-size: 0.8rem;
+}
+
+.listing-price {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.listing-status {
+    display: inline-flex;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-active {
+    background-color: rgba(75, 181, 67, 0.2);
+    color: #4bb543;
+}
+
+.listing-actions {
+    display: flex;
+    gap: 0.5rem;
+    height: 110px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #333;
+}
+
+.action-btn i {
+    font-size: 1.2rem;
+}
+
+.edit-btn {
+    color: #3498db;
+}
+
+.delete-btn {
+    color: #e74c3c;
+}
+
+.view-btn {
+    color: #2ecc71;
+}
+
+.no-listings-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.no-listings-message i {
+    font-size: 3rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+.no-listings-message h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.no-listings-message p {
+    color: #aaa;
+    margin-bottom: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Modal styles for editing listings */
+.edit-listing-content {
+    max-width: 800px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #444;
+    background-color: #222;
+    color: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.form-tip {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 24px;
+}
+
+.btn-secondary {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.edit-cover-preview,
+.edit-screenshots-preview {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.preview-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid #333;
+}
+
+.delete-confirmation-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.delete-confirmation-content h2 {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+}
+
+.delete-confirmation-content p {
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .listings-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .listings-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .listings-table th:nth-child(2),
+    .listings-table td:nth-child(2) {
+        max-width: 200px;
+    }
+
+    .listings-actions {
+        width: 100%;
+    }
+
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+    #wrapper {
+        width: 95%;
+    }
+
+    .main-header .header-content {
+        width: 95%;
+    }
+}
+
+.add-game-container {
+    display: flex;
+    justify-content: left;
+    margin: 30px 0;
+}
+
+.add-game-container .btn-primary {
+    padding: 10px 30px;
+    font-size: 16px;
+}
+
+.marketplace-footer {
+    width: 100%; /* Full width on mobile */
+    margin-left: 0; /* Reset margin for mobile */
+}
+
+.main-content.full-width {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* .main-header .header-content {
+    max-width: 1500px;
+    width: 90%;
+    margin: 0 auto;
+} */

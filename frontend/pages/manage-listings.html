@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Meta's -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Your Listings - GameStore</title>
+    <meta name="description" content="Manage your game listings on GameStore" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="../assets/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicons/favicon.svg" />
+    <link rel="shortcut icon" href="../assets/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="GameStore" />
+    <link rel="manifest" href="../assets/favicons/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/marketplace-main.css" />
+    <link rel="stylesheet" href="../styles/layouts/manage-listings.css" />
+    <link rel="stylesheet" href="../styles/layouts/special-pages.css" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body class="special-page">
+    <div class="loading hidden" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Modal for users who aren't signed in -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Authentication Required</h2>
+            <p>You need to be signed in to manage your listings.</p>
+            <div class="modal-buttons">
+                <a href="login.html" class="modal-btn primary">Log In</a>
+                <a href="../index.html" class="modal-btn secondary">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Listing Modal -->
+    <div id="edit-listing-modal" class="modal hidden">
+        <div class="modal-content edit-listing-content">
+            <button class="close-modal">&times;</button>
+            <h2>Edit Game Listing</h2>
+            <form id="edit-listing-form">
+                <input type="hidden" id="edit-listing-id">
+
+                <div class="form-group">
+                    <label for="edit-title">Game Title</label>
+                    <input type="text" id="edit-title" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" name="description" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-price">Price (£)</label>
+                    <input type="number" id="edit-price" name="price" min="0.01" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-release-date">Release Date</label>
+                    <input type="date" id="edit-release-date" name="release_date">
+                </div>
+
+                <div class="form-group">
+                    <label>Cover Image</label>
+                    <div class="edit-cover-preview" id="edit-cover-preview"></div>
+                    <input type="file" id="edit-cover-image" name="cover_image" accept="image/*" title="Select a cover image">
+                    <p class="form-tip">Current cover image will be kept if no new image is selected</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Screenshots (Max 5)</label>
+                    <div class="edit-screenshots-preview" id="edit-screenshots-preview"></div>
+                    <input type="file" id="edit-screenshots" name="screenshots" accept="image/*" multiple title="Select up to 5 images">
+                    <p class="form-tip">Current screenshots will be kept if no new images are selected</p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                    <button type="button" class="btn-secondary close-edit-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirmation-modal" class="modal hidden">
+        <div class="modal-content delete-confirmation-content">
+            <h2>Delete Listing?</h2>
+            <p>Are you sure you want to delete this listing? This action cannot be undone.</p>
+            <div class="form-actions">
+                <button id="confirm-delete-btn" class="btn-danger">Delete Listing</button>
+                <button class="btn-secondary close-delete-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- Side cart -->
+
+
+    <!-- Header Content -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="brand-container">
+                <div class="brand-content">
+                    <img src="../assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
+                    <span class="brand-name">GameStore</span>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Search for games..." />
+                <button class="search-btn" type="button" title="Search for games">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+            <div class="cart-container">
+                <button id="open-cart-btn" class="cart-btn" type="button" title="View cart">
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Side cart -->
+    <div class="side-cart">
+        <div class="side-cart-header">
+            <button type="button" id="close-cart-btn" class="closebtn">&times;</button>
+            <h3>Shopping Cart</h3>
+        </div>
+
+        <div class="cart-items">
+
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">Example Game</div>
+                    <div class="cart-item-info">
+                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
+                            class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">PlayStation 5</div>
+                            <div class="cart-item-price">£59.99</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-item">
+                <div class="cart-item-details">
+                    <div class="cart-item-title">Example Game</div>
+                    <div class="cart-item-info">
+                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
+                            class="cart-item-image">
+                        <div>
+                            <div class="cart-item-platform">PlayStation 5</div>
+                            <div class="cart-item-price">£59.99</div>
+                            <div class="cart-item-quantity">
+                                <label>Qty:</label>
+                                <div class="quantity-controls">
+                                    <button class="quantity-decrement">-</button>
+                                    <span class="quantity-value">1</span>
+                                    <button class="quantity-increment">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="cart-remove" title="Remove item">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="total-cost">$129.98</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <div id="wrapper">
+
+        <div class="page-layout">
+
+
+            <div class="page-layout">
+                <!-- Hamburger menu for mobile -->
+                <button class="hamburger-menu" aria-label="Toggle navigation menu">
+                    <div class="hamburger-lines">
+                        <span class="line line1"></span>
+                        <span class="line line2"></span>
+                        <span class="line line3"></span>
+                    </div>
+                </button>
+
+                <!-- Side Navigation -->
+                <aside class="side-nav">
+                    <nav class="side-nav-content">
+
+                        <div class="filter-section">
+                            <h3>Settings</h3>
+                            <ul>
+                                <li>
+                                    <a href="account.html">
+                                        <span class="icon-container"><i class="fa fa-user"></i></span>
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="about.html">
+                                        <span class="icon-container"><i class="fa fa-info-circle"></i></span>
+                                        About
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-sun-o"></i></span>
+                                        Light Theme
+                                    </button>
+                                </li>
+                                <li>
+                                    <a href="" onclick="handleSignOut()">
+                                        <span class="icon-container"><i class="fa fa-sign-out"></i></span>
+                                        Sign Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="filter-section">
+                            <h3>Community</h3>
+                            <ul>
+                                <li>
+                                    <a href="list-game.html">
+                                        <span class="icon-container"><i class="fa fa-plus"></i></span>
+                                        List a Game
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button" onclick="handleFilterSelection('timeframe', 'Community Games')">
+                                        <span class="icon-container"><i class="fa fa-users"></i></span>
+                                        Community Games
+                                    </button>
+                                </li>
+                                <li>
+                                    <a href="manage-listings.html">
+                                        <span class="icon-container"><i class="fa fa-list"></i></span>
+                                        Manage Listings
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="filter-section">
+                            <h3>Top Games</h3>
+                            <ul>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-trophy"></i></span>
+                                        All Time
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-calendar"></i></span>
+                                        Specific Year
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-star"></i></span>
+                                        Popular in 2025
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="filter-section">
+                            <h3>Platforms</h3>
+                            <ul>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-windows"></i></span>
+                                        PC
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+
+                                        <span class="icon-container"><img src="../assets/icons/playstation.svg"
+                                                title="playstation"></span>
+                                        PlayStation
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+
+                                        <span class="icon-container"><img src="../assets/icons/xbox.svg"
+                                                title="playstation"></span>
+                                        Xbox
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+
+                                        <span class="icon-container"><img src="../assets/icons/nintendo.svg"
+                                                title="playstation"></span>
+                                        Nintendo
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><img src="../assets/icons/android.svg"
+                                                title="playstation"></span>
+                                        Android
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><img src="../assets/icons/apple.svg"
+                                                title="playstation"></span>
+                                        Apple
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="filter-section">
+                            <h3>Categories</h3>
+                            <ul>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-bolt"></i></span>
+                                        Action
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-compass"></i></span>
+                                        Adventure
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-shield"></i></span>
+                                        RPG
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-puzzle-piece"></i></span>
+                                        Strategy
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button">
+                                        <span class="icon-container"><i class="fa fa-futbol-o"></i></span>
+                                        Sport
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+                
+                <main class="main-content full-width">
+                    <div class="back-button-container">
+                        <a href="marketplace.html" class="back-to-marketplace">
+                            <i class="fa fa-arrow-left"></i> Back to Marketplace
+                        </a>
+                    </div>
+
+                    <h1 id="current-section">Manage Your Listings</h1>
+
+                    <div class="listings-header">
+                        <div class="listings-stats">
+                            <div class="stat-box">
+                                <span class="stat-value" id="total-listings">0</span>
+                                <span class="stat-label">Total Listings</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-value" id="active-listings">0</span>
+                                <span class="stat-label">Active Listings</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- No listings message (shown when user has no listings) -->
+                    <div id="no-listings-message" class="no-listings-message hidden">
+                        <i class="fa fa-gamepad"></i>
+                        <h2>You haven't listed any games yet</h2>
+                        <p>Start selling your games to the community!</p>
+                        <a href="list-game.html" class="btn-primary">
+                            <i class="fa fa-plus"></i> List Your First Game
+                        </a>
+                    </div>
+
+                    <!-- Listings table -->
+                    <div class="listings-container">
+                        <div class="listings-table-wrapper">
+                            <table class="listings-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cover</th>
+                                        <th>Game Details</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listings-table-body">
+                                    <!-- Listings will be loaded here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="add-game-container">
+                        <a href="list-game.html" class="btn-primary">
+                            <i class="fa fa-plus"></i> Add New Game
+                        </a>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="marketplace-footer">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h4>GameStore</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="">Careers</a></li>
+                        <li><a href="">Press</a></li>
+                        <li><a href="">Blog</a></li>
+                        <li><a href="">Store Locations</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="">Help Center</a></li>
+                        <li><a href="">Contact Us</a></li>
+                        <li><a href="">Return Policy</a></li>
+                        <li><a href="">Order Status</a></li>
+                        <li><a href="">Trade-In Program</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="">Terms of Service</a></li>
+                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="">Cookie Policy</a></li>
+                        <li><a href="">EULA</a></li>
+                        <li><a href="">Accessibility</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Payment Methods</h4>
+                    <div class="payment-icons">
+                        <i class="fa fa-cc-visa" aria-hidden="true"></i>
+                        <i class="fa fa-cc-mastercard" aria-hidden="true"></i>
+                        <i class="fa fa-cc-amex" aria-hidden="true"></i>
+                        <i class="fa fa-cc-paypal" aria-hidden="true"></i>
+                        <i class="fa fa-apple" aria-hidden="true"></i>
+                        <i class="fa fa-google" aria-hidden="true"></i>
+                    </div>
+
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="" title="Twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="" title="Facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="" title="Instagram"><i class="fa fa-instagram"></i></a>
+                        <a href="" title="YouTube"><i class="fa fa-youtube-play"></i></a>
+                        <a href="" title="Discord"><i class="fa fa-comments"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="platform-icons-footer">
+                    <img src="../assets/icons/windows.svg" alt="Windows" title="Windows">
+                    <img src="../assets/icons/playstation.svg" alt="PlayStation" title="PlayStation">
+                    <img src="../assets/icons/xbox.svg" alt="Xbox" title="Xbox">
+                    <img src="../assets/icons/nintendo.svg" alt="Nintendo" title="Nintendo">
+                    <img src="../assets/icons/android.svg" alt="Android" title="Android">
+                    <img src="../assets/icons/apple.svg" alt="Apple" title="Apple">
+                </div>
+                <p class="copyright">
+                    &copy; 2025 GameStore. All rights reserved. All trademarks are property of their respective owners
+                    in
+                    the UK and other countries.
+                    Games and cover images are for illustrative purposes only and may not represent actual gameplay. The
+                    games displayed on this website cannot be purchased, and all prices are randomly generated.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../js/utils/page-transition.js"></script>
+    <script type="module" src="../js/components/SideCart.js"></script>
+    <script type="module" src="../js/modules/manage-listings.js"></script>
+
+    <script type="module">
+        import { initializeMobileMenu } from "../js/modules/ui-initialiser.js";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize mobile menu functionality
+            initializeMobileMenu();
+        });
+    </script>
+</body>
+
+</html>

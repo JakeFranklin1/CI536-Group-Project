@@ -1,0 +1,70 @@
+@media (min-width: 769px) {
+    .special-page .side-nav {
+        display: none; /* Hide side nav on desktop */
+    }
+
+    .special-page .main-content {
+        margin-left: 0; /* Full width main content */
+        width: 100%;
+    }
+
+    .special-page .hamburger-menu {
+        display: none; /* Hide hamburger on desktop */
+    }
+
+    .special-page .marketplace-footer {
+        margin-left: 0; /* No margin for footer */
+        width: 100%;
+    }
+}
+
+/* On mobile: Show hamburger menu and allow side-nav to be toggled */
+@media (max-width: 768px) {
+    .special-page .hamburger-menu {
+        display: flex; /* Show hamburger on mobile */
+    }
+
+    .special-page .side-nav {
+        transform: translateX(100%); /* Hide off-screen by default */
+    }
+
+    .special-page .side-nav.active {
+        transform: translateX(0); /* Show when active */
+    }
+}
+
+.special-page #account-settings-container {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.special-page .account-details-content,
+.special-page .account-container {
+    display: grid;
+}
+
+.back-button-container {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.back-to-marketplace {
+    display: inline-flex;
+    align-items: center;
+    background: #333;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.back-to-marketplace:hover {
+    background: #444;
+}
+
+.back-to-marketplace i {
+    margin-right: 8px;
+}

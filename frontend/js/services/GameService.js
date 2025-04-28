@@ -7,6 +7,10 @@
 import { escapeHTML } from "../utils/sanitise.js";
 import { showToast } from "../utils/toast.js";
 import { fetchFilteredGames } from "./FilterService.js";
+import {
+    isCommunityGamesFilter,
+    fetchCommunityGames,
+} from "./FilterService.js";
 
 const API_URL =
     window.location.hostname === "localhost"
@@ -60,20 +64,18 @@ function positionSearchResults(searchBar, searchResults) {
 
     const searchBarRect = searchBar.getBoundingClientRect();
 
-    // Position directly under the search bar and ensure minimum width of 400px
     const width = Math.max(searchBarRect.width, 398);
 
     searchResults.style.width = `${width}px`;
 
-    // Calculate left position to center the dropdown if it's wider than the search bar
+    // Calculate left position to center the dropdown
     const leftOffset =
         searchBarRect.width < width
             ? searchBarRect.left - (width - searchBarRect.width) / 2
             : searchBarRect.left;
 
     // Make sure the dropdown doesn't go off screen on the left
-    // Subtract 1 to move it 1px to the left
-    const finalLeft = Math.max(leftOffset - 1, 10); // Subtracting 1px here to center it
+    const finalLeft = Math.max(leftOffset, 10);
 
     searchResults.style.left = `${finalLeft}px`;
     searchResults.style.top = `${searchBarRect.bottom}px`;
@@ -202,7 +204,7 @@ export async function searchGames(query, limit = 12, isPreview = false) {
         }
 
         // Build API URL
-        const apiUrl = `${API_URL}/api/games/search/${encodeURIComponent(query)}?limit=${limit}`;
+        const apiUrl = `${API_URL}/api/games/search/${encodeURIComponent(query)}?limit=${limit}&fields=screenshots,cover,name,summary,platforms,first_release_date,age_ratings,total_rating`;
 
         // Make the API call
         const response = await fetch(apiUrl);
@@ -457,6 +459,17 @@ export function createGameCard(
         game.summary || "No description available"
     );
 
+    // Add community badge for community games
+    if (game.isCommunityGame) {
+        const badge = document.createElement("div");
+        badge.className = "community-badge";
+        badge.textContent = "Community";
+        card.appendChild(badge);
+
+        // Also store the community flag in the dataset
+        card.dataset.isCommunityGame = "true";
+    }
+
     // Make the card clickable except for the add to cart button
     card.addEventListener("click", (e) => {
         // Don't show game details if the add to cart button was clicked
@@ -522,10 +535,18 @@ export function createGameCard(
     title.textContent = tempDiv.textContent;
     details.appendChild(title);
 
+    // Creator info for community games
+    if (game.isCommunityGame && game.creator) {
+        const creator = document.createElement("p");
+        creator.className = "game-creator";
+        creator.textContent = `Created by: ${escapeHTML(game.creator)}`;
+        details.appendChild(creator);
+    }
+
     // Age rating
     const ageRating = document.createElement("p");
     ageRating.className = "game-age-rating";
-    ageRating.textContent = `Age rating: ${escapeHTML(game.age_rating_string || "Unknown")}`;
+    ageRating.textContent = `Age rating: ${escapeHTML(game.age_rating_string || "Not Rated")}`;
     details.appendChild(ageRating);
 
     // Add details to card
@@ -638,19 +659,29 @@ export function displayGames(games, gamesGrid, addToCartCallback) {
     gamesGrid.innerHTML = ""; // Clear any existing content
 
     if (!games || games.length === 0) {
-        gamesGrid.innerHTML =
-            '<div class="no-games-message">No games found matching your criteria.</div>';
+        gamesGrid.innerHTML = `
+            <div class="empty-state">
+                <i class="fa fa-search"></i>
+                <h3>No games found</h3>
+                <p>Try a different filter or search term.</p>
+            </div>
+        `;
         return;
     }
 
     // Generate cards for each game
     games.forEach((game) => {
-        // Get cover URL
-        const coverUrl = getGameCoverUrl(game, "large");
+        // Get cover URL (handle both API and community games)
+        const coverUrl = game.isCommunityGame
+            ? game.cover.url
+            : getGameCoverUrl(game, "large");
 
         // Get platform icons and price
-        const platforms = getPlatformIcons(game.platforms);
-        const price = generateRandomPrice();
+        const platforms = game.isCommunityGame
+            ? '<img src="../assets/icons/windows.svg" alt="PC" class="platform-icon" title="PC">'
+            : getPlatformIcons(game.platforms);
+
+        const price = game.isCommunityGame ? game.price : generateRandomPrice();
 
         // Create and append the game card
         const gameCard = createGameCard(
@@ -691,11 +722,49 @@ export async function loadGames(
             showLoadingPlaceholders(gamesGrid, count);
         }
 
-        // Fetch games with filters
-        const games = await fetchFilteredGames(filterParams, count);
+        // Check if this is a community games filter
+        if (filterParams.timeframe === "Community Games") {
+            // Update the section header
+            const currentSectionHeader =
+                document.getElementById("current-section");
+            if (currentSectionHeader) {
+                currentSectionHeader.textContent = "Community Games";
+            }
 
-        // Display games
-        displayGames(games, gamesGrid, addToCartCallback);
+            // Get sort parameter from dropdown if available
+            const sortDropdown = document.getElementById("filter-choice");
+            let sortOrder = "recent";
+
+            if (sortDropdown) {
+                const currentSort = sortDropdown.textContent.trim();
+                switch (currentSort) {
+                    case "Most Popular":
+                        sortOrder = "recent";
+                        break;
+                    case "Price: Low to High":
+                        sortOrder = "price-asc";
+                        break;
+                    case "Price: High to Low":
+                        sortOrder = "price-desc";
+                        break;
+                    case "Name: A to Z":
+                        sortOrder = "name-asc";
+                        break;
+                }
+            }
+
+            // Fetch community games from Supabase
+            const games = await fetchCommunityGames(sortOrder);
+
+            // Display the games
+            displayGames(games, gamesGrid, addToCartCallback);
+        } else {
+            // Fetch regular games with filters
+            const games = await fetchFilteredGames(filterParams, count);
+
+            // Display games
+            displayGames(games, gamesGrid, addToCartCallback);
+        }
     } catch (error) {
         console.error("Error loading games:", error);
         gamesGrid.innerHTML =

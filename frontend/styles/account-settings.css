@@ -12,13 +12,12 @@
 @import url("components/dropdown.css");
 @import url("components/modal.css");
 @import url("components/nav.css");
-@import url("components/game-card.css");
-@import url("components/side-cart.css");
+@import url("components/footer.css");
 
 /* Utils */
 @import url("utils/toast.css");
-/* @import url("utils/loading.css"); */
+@import url("utils/loading.css");
 @import url("utils/general.css");
-@import url("utils/game-card-loading.css");
 
-@import url("components/account.css");
+/* Account specific styling */
+@import url("layouts/account.css");
