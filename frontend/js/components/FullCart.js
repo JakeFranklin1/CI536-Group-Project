@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 };
             }
             
-            // 
+            
             cartOverlay.onclick = function() {
                 if (sideCart.classList.contains('fullscreen-cart')) {
                     // Exit fullscreen, don't close completely
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Function to go back to normal cart view
     function exitFullscreenCart() {
-        // Remove fullscreen mode
+        // Close fullscreen mode
         sideCart.classList.remove('fullscreen-cart');
         cartOverlay.classList.remove('fullscreen-overlay');
         
