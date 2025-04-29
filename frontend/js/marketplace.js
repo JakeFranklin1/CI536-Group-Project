@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     window.handleSignOut = async function() {
         try {
-            await signOut(); // signOut handles the redirect internally
+            await signOut(); 
         } catch (error) {
             console.error('Error signing out:', error);
             alert('Failed to sign out. Please try again.');

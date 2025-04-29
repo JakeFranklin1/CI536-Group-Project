@@ -25,7 +25,15 @@ export async function signOut() {
         sessionStorage.clear();
         localStorage.clear();
 
-        window.location.href = "/frontend/pages/login.html";
+        console.log("Attempting redirect to login.html from signOut...");
+        window.location.href = "login.html";
+        // Fallback in case redirect is blocked
+        setTimeout(() => {
+            if (window.location.pathname.indexOf("login.html") === -1) {
+                console.warn("Redirect to login.html failed, forcing reload...");
+                window.location.assign("login.html");
+            }
+        }, 6000);
     }
 }
 
@@ -78,7 +86,7 @@ export async function checkAuth() {
         // Catch any unexpected errors
         console.error("Unexpected error during auth check:", error);
         console.log("Attempting to show modal due to unexpected error..."); // Log
-        if(modal) { 
+        if(modal) {
              modal.classList.remove("hidden");
              console.log("Modal classes after attempting removal (catch block):", modal.className); // Log classes
         }
