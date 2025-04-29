@@ -4,7 +4,7 @@
  */
 
 // Import core services
-import { checkAuth } from "./services/auth-service.js";
+import { signOut, checkAuth } from "./services/auth-service.js";
 import { loadGames } from "./services/GameService.js";
 
 // Import UI modules
@@ -27,7 +27,9 @@ import { showAccountSettings } from "./modules/account-settings.js";
  */
 async function initializeMarketplace() {
     try {
+        console.log("Checking authentication..."); // Log
         const isAuthenticated = await checkAuth();
+        console.log("Is authenticated:", isAuthenticated); // Log
         return isAuthenticated;
     } catch (error) {
         console.error("Authentication error:", error);
@@ -40,9 +42,24 @@ async function initializeMarketplace() {
  * @description Initializes the marketplace when the DOM is fully loaded
  */
 document.addEventListener("DOMContentLoaded", async () => {
+    console.log("DOMContentLoaded event fired."); // Log
+    const loadingSpinner = document.getElementById('loading');
+    if (loadingSpinner) loadingSpinner.classList.remove('hidden'); // Show loading spinner
+
     // Check authentication first
     const isAuthenticated = await initializeMarketplace();
-    if (!isAuthenticated) return;
+
+    // If not authenticated, stop further execution for marketplace features.
+    // checkAuth should handle showing the modal.
+    if (!isAuthenticated) {
+        console.log("User not authenticated. Stopping marketplace initialization."); // Log
+        if (loadingSpinner) loadingSpinner.classList.add('hidden'); // Hide loading spinner
+        return; // Stop execution here
+    }
+
+    console.log("User authenticated. Initializing marketplace..."); // Log
+
+    // --- Code below only runs if authenticated ---
 
     // Set up year picker button
     setupYearPickerButton();
@@ -75,4 +92,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.addItemToCart = addItemToCart;
     window.showGameDetails = showGameDetails;
     window.handleFilterSelection = handleFilterSelection;
+
+    window.handleSignOut = async function() {
+        try {
+            await signOut(); // signOut handles the redirect internally
+        } catch (error) {
+            console.error('Error signing out:', error);
+            alert('Failed to sign out. Please try again.');
+        }
+    };
+
+    // Hide loading spinner after setup
+    if (loadingSpinner) loadingSpinner.classList.add('hidden');
 });

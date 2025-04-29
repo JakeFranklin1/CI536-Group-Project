@@ -8,11 +8,24 @@ import supabase from "../supabase-client.js";
  */
 export async function signOut() {
     try {
+        // Try the Supabase signOut
         const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        window.location.href = "../pages/login.html";
+
+        // Even if there's an error, continue with cleanup and redirect
+        if (error) {
+            console.warn("Supabase sign out had an error:", error.message);
+        }
     } catch (error) {
-        console.error("Error signing out:", error.message);
+        console.error("Error during sign out process:", error.message);
+    } finally {
+        // Force clean any potential storage items that might be causing the issue
+        // This ensures clean logout even if the API call fails
+        localStorage.removeItem('supabase.auth.token');
+        localStorage.removeItem('supabase.auth.expires_at');
+        sessionStorage.clear();
+        localStorage.clear();
+
+        window.location.href = "/frontend/pages/login.html";
     }
 }
 
@@ -24,24 +37,50 @@ export async function signOut() {
  * @returns {Promise<boolean>} - True if the user is authenticated, false otherwise.
  */
 export async function checkAuth() {
+    const modal = document.getElementById("auth-modal"); // Get modal element once
+    // Log if modal element was found
+    if (!modal) {
+        console.error("CRITICAL: Auth modal element (#auth-modal) not found in the DOM!");
+        return false; // Can't proceed without the modal
+    } else {
+        console.log("Auth modal element found:", modal);
+    }
+
+
     try {
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-        if (!user) {
-            // Show modal instead of redirecting
-            const modal = document.getElementById("auth-modal");
-            if (modal) {
-                modal.classList.remove("hidden");
-            }
+        console.log("Attempting to get user..."); // Log: Start check
+        const { data: { user }, error } = await supabase.auth.getUser();
+
+        // Handle potential errors during getUser call
+        if (error) {
+            console.error("Auth check error:", error.message);
+            console.log("Attempting to show modal due to error..."); // Log
+            modal.classList.remove("hidden");
+            console.log("Modal classes after attempting removal (error case):", modal.className); // Log classes
             return false;
         }
-        return true;
-    } catch (error) {
-        console.error("Auth error:", error);
-        const modal = document.getElementById("auth-modal");
-        if (modal) {
+
+        if (!user) {
+            console.log("No user session found."); // Log: No user
+            console.log("Attempting to show modal because no user found..."); // Log
             modal.classList.remove("hidden");
+            console.log("Modal classes after attempting removal (no user case):", modal.className); // Log classes
+            return false; // User is not authenticated
+        }
+
+        console.log("User session found:", user.email); // Log: User found
+        // If user exists, ensure modal is hidden
+        modal.classList.add("hidden");
+        console.log("Modal hidden as user is authenticated."); // Log
+        return true; // User is authenticated
+
+    } catch (error) {
+        // Catch any unexpected errors
+        console.error("Unexpected error during auth check:", error);
+        console.log("Attempting to show modal due to unexpected error..."); // Log
+        if(modal) { 
+             modal.classList.remove("hidden");
+             console.log("Modal classes after attempting removal (catch block):", modal.className); // Log classes
         }
         return false;
     }

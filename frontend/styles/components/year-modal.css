@@ -37,11 +37,9 @@
     gap: 8px;
     margin-bottom: 20px;
 }
-
 .modal.hidden {
     display: none;
 }
-
 .decade-tab {
     padding: 8px 16px;
     border-radius: 20px;
