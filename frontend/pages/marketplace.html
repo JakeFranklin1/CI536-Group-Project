@@ -20,7 +20,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../styles/marketplace-main.css" />
-
+    <link rel="stylesheet" href="../styles/components/full-cart.css">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -146,32 +146,6 @@
                     <i class="fa fa-times"></i>
                 </button>
             </div>
-
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Example Game</div>
-                    <div class="cart-item-info">
-                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
-                            class="cart-item-image">
-                        <div>
-                            <div class="cart-item-platform">PlayStation 5</div>
-                            <div class="cart-item-price">£59.99</div>
-                            <div class="cart-item-quantity">
-                                <label>Qty:</label>
-                                <div class="quantity-controls">
-                                    <button class="quantity-decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-increment">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="cart-remove" title="Remove item">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-
         </div>
 
         <div class="cart-summary">
@@ -191,7 +165,6 @@
                 <span class="line line3"></span>
             </div>
         </button>
-
         <aside class="side-nav">
             <nav class="side-nav-content">
 
@@ -199,7 +172,7 @@
                     <h3>Settings</h3>
                     <ul>
                         <li>
-                            <a href="account.html">
+                            <a href="">
                                 <span class="icon-container"><i class="fa fa-user"></i></span>
                                 Profile
                             </a>
@@ -224,23 +197,24 @@
                         </li>
                     </ul>
                 </div>
+
                 <div class="filter-section">
                     <h3>Community</h3>
                     <ul>
                         <li>
-                            <a href="list-game.html">
-                                <span class="icon-container"><i class="fa fa-plus"></i></span>
+                            <a href="sell.html">
+                                <span class="icon-container"><i class="fa fa-tag"></i></span>
                                 List a Game
                             </a>
                         </li>
                         <li>
-                            <button type="button" onclick="handleFilterSelection('timeframe', 'Community Games')">
-                                <span class="icon-container"><i class="fa fa-users"></i></span>
-                                Community Games
+                            <button type="button">
+                                <span class="icon-container"><i class="fa fa-clock-o"></i></span>
+                                Recently Added
                             </button>
                         </li>
                         <li>
-                            <a href="manage-listings.html">
+                            <a href="sell.html">
                                 <span class="icon-container"><i class="fa fa-list"></i></span>
                                 Manage Listings
                             </a>
@@ -409,7 +383,6 @@
                 </div>
             </div>
         </main>
-
         <!-- Footer Section -->
         <footer class="marketplace-footer">
             <div class="footer-container">
@@ -496,6 +469,8 @@
     <script type="module" src="../js/components/SideCart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
     <script type="module" src="../js/utils/dropdown.js"></script>
+    <script type="module" src="../js/checkout.js"></script>
+    <script src="../js/components/FullCart.js"></script>
 </body>
 
 </html>
