@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Insert the order into the 'orders' table
         const { data, error } = await supabase.from("orders").insert([
             {
-                order_id: orderId
+                order_id: orderId,
                 user_id: userId,
                 order_date: orderDate,
                 total_price: cartTotal,
