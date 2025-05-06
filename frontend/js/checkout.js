@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const checkoutBtn = document.getElementById("checkout-btn");
+    const checkoutBtn = document.querySelector(".checkout-btn");
 
     if (!checkoutBtn) {
         console.warn("Checkout button not found.");
