@@ -1,3 +1,5 @@
+import supabase from './supabase-client.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const checkoutBtn = document.querySelector(".checkout-btn");
 
