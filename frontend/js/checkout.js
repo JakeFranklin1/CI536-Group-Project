@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     checkoutBtn.addEventListener("click", async () => {
         // Need to get the current user ID and the total amount from the cart
+        const orderId = "9a1a036b-fe16-4780-8494-701f21f9f66d";
         const userId = "9a1a036b-fe16-4780-8494-701f21f9f66d";
         const cartTotal = 50.0;
         const orderDate = "2025-03-24";
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Insert the order into the 'orders' table
         const { data, error } = await supabase.from("orders").insert([
             {
+                order_id: orderId
                 user_id: userId,
                 order_date: orderDate,
                 total_price: cartTotal,
