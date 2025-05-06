@@ -31,4 +31,3 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Checkout successful! Your order is being processed.");
     });
 });
-
