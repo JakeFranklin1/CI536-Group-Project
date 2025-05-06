@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Need to get the current user ID and the total amount from the cart
         const orderId = "9a1a036b-fe16-4780-8494-701f21f9f66d";
         const userId = "9a1a036b-fe16-4780-8494-701f21f9f66d";
-        const cartTotal = 50.0;
+        const cartTotal = 50;
         const orderDate = "2025-03-24";
 
         // Insert the order into the 'orders' table
