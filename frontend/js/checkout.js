@@ -11,20 +11,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     checkoutBtn.addEventListener("click", async () => {
-
-        // Defines relevant variables 
+        // Defines relevant variables
         const orderId = crypto.randomUUID();
-        const { data: { user }, error: error1 } = await supabase.auth.getUser();
+        const {
+            data: { user },
+            error: error1,
+        } = await supabase.auth.getUser();
 
         let userId;
 
-           if (error1) {
-              console.error("Error getting user:", error1.message);
-           } else if (!user) {
-              console.warn("No user found. User may not be logged in.");
-           } else {
-              userId = user.id;
-           }
+        if (error1) {
+            console.error("Error getting user:", error1.message);
+        } else if (!user) {
+            console.warn("No user found. User may not be logged in.");
+        } else {
+            userId = user.id;
+        }
 
         const cartTotal = 129.98;
         const orderDate = new Date().toISOString().split("T")[0];
