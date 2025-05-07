@@ -1,5 +1,7 @@
+// Allows for database access
 import supabase from "./supabase-client.js";
 
+// Makes sure page is loaded
 document.addEventListener("DOMContentLoaded", () => {
     const checkoutBtn = document.querySelector(".checkout-btn");
 
@@ -9,14 +11,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     checkoutBtn.addEventListener("click", async () => {
-        // Need to get the current user ID and the total amount from the cart
-        const orderId = "9a1a036b-fe16-4780-8494-701f21f9f66d";
-        const userId = "9a1a036b-fe16-4780-8494-701f21f9f66d";
-        const cartTotal = 50;
-        const orderDate = "2025-03-24";
 
-        // Insert the order into the 'orders' table
-        const { data, error } = await supabase.from("orders").insert([
+        // Defines relevant variables 
+        const orderId = crypto.randomUUID();
+        const { data: { user }, error: error1 } = await supabase.auth.getUser();
+
+        let userId;
+
+           if (error1) {
+              console.error("Error getting user:", error1.message);
+           } else if (!user) {
+              console.warn("No user found. User may not be logged in.");
+           } else {
+              userId = user.id;
+           }
+
+        const cartTotal = 129.98;
+        const orderDate = new Date().toISOString().split("T")[0];
+
+        // Inserts order into 'orders' table in database
+        const { data, error2 } = await supabase.from("orders").insert([
             {
                 order_id: orderId,
                 user_id: userId,
@@ -25,13 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         ]);
 
-        if (error) {
-            console.error("Error inserting order:", error);
+        if (error2) {
+            console.error("Error inserting order:", error2);
             alert("There was an issue with your checkout. Please try again.");
             return;
         }
 
-        // If successful, notify the user
         alert("Checkout successful! Your order is being processed.");
     });
 });
