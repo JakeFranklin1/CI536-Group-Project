@@ -20,8 +20,8 @@ export async function signOut() {
     } finally {
         // Force clean any potential storage items that might be causing the issue
         // This ensures clean logout even if the API call fails
-        localStorage.removeItem('supabase.auth.token');
-        localStorage.removeItem('supabase.auth.expires_at');
+        localStorage.removeItem("supabase.auth.token");
+        localStorage.removeItem("supabase.auth.expires_at");
         sessionStorage.clear();
         localStorage.clear();
 
@@ -30,7 +30,9 @@ export async function signOut() {
         // Fallback in case redirect is blocked
         setTimeout(() => {
             if (window.location.pathname.indexOf("login.html") === -1) {
-                console.warn("Redirect to login.html failed, forcing reload...");
+                console.warn(
+                    "Redirect to login.html failed, forcing reload..."
+                );
                 window.location.assign("login.html");
             }
         }, 6000);
@@ -48,23 +50,30 @@ export async function checkAuth() {
     const modal = document.getElementById("auth-modal"); // Get modal element once
     // Log if modal element was found
     if (!modal) {
-        console.error("CRITICAL: Auth modal element (#auth-modal) not found in the DOM!");
+        console.error(
+            "CRITICAL: Auth modal element (#auth-modal) not found in the DOM!"
+        );
         return false; // Can't proceed without the modal
     } else {
         console.log("Auth modal element found:", modal);
     }
 
-
     try {
         console.log("Attempting to get user..."); // Log: Start check
-        const { data: { user }, error } = await supabase.auth.getUser();
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.getUser();
 
         // Handle potential errors during getUser call
         if (error) {
             console.error("Auth check error:", error.message);
             console.log("Attempting to show modal due to error..."); // Log
             modal.classList.remove("hidden");
-            console.log("Modal classes after attempting removal (error case):", modal.className); // Log classes
+            console.log(
+                "Modal classes after attempting removal (error case):",
+                modal.className
+            ); // Log classes
             return false;
         }
 
@@ -72,7 +81,10 @@ export async function checkAuth() {
             console.log("No user session found."); // Log: No user
             console.log("Attempting to show modal because no user found..."); // Log
             modal.classList.remove("hidden");
-            console.log("Modal classes after attempting removal (no user case):", modal.className); // Log classes
+            console.log(
+                "Modal classes after attempting removal (no user case):",
+                modal.className
+            ); // Log classes
             return false; // User is not authenticated
         }
 
@@ -81,14 +93,16 @@ export async function checkAuth() {
         modal.classList.add("hidden");
         console.log("Modal hidden as user is authenticated."); // Log
         return true; // User is authenticated
-
     } catch (error) {
         // Catch any unexpected errors
         console.error("Unexpected error during auth check:", error);
         console.log("Attempting to show modal due to unexpected error..."); // Log
-        if(modal) {
-             modal.classList.remove("hidden");
-             console.log("Modal classes after attempting removal (catch block):", modal.className); // Log classes
+        if (modal) {
+            modal.classList.remove("hidden");
+            console.log(
+                "Modal classes after attempting removal (catch block):",
+                modal.className
+            ); // Log classes
         }
         return false;
     }

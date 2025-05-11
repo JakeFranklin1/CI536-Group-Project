@@ -46,45 +46,56 @@
     </div>
 
     <!-- Edit Listing Modal -->
-    <div id="edit-listing-modal" class="modal hidden">
-        <div class="modal-content edit-listing-content">
+    <div id="edit-listing-modal" class="edit-listing-modal hidden">
+        <div class="edit-listing-content">
             <button class="close-modal">&times;</button>
             <h2>Edit Game Listing</h2>
-            <form id="edit-listing-form">
+
+            <form id="edit-listing-form" class="edit-listing-form">
                 <input type="hidden" id="edit-listing-id">
 
                 <div class="form-group">
                     <label for="edit-title">Game Title</label>
                     <input type="text" id="edit-title" name="title" required>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="edit-description">Description</label>
                     <textarea id="edit-description" name="description" rows="4"></textarea>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="edit-price">Price (£)</label>
                     <input type="number" id="edit-price" name="price" min="0.01" step="0.01" required>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="edit-release-date">Release Date</label>
                     <input type="date" id="edit-release-date" name="release_date">
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Cover Image</label>
-                    <div class="edit-cover-preview" id="edit-cover-preview"></div>
-                    <input type="file" id="edit-cover-image" name="cover_image" accept="image/*" title="Select a cover image">
+                    <div class="image-preview-container" id="edit-cover-preview"></div>
+                    <div class="image-upload-container">
+                        <input type="file" id="edit-cover-image" name="cover_image" accept="image/*">
+                    </div>
                     <p class="form-tip">Current cover image will be kept if no new image is selected</p>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Screenshots (Max 5)</label>
-                    <div class="edit-screenshots-preview" id="edit-screenshots-preview"></div>
-                    <input type="file" id="edit-screenshots" name="screenshots" accept="image/*" multiple title="Select up to 5 images">
+                    <div class="image-preview-container" id="edit-screenshots-preview"></div>
+                    <div class="image-upload-container">
+                        <input type="file" id="edit-screenshots" name="screenshots" accept="image/*" multiple>
+                    </div>
                     <p class="form-tip">Current screenshots will be kept if no new images are selected</p>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-actions">
@@ -263,7 +274,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <button type="button" onclick="handleFilterSelection('timeframe', 'Community Games')">
+                                    <button type="button"
+                                        onclick="handleFilterSelection('timeframe', 'Community Games')">
                                         <span class="icon-container"><i class="fa fa-users"></i></span>
                                         Community Games
                                     </button>
@@ -416,7 +428,7 @@
                         <i class="fa fa-gamepad"></i>
                         <h2>You haven't listed any games yet</h2>
                         <p>Start selling your games to the community!</p>
-                        <a href="list-game.html" class="btn-primary">
+                        <a href="list-game.html" class="list-new-btn">
                             <i class="fa fa-plus"></i> List Your First Game
                         </a>
                     </div>
@@ -442,8 +454,8 @@
                     </div>
 
                     <div class="add-game-container">
-                        <a href="list-game.html" class="btn-primary">
-                            <i class="fa fa-plus"></i> Add New Game
+                        <a href="list-game.html" class="btn-primary add-game-btn">
+                            <i class="fa fa-plus"></i> Add Game
                         </a>
                     </div>
                 </main>

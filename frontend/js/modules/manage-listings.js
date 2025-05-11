@@ -151,12 +151,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         // Delete confirmation buttons
-        const closeDeleteButtons = document.querySelectorAll(
-            ".close-delete-modal"
-        );
-        closeDeleteButtons.forEach((button) => {
-            button.addEventListener("click", closeDeleteModal);
-        });
+const closeDeleteButtons = document.querySelectorAll(
+    ".close-delete-modal"
+);
+closeDeleteButtons.forEach((button) => {
+    button.addEventListener("click", closeDeleteModal);
+});
 
         const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
         confirmDeleteBtn.addEventListener("click", confirmDeleteListing);
@@ -174,31 +174,23 @@ document.addEventListener("DOMContentLoaded", async function () {
      * Handles clicks on action buttons in the listings table
      * @param {Event} e - Click event
      */
-    async function handleTableActions(e) {
-        const target = e.target.closest(".action-btn");
-        if (!target) return;
+   async function handleTableActions(e) {
+    // Always get the button, even if the icon is clicked
+    const button = e.target.closest(".action-btn");
+    if (!button) return;
 
-        const row = target.closest("tr");
-        const listingId = row.dataset.listingId;
+    // Always get the row from the button
+    const row = button.closest("tr");
+    const listingId = row ? row.dataset.listingId : null;
 
-        if (
-            target.classList.contains("edit-btn") ||
-            target.querySelector(".fa-pencil")
-        ) {
-            await openEditModal(listingId);
-        } else if (
-            target.classList.contains("delete-btn") ||
-            target.querySelector(".fa-trash")
-        ) {
-            openDeleteModal(listingId);
-        } else if (
-            target.classList.contains("view-btn") ||
-            target.querySelector(".fa-eye")
-        ) {
-            // Redirect to marketplace with a filter for this specific game
-            window.location.href = `marketplace.html?timeframe=Community%20Games&listing=${listingId}`;
-        }
+    if (button.classList.contains("edit-btn")) {
+        await openEditModal(listingId);
+    } else if (button.classList.contains("delete-btn")) {
+        openDeleteModal(listingId);
+    } else if (button.classList.contains("view-btn")) {
+        window.location.href = `marketplace.html?timeframe=Community%20Games&listing=${listingId}`;
     }
+}
 
     /**
      * Opens the edit modal for a specific listing
@@ -208,6 +200,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             // Show loading indicator
             document.getElementById("loading").classList.remove("hidden");
+            document.body.classList.add("modal-open");
 
             // Fetch listing data
             const { data: listing, error } = await supabase
@@ -284,29 +277,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("edit-listing-form").reset();
         document.getElementById("edit-cover-preview").innerHTML = "";
         document.getElementById("edit-screenshots-preview").innerHTML = "";
+        document.body.classList.remove("modal-open");
     }
 
     /**
      * Opens the delete confirmation modal
      * @param {string} listingId - ID of the listing to delete
      */
-    function openDeleteModal(listingId) {
-        // Store the listing ID for deletion
-        document.getElementById("confirm-delete-btn").dataset.listingId =
-            listingId;
-        document
-            .getElementById("delete-confirmation-modal")
-            .classList.remove("hidden");
+function openDeleteModal(listingId) {
+    if (!listingId) {
+        showToast("No listing selected for deletion.", "error");
+        return;
     }
+    document.getElementById("confirm-delete-btn").dataset.listingId = listingId;
+    document.getElementById("delete-confirmation-modal").classList.remove("hidden");
+}
 
     /**
      * Closes the delete confirmation modal
      */
-    function closeDeleteModal() {
-        document
-            .getElementById("delete-confirmation-modal")
-            .classList.add("hidden");
-    }
+function closeDeleteModal() {
+    document.getElementById("delete-confirmation-modal").classList.add("hidden");
+    document.getElementById("confirm-delete-btn").dataset.listingId = "";
+}
 
     /**
      * Handles the submission of the edit form
@@ -435,13 +428,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     /**
      * Confirms and executes the deletion of a listing
      */
-    async function confirmDeleteListing() {
-        try {
-            // Show loading indicator
-            document.getElementById("loading").classList.remove("hidden");
+async function confirmDeleteListing() {
+    try {
+        document.getElementById("loading").classList.remove("hidden");
 
-            const listingId =
-                document.getElementById("confirm-delete-btn").dataset.listingId;
+        const listingId = document.getElementById("confirm-delete-btn").dataset.listingId;
+        if (!listingId) {
+            showToast("No listing selected for deletion.", "error");
+            closeDeleteModal();
+            return;
+        }
 
             // First get the listing to get screenshot info
             const { data: listing, error: fetchError } = await supabase
