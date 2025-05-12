@@ -30,7 +30,9 @@ export function addItemToCart(gameCard) {
     const cartIcon = document.querySelector(".cart-btn");
 
     if (!addToCartBtn || !cartIcon) {
-        console.log("Required elements for cart animation not found, adding directly to cart");
+        console.log(
+            "Required elements for cart animation not found, adding directly to cart"
+        );
         // Skip animation and add directly to cart
         addToCartDirectly(gameTitle, gamePrice, gameImage);
         return;
