@@ -66,7 +66,7 @@ export async function fetchCommunityGames(sortOrder = "recent") {
     try {
         // Build the query based on sort order
         let query = supabase.from("game_listings").select(`
-            id, title, description, release_date, price, cover_image,
+            id, title, description, release_date, price, cover_image, platforms,
             users!user_id (id, first_name, last_name, email),
             game_screenshots!game_listing_id (id, screenshot_url)
         `);
@@ -100,18 +100,24 @@ export async function fetchCommunityGames(sortOrder = "recent") {
             id: game.id,
             name: game.title,
             summary: game.description || "No description available",
-            first_release_date: game.release_date, // Ensure this is mapped correctly
-            cover_image: game.cover_image || "../assets/images/placeholder-game.webp",
+            first_release_date: game.release_date,
+            cover_image:
+                game.cover_image || "../assets/images/placeholder-game.webp",
             game_screenshots: game.game_screenshots,
-            screenshots: game.game_screenshots?.map((screenshot) => ({
-                url: screenshot.screenshot_url,
-            })) || [],
-            platforms: [{ name: "PC" }],
+            screenshots:
+                game.game_screenshots?.map((screenshot) => ({
+                    url: screenshot.screenshot_url,
+                })) || [],
+            // Convert platforms array to objects with name property to match IGDB format
+            platforms: game.platforms?.map((platform) => ({
+                name: platform,
+            })) || [{ name: "PC" }],
             age_rating_string: "Not Rated",
             price: game.price,
             isCommunityGame: true,
             creator: game.users
-                ? `${game.users.first_name || ""} ${game.users.last_name || ""}`.trim() || "Anonymous User"
+                ? `${game.users.first_name || ""} ${game.users.last_name || ""}`.trim() ||
+                  "Anonymous User"
                 : "Anonymous User",
             users: game.users,
         }));

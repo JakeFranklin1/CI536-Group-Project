@@ -60,6 +60,7 @@
 
     <div id="cart-overlay" class="cart-overlay"></div>
 
+
     <!-- Side cart -->
     <div class="side-cart">
         <div class="side-cart-header">
@@ -68,63 +69,16 @@
         </div>
 
         <div class="cart-items">
-
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Example Game</div>
-                    <div class="cart-item-info">
-                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
-                            class="cart-item-image">
-                        <div>
-                            <div class="cart-item-platform">PlayStation 5</div>
-                            <div class="cart-item-price">£59.99</div>
-                            <div class="cart-item-quantity">
-                                <label>Qty:</label>
-                                <div class="quantity-controls">
-                                    <button class="quantity-decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-increment">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="cart-remove" title="Remove item">
-                    <i class="fa fa-times"></i>
-                </button>
+            <div class="empty-cart">
+                <i class="fa fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
             </div>
-
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Example Game</div>
-                    <div class="cart-item-info">
-                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
-                            class="cart-item-image">
-                        <div>
-                            <div class="cart-item-platform">PlayStation 5</div>
-                            <div class="cart-item-price">£59.99</div>
-                            <div class="cart-item-quantity">
-                                <label>Qty:</label>
-                                <div class="quantity-controls">
-                                    <button class="quantity-decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-increment">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="cart-remove" title="Remove item">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-
         </div>
 
         <div class="cart-summary">
             <div class="cart-total">
                 <span>Total:</span>
-                <span id="total-cost">$129.98</span>
+                <span id="total-cost">£0.00</span>
             </div>
             <button class="checkout-btn">Checkout</button>
         </div>
@@ -366,10 +320,8 @@
                                     <button type="button" class="platform-btn" data-platform="Xbox">Xbox</button>
                                     <button type="button" class="platform-btn"
                                         data-platform="Nintendo">Nintendo</button>
-                                    <button type="button" class="platform-btn"
-                                        data-platform="Android">Android</button>
-                                    <button type="button" class="platform-btn"
-                                        data-platform="Apple">Apple</button>
+                                    <button type="button" class="platform-btn" data-platform="Android">Android</button>
+                                    <button type="button" class="platform-btn" data-platform="Apple">Apple</button>
                                 </div>
                                 <div class="error-message" id="platform-error"></div>
                             </div>

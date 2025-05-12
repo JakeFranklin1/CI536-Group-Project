@@ -126,8 +126,8 @@ function createCommunityGameCard(game) {
     const img = document.createElement("img");
     img.src = escapeHTML(
         game.cover_image || "../assets/images/placeholder-game.webp"
-    ); // Use cover_image directly
-    img.alt = escapeHTML(game.name); // Use game.name here
+    );
+    img.alt = escapeHTML(game.name);
     img.className = "game-image";
     img.loading = "lazy";
     card.appendChild(img);
@@ -159,17 +159,35 @@ function createCommunityGameCard(game) {
     purchaseRow.appendChild(price);
     details.appendChild(purchaseRow);
 
+    // Platform icons - using the GameService getPlatformIcons if available
+    const platformIconsContainer = document.createElement("div");
+    platformIconsContainer.className = "platform-icons";
+
+    // If window.getPlatformIcons exists, use it, otherwise create our own implementation
+    if (typeof window.getPlatformIcons === "function") {
+        platformIconsContainer.innerHTML = window.getPlatformIcons(
+            game.platforms
+        );
+    } else {
+        // Simplified version for community games
+        platformIconsContainer.innerHTML = generatePlatformIconsHTML(
+            game.platforms
+        );
+    }
+
+    details.appendChild(platformIconsContainer);
+
     // Game title
     const title = document.createElement("h2");
     title.className = "game-title";
-    title.textContent = escapeHTML(game.name); // Use game.name here
+    title.textContent = escapeHTML(game.name);
     details.appendChild(title);
 
     // Creator name
     const creator = document.createElement("p");
-    creator.className = "game-age-rating";
+    creator.className = "game-creator"; // Changed from game-age-rating to be more semantic
     const authorName = game.creator || "Anonymous User";
-    creator.textContent = `Created by: ${escapeHTML(authorName)}`;
+    creator.textContent = `Listed by: ${escapeHTML(authorName)}`;
     details.appendChild(creator);
 
     // Add details to card
@@ -185,6 +203,63 @@ function createCommunityGameCard(game) {
     return card;
 }
 
+// Helper function to generate platform icons HTML
+function generatePlatformIconsHTML(platforms) {
+    // Default to PC if no platforms
+    if (!platforms || platforms.length === 0) {
+        return '<img src="../assets/icons/windows.svg" alt="PC" class="platform-icon" title="PC">';
+    }
+
+    // Platform mapping for icons
+    const platformIconMap = {
+        PC: "../assets/icons/windows.svg",
+        Windows: "../assets/icons/windows.svg",
+        PlayStation: "../assets/icons/playstation.svg",
+        Xbox: "../assets/icons/xbox.svg",
+        Nintendo: "../assets/icons/nintendo.svg",
+        Mobile: "../assets/icons/android.svg",
+        Web: "../assets/icons/web.svg",
+    };
+
+    // Track used icons to avoid duplicates
+    const usedIcons = new Set();
+
+    return platforms
+        .map((platform) => {
+            // Handle both string and object format
+            const platformName =
+                typeof platform === "object" ? platform.name : platform;
+            if (!platformName) return "";
+
+            // Find the appropriate icon
+            let iconPath = platformIconMap[platformName];
+
+            // If no direct match, try partial match
+            if (!iconPath) {
+                if (platformName.includes("PlayStation")) {
+                    iconPath = "../assets/icons/playstation.svg";
+                } else if (platformName.includes("Xbox")) {
+                    iconPath = "../assets/icons/xbox.svg";
+                } else if (
+                    platformName.includes("Nintendo") ||
+                    platformName.includes("Switch")
+                ) {
+                    iconPath = "../assets/icons/nintendo.svg";
+                } else {
+                    // Default to PC
+                    iconPath = "../assets/icons/windows.svg";
+                }
+            }
+
+            // Skip duplicates
+            if (usedIcons.has(iconPath)) return "";
+            usedIcons.add(iconPath);
+
+            return `<img src="${escapeHTML(iconPath)}" alt="${escapeHTML(platformName)}" class="platform-icon" title="${escapeHTML(platformName)}">`;
+        })
+        .filter((html) => html) // Remove empty strings
+        .join("");
+}
 /**
  * Shows detailed view for a community game
  * @param {Object} game - Game data from Supabase
@@ -193,23 +268,24 @@ async function showCommunityGameDetails(game) {
     // Create a game object that will be updated with screenshots
     let formattedGame = {
         id: game.id,
-        name: game.name || "Unknown Game", // Use game.name instead of game.title
-        summary: game.summary || "No description available", // Use game.summary instead of game.description
+        name: game.name || "Unknown Game",
+        summary: game.summary || "No description available",
         first_release_date: game.first_release_date
             ? new Date(game.first_release_date).toLocaleDateString("en-GB", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
               })
-            : "Unknown release date", // Format release date or show "Unknown"
+            : "Unknown release date",
         cover: { url: game.cover_image },
-        screenshots: [], // Will be populated
-        platforms: [{ name: "PC" }], // Default platform
+        screenshots: [],
+        platforms: game.platforms || [{ name: "PC" }],
         age_rating_string: "PEGI 12",
-        price: `${parseFloat(game.price).toFixed(2)}`,
+        price: parseFloat(game.price).toFixed(2),
     };
 
     console.log("Raw release date:", game.first_release_date);
+    console.log("Platforms for game details:", game.platforms);
 
     // Check if screenshots exist in the game object
     if (game.game_screenshots && game.game_screenshots.length > 0) {
@@ -258,13 +334,18 @@ async function showCommunityGameDetails(game) {
 function showFormattedGame(formattedGame, originalGame) {
     console.log("Formatted game with screenshots:", formattedGame);
 
+    // Generate platform icons HTML
+    const platformIconsHTML = generatePlatformIconsHTML(
+        formattedGame.platforms
+    );
+
     // If we have the global showGameDetails function, use it
     if (typeof window.showGameDetails === "function") {
         window.showGameDetails(
             formattedGame,
-            formattedGame.cover.url, // Use formattedGame.cover.url
-            '<img src="../assets/icons/windows.svg" alt="PC" title="PC">', // Default platform icon
-            formattedGame.price // Use formatted price
+            formattedGame.cover.url,
+            platformIconsHTML, // Use the generated platform icons HTML
+            formattedGame.price
         );
     } else {
         // Fallback if showGameDetails is not available
