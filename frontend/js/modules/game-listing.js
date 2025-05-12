@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      * @param {HTMLElement} element - The element to enable drag and drop on
      * @param {Function} callback - Function to call with the dropped files
      */
-        function setupDragDrop(element, callback) {
+    function setupDragDrop(element, callback) {
         ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
             element.addEventListener(eventName, preventDefaults, false);
         });
@@ -240,7 +240,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (element.id === "screenshots-upload-container") {
                 const screenshotInput = document.getElementById("screenshots");
                 const dataTransfer = new DataTransfer();
-                Array.from(files).forEach((file) => dataTransfer.items.add(file));
+                Array.from(files).forEach((file) =>
+                    dataTransfer.items.add(file)
+                );
                 screenshotInput.files = dataTransfer.files;
             }
         });
@@ -250,7 +252,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      * Handles cover image upload and preview
      * @param {File} file - The uploaded cover image file
      */
-        function handleCoverImageUpload(file) {
+    function handleCoverImageUpload(file) {
         if (!file) return;
 
         // Validate file

@@ -227,62 +227,65 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     /**
- * Opens the edit modal for a specific listing
- * @param {string} listingId - ID of the listing to edit
- */
-async function openEditModal(listingId) {
-    try {
-        // Show loading indicator
-        document.getElementById("loading").classList.remove("hidden");
-        document.body.classList.add("modal-open");
-        selectedPlatforms = [];
+     * Opens the edit modal for a specific listing
+     * @param {string} listingId - ID of the listing to edit
+     */
+    async function openEditModal(listingId) {
+        try {
+            // Show loading indicator
+            document.getElementById("loading").classList.remove("hidden");
+            document.body.classList.add("modal-open");
+            selectedPlatforms = [];
 
-        // Fetch listing data
-        const { data: listing, error } = await supabase
-            .from("game_listings")
-            .select(
-                `
+            // Fetch listing data
+            const { data: listing, error } = await supabase
+                .from("game_listings")
+                .select(
+                    `
                 *,
                 game_screenshots(id, screenshot_url)
             `
-            )
-            .eq("id", listingId)
-            .single();
+                )
+                .eq("id", listingId)
+                .single();
 
-        if (error) throw error;
+            if (error) throw error;
 
-        // Populate form fields
-        document.getElementById("edit-listing-id").value = listing.id;
-        document.getElementById("edit-title").value = listing.title;
-        document.getElementById("edit-description").value =
-            listing.description || "";
-        document.getElementById("edit-price").value = listing.price;
+            // Populate form fields
+            document.getElementById("edit-listing-id").value = listing.id;
+            document.getElementById("edit-title").value = listing.title;
+            document.getElementById("edit-description").value =
+                listing.description || "";
+            document.getElementById("edit-price").value = listing.price;
 
-        if (listing.release_date) {
-            // Format date for input (YYYY-MM-DD)
-            const releaseDate = new Date(listing.release_date);
-            const formattedDate = releaseDate.toISOString().split("T")[0];
-            document.getElementById("edit-release-date").value =
-                formattedDate;
-        } else {
-            document.getElementById("edit-release-date").value = "";
-        }
+            if (listing.release_date) {
+                // Format date for input (YYYY-MM-DD)
+                const releaseDate = new Date(listing.release_date);
+                const formattedDate = releaseDate.toISOString().split("T")[0];
+                document.getElementById("edit-release-date").value =
+                    formattedDate;
+            } else {
+                document.getElementById("edit-release-date").value = "";
+            }
 
-        // Show cover image preview
-        const coverPreview = document.getElementById("edit-cover-preview");
-        coverPreview.innerHTML = `
+            // Show cover image preview
+            const coverPreview = document.getElementById("edit-cover-preview");
+            coverPreview.innerHTML = `
             <img src="${listing.cover_image}" alt="Cover image" class="preview-image">
         `;
 
-        // Show screenshots preview with remove buttons
-        const screenshotsPreview = document.getElementById(
-            "edit-screenshots-preview"
-        );
-        screenshotsPreview.innerHTML = "";
+            // Show screenshots preview with remove buttons
+            const screenshotsPreview = document.getElementById(
+                "edit-screenshots-preview"
+            );
+            screenshotsPreview.innerHTML = "";
 
-if (listing.game_screenshots && listing.game_screenshots.length > 0) {
-    listing.game_screenshots.forEach((screenshot) => {
-        screenshotsPreview.innerHTML += `
+            if (
+                listing.game_screenshots &&
+                listing.game_screenshots.length > 0
+            ) {
+                listing.game_screenshots.forEach((screenshot) => {
+                    screenshotsPreview.innerHTML += `
             <div class="screenshot-preview-wrapper" data-screenshot-id="${screenshot.id}">
                 <img src="${screenshot.screenshot_url}" alt="Screenshot" class="preview-image" data-id="${screenshot.id}">
                 <button type="button" class="remove-image" data-screenshot-id="${screenshot.id}" title="Remove screenshot">
@@ -290,61 +293,69 @@ if (listing.game_screenshots && listing.game_screenshots.length > 0) {
                 </button>
             </div>
         `;
-    });
-}
-
-// Add event listeners for remove screenshot buttons
-screenshotsPreview.querySelectorAll('.remove-image').forEach(btn => {
-    btn.addEventListener('click', async function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        const wrapper = btn.closest('.screenshot-preview-wrapper');
-        const screenshotId = wrapper.getAttribute('data-screenshot-id');
-        if (screenshotId) {
-            // Remove from DB
-            await supabase.from("game_screenshots").delete().eq("id", screenshotId);
-            // Remove from DOM
-            wrapper.remove();
-        }
-    });
-});
-
-        if (listing.platforms && listing.platforms.length > 0) {
-            const platformButtons = document.querySelectorAll(
-                "#edit-platform-selection .platform-btn"
-            );
-            platformButtons.forEach((btn) => {
-                btn.classList.remove("selected");
-                const platform = btn.dataset.platform;
-
-                if (listing.platforms.includes(platform)) {
-                    btn.classList.add("selected");
-                    selectedPlatforms.push(platform);
-                }
-            });
-        } else {
-            // Default to PC if no platforms specified
-            const pcButton = document.querySelector(
-                '.platform-btn[data-platform="PC"]'
-            );
-            if (pcButton) {
-                pcButton.classList.add("selected");
-                selectedPlatforms = ["PC"];
+                });
             }
-        }
 
-        // Show the modal
-        document
-            .getElementById("edit-listing-modal")
-            .classList.remove("hidden");
-    } catch (error) {
-        console.error("Error loading listing for edit:", error);
-        showToast("Failed to load listing details.", "error");
-    } finally {
-        // Hide loading indicator
-        document.getElementById("loading").classList.add("hidden");
+            // Add event listeners for remove screenshot buttons
+            screenshotsPreview
+                .querySelectorAll(".remove-image")
+                .forEach((btn) => {
+                    btn.addEventListener("click", async function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const wrapper = btn.closest(
+                            ".screenshot-preview-wrapper"
+                        );
+                        const screenshotId =
+                            wrapper.getAttribute("data-screenshot-id");
+                        if (screenshotId) {
+                            // Remove from DB
+                            await supabase
+                                .from("game_screenshots")
+                                .delete()
+                                .eq("id", screenshotId);
+                            // Remove from DOM
+                            wrapper.remove();
+                        }
+                    });
+                });
+
+            if (listing.platforms && listing.platforms.length > 0) {
+                const platformButtons = document.querySelectorAll(
+                    "#edit-platform-selection .platform-btn"
+                );
+                platformButtons.forEach((btn) => {
+                    btn.classList.remove("selected");
+                    const platform = btn.dataset.platform;
+
+                    if (listing.platforms.includes(platform)) {
+                        btn.classList.add("selected");
+                        selectedPlatforms.push(platform);
+                    }
+                });
+            } else {
+                // Default to PC if no platforms specified
+                const pcButton = document.querySelector(
+                    '.platform-btn[data-platform="PC"]'
+                );
+                if (pcButton) {
+                    pcButton.classList.add("selected");
+                    selectedPlatforms = ["PC"];
+                }
+            }
+
+            // Show the modal
+            document
+                .getElementById("edit-listing-modal")
+                .classList.remove("hidden");
+        } catch (error) {
+            console.error("Error loading listing for edit:", error);
+            showToast("Failed to load listing details.", "error");
+        } finally {
+            // Hide loading indicator
+            document.getElementById("loading").classList.add("hidden");
+        }
     }
-}
 
     /**
      * Closes the edit modal
