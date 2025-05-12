@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      * @param {HTMLElement} element - The element to enable drag and drop on
      * @param {Function} callback - Function to call with the dropped files
      */
-    function setupDragDrop(element, callback) {
+        function setupDragDrop(element, callback) {
         ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
             element.addEventListener(eventName, preventDefaults, false);
         });
@@ -235,6 +235,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         element.addEventListener("drop", (e) => {
             const files = e.dataTransfer.files;
             callback(files);
+
+            // Programmatically update the file input field for screenshots
+            if (element.id === "screenshots-upload-container") {
+                const screenshotInput = document.getElementById("screenshots");
+                const dataTransfer = new DataTransfer();
+                Array.from(files).forEach((file) => dataTransfer.items.add(file));
+                screenshotInput.files = dataTransfer.files;
+            }
         });
     }
 
@@ -242,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      * Handles cover image upload and preview
      * @param {File} file - The uploaded cover image file
      */
-    function handleCoverImageUpload(file) {
+        function handleCoverImageUpload(file) {
         if (!file) return;
 
         // Validate file
@@ -252,6 +260,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Store file for later upload
         coverImageFile = file;
+
+        // Programmatically update the file input field
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        document.getElementById("cover-image").files = dataTransfer.files;
 
         // Show preview
         const reader = new FileReader();

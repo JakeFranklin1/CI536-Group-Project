@@ -280,35 +280,34 @@ async function openEditModal(listingId) {
         );
         screenshotsPreview.innerHTML = "";
 
-        if (
-            listing.game_screenshots &&
-            listing.game_screenshots.length > 0
-        ) {
-            listing.game_screenshots.forEach((screenshot) => {
-                screenshotsPreview.innerHTML += `
-                    <div class="screenshot-preview-wrapper" data-screenshot-id="${screenshot.id}">
-                        <img src="${screenshot.screenshot_url}" alt="Screenshot" class="preview-image" data-id="${screenshot.id}">
-                        <button type="button" class="remove-screenshot-btn" title="Remove screenshot">x</button>
-                    </div>
-                `;
-            });
-        }
+if (listing.game_screenshots && listing.game_screenshots.length > 0) {
+    listing.game_screenshots.forEach((screenshot) => {
+        screenshotsPreview.innerHTML += `
+            <div class="screenshot-preview-wrapper" data-screenshot-id="${screenshot.id}">
+                <img src="${screenshot.screenshot_url}" alt="Screenshot" class="preview-image" data-id="${screenshot.id}">
+                <button type="button" class="remove-image" data-screenshot-id="${screenshot.id}" title="Remove screenshot">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        `;
+    });
+}
 
-        // Add event listeners for remove screenshot buttons
-        screenshotsPreview.querySelectorAll('.remove-screenshot-btn').forEach(btn => {
-            btn.addEventListener('click', async function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const wrapper = btn.closest('.screenshot-preview-wrapper');
-                const screenshotId = wrapper.getAttribute('data-screenshot-id');
-                if (screenshotId) {
-                    // Remove from DB
-                    await supabase.from("game_screenshots").delete().eq("id", screenshotId);
-                    // Remove from DOM
-                    wrapper.remove();
-                }
-            });
-        });
+// Add event listeners for remove screenshot buttons
+screenshotsPreview.querySelectorAll('.remove-image').forEach(btn => {
+    btn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const wrapper = btn.closest('.screenshot-preview-wrapper');
+        const screenshotId = wrapper.getAttribute('data-screenshot-id');
+        if (screenshotId) {
+            // Remove from DB
+            await supabase.from("game_screenshots").delete().eq("id", screenshotId);
+            // Remove from DOM
+            wrapper.remove();
+        }
+    });
+});
 
         if (listing.platforms && listing.platforms.length > 0) {
             const platformButtons = document.querySelectorAll(
