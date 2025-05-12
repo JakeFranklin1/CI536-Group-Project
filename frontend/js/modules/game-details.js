@@ -1,6 +1,7 @@
 // import { showToast } from "../utils/toast.js";
 import { escapeHTML } from "../utils/sanitise.js";
 import { initializeReviewSystem, renderReviewsHTML } from "./reviews.js";
+import { addItemToCart } from "../modules/cart-handler.js";
 
 /**
  * Shows detailed view for a game with smooth transitions

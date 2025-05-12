@@ -4,16 +4,35 @@ import { escapeHTML } from "../utils/sanitise.js";
 
 /**
  * Adds an item to the shopping cart with animation
- * @param {HTMLElement} gameCard - The game card element to add to cart
+ * @param {HTMLElement|Object} gameCard - The game card element or object to add to cart
  */
 export function addItemToCart(gameCard) {
+    // Get game info from the card first, in case we need to skip animation
+    let gameTitle, gamePrice, gameImage;
+
+    try {
+        gameTitle = gameCard.querySelector(".game-title").textContent;
+        gamePrice = gameCard.querySelector(".price").textContent;
+        gameImage = gameCard.querySelector(".game-image").src;
+    } catch (error) {
+        console.error("Error retrieving game information:", error);
+        return;
+    }
+
+    // Validate game information
+    if (!gameTitle || !gamePrice || !gameImage) {
+        console.error("Missing game information required for cart");
+        return;
+    }
+
     // Create flying animation element
     const addToCartBtn = gameCard.querySelector(".add-to-cart");
     const cartIcon = document.querySelector(".cart-btn");
 
-    // Code from your original addItemToCart function...
     if (!addToCartBtn || !cartIcon) {
-        console.error("Required elements for cart animation not found");
+        console.log("Required elements for cart animation not found, adding directly to cart");
+        // Skip animation and add directly to cart
+        addToCartDirectly(gameTitle, gamePrice, gameImage);
         return;
     }
 
@@ -56,65 +75,70 @@ export function addItemToCart(gameCard) {
     // Add the item to cart after animation
     animation.onfinish = () => {
         circle.remove();
+        addToCartDirectly(gameTitle, gamePrice, gameImage);
+    };
+}
 
-        const gameTitle = gameCard.querySelector(".game-title").textContent;
-        const gamePrice = gameCard.querySelector(".price").textContent;
-        const gameImage = gameCard.querySelector(".game-image").src;
+/**
+ * Adds an item directly to the cart without animation
+ * @param {string} gameTitle - The game title
+ * @param {string} gamePrice - The game price
+ * @param {string} gameImage - The game image URL
+ */
+function addToCartDirectly(gameTitle, gamePrice, gameImage) {
+    // Check if the item already exists in cart
+    const existingItem = findExistingCartItem(gameTitle);
 
-        // Check if the item already exists in cart
-        const existingItem = findExistingCartItem(gameTitle);
+    if (existingItem) {
+        // Increment quantity of existing item
+        const quantityValue = existingItem.querySelector(".quantity-value");
+        quantityValue.textContent = parseInt(quantityValue.textContent) + 1;
+        updateCartTotal();
 
-        if (existingItem) {
-            // Increment quantity of existing item
-            const quantityValue = existingItem.querySelector(".quantity-value");
-            quantityValue.textContent = parseInt(quantityValue.textContent) + 1;
-            updateCartTotal();
+        // Show toast notification
+        showToast(`Increased quantity of ${gameTitle}`, "info");
+        return;
+    }
 
-            // Show toast notification
-            showToast(`Increased quantity of ${gameTitle}`, "info");
-            return;
-        }
-
-        const cartItemHTML = `
-            <div class="cart-item" data-game-title="${escapeHTML(gameTitle)}">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">${escapeHTML(gameTitle)}</div>
-                    <div class="cart-item-info">
-                        <img src="${escapeHTML(gameImage)}" alt="${escapeHTML(gameTitle)}" class="cart-item-image">
-                        <div>
-                            <div class="cart-item-platform">Platform</div>
-                            <div class="cart-item-price">${escapeHTML(gamePrice)}</div>
-                            <div class="cart-item-quantity">
-                                <label>Qty:</label>
-                                <div class="quantity-controls">
-                                    <button class="quantity-decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-increment">+</button>
-                                </div>
+    const cartItemHTML = `
+        <div class="cart-item" data-game-title="${escapeHTML(gameTitle)}">
+            <div class="cart-item-details">
+                <div class="cart-item-title">${escapeHTML(gameTitle)}</div>
+                <div class="cart-item-info">
+                    <img src="${escapeHTML(gameImage)}" alt="${escapeHTML(gameTitle)}" class="cart-item-image">
+                    <div>
+                        <div class="cart-item-platform">Platform</div>
+                        <div class="cart-item-price">${escapeHTML(gamePrice)}</div>
+                        <div class="cart-item-quantity">
+                            <label>Qty:</label>
+                            <div class="quantity-controls">
+                                <button class="quantity-decrement">-</button>
+                                <span class="quantity-value">1</span>
+                                <button class="quantity-increment">+</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="cart-remove" title="Remove item">
-                    <i class="fa fa-times"></i>
-                </button>
             </div>
-        `;
+            <button class="cart-remove" title="Remove item">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    `;
 
-        const cartItemsContainer = document.querySelector(".cart-items");
-        const emptyCart = cartItemsContainer?.querySelector(".empty-cart");
-        if (emptyCart) {
-            emptyCart.remove();
-            document.querySelector(".cart-summary").style.display = "block";
-        }
+    const cartItemsContainer = document.querySelector(".cart-items");
+    const emptyCart = cartItemsContainer?.querySelector(".empty-cart");
+    if (emptyCart) {
+        emptyCart.remove();
+        document.querySelector(".cart-summary").style.display = "block";
+    }
 
-        cartItemsContainer?.insertAdjacentHTML("beforeend", cartItemHTML);
-        updateCartTotal();
-        updateCartCount();
+    cartItemsContainer?.insertAdjacentHTML("beforeend", cartItemHTML);
+    updateCartTotal();
+    updateCartCount();
 
-        // Show toast notification
-        showToast(`${gameTitle} added to cart`, "success");
-    };
+    // Show toast notification
+    showToast(`${gameTitle} added to cart`, "success");
 }
 
 /**
