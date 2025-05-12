@@ -217,8 +217,8 @@ function generatePlatformIconsHTML(platforms) {
         PlayStation: "../assets/icons/playstation.svg",
         Xbox: "../assets/icons/xbox.svg",
         Nintendo: "../assets/icons/nintendo.svg",
-        Mobile: "../assets/icons/android.svg",
-        Web: "../assets/icons/web.svg",
+        Android: "../assets/icons/android.svg",
+        Apple: "../assets/icons/apple.svg",
     };
 
     // Track used icons to avoid duplicates
