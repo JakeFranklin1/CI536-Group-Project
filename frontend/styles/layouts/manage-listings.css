@@ -463,7 +463,7 @@ body.modal-open {
     padding: 32px 40px;
     max-width: 400px;
     width: 100%;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     text-align: center;
 }
 
@@ -518,4 +518,29 @@ body.modal-open {
 
 .delete-confirmation-content .btn-secondary:hover {
     background: #444;
+}
+
+.list-new-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #4caf50;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition:
+        background 0.2s,
+        color 0.2s;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.list-new-btn:hover,
+.list-new-btn:focus {
+    background: #388e3c;
+    color: #fff;
+    text-decoration: none;
 }

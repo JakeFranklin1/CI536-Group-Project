@@ -358,6 +358,23 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Platform(s)<span class="required">*</span></label>
+                                <div class="platform-selection-container" id="platform-selection">
+                                    <button type="button" class="platform-btn" data-platform="PC">PC</button>
+                                    <button type="button" class="platform-btn"
+                                        data-platform="PlayStation">PlayStation</button>
+                                    <button type="button" class="platform-btn" data-platform="Xbox">Xbox</button>
+                                    <button type="button" class="platform-btn"
+                                        data-platform="Nintendo">Nintendo</button>
+                                    <button type="button" class="platform-btn"
+                                        data-platform="Android">Android</button>
+                                    <button type="button" class="platform-btn"
+                                        data-platform="Apple">Apple</button>
+                                </div>
+                                <div class="error-message" id="platform-error"></div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="release-date">Release Date</label>
                                 <input type="date" id="release-date" name="release_date">
                                 <div class="error-message"></div>
@@ -442,6 +459,10 @@
                                     <div class="preview-row">
                                         <span class="preview-label">Description:</span>
                                         <span class="preview-value" id="preview-description"></span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">Platform(s):</span>
+                                        <span class="preview-value" id="preview-platforms"></span>
                                     </div>
                                     <div class="preview-row">
                                         <span class="preview-label">Release Date:</span>
