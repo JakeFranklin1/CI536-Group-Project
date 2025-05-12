@@ -89,12 +89,18 @@ export function showGameDetails(game, coverUrl, platforms, price) {
         // Get formatted release date
         let releaseDate = "Unknown release date";
         if (game.first_release_date) {
-            const date = new Date(game.first_release_date * 1000);
-            releaseDate = date.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            });
+            if (typeof game.first_release_date === "number") {
+                const date = new Date(game.first_release_date * 1000);
+                if (!isNaN(date.valueOf())) {
+                    releaseDate = date.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    });
+                }
+            } else if (typeof game.first_release_date === "string") {
+                releaseDate = game.first_release_date;
+            }
         }
 
         // Construct HTML for game details

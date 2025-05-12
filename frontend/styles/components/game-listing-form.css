@@ -134,9 +134,46 @@
     font-size: 16px;
 }
 
+.form-group input[type="date"] {
+    color-scheme: dark;
+}
+
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
+}
+
+.platform-selection-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Spacing between buttons */
+    margin-top: 8px;
+}
+
+.platform-btn {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+    font-size: 14px;
+}
+
+.platform-btn:hover {
+    background-color: #444;
+    border-color: #666;
+}
+
+.platform-btn.selected {
+    background-color: #4caf50; /* Green for selected */
+    border-color: #3d9840;
+    color: white;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.7);
 }
 
 .error-message {

@@ -31,10 +31,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     // For storing uploaded files
     let coverImageFile = null;
     let screenshotFiles = [];
+    let selectedPlatforms = [];
 
     // Initialize the form
     initFormNavigation();
     initImageUploads();
+    initPlatformSelection();
     initFormSubmission();
 
     /**
@@ -67,27 +69,50 @@ document.addEventListener("DOMContentLoaded", async function () {
      * Sets up form step navigation
      */
     function initFormNavigation() {
-        // Next button handlers
         nextBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
-                // Validate current step before proceeding
                 if (validateStep(currentStep)) {
-                    // If we're moving to the review step, populate preview data
                     if (currentStep === 3) {
                         populateReviewStep();
                     }
-
-                    // Move to next step
                     goToStep(currentStep + 1);
                 }
             });
         });
 
-        // Previous button handlers
         prevBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
                 goToStep(currentStep - 1);
             });
+        });
+    }
+
+    function initPlatformSelection() {
+        const platformContainer = document.getElementById("platform-selection");
+        if (!platformContainer) return;
+
+        platformContainer.addEventListener("click", (e) => {
+            if (e.target.classList.contains("platform-btn")) {
+                const button = e.target;
+                const platform = button.dataset.platform;
+                button.classList.toggle("selected");
+
+                if (button.classList.contains("selected")) {
+                    if (!selectedPlatforms.includes(platform)) {
+                        selectedPlatforms.push(platform);
+                    }
+                } else {
+                    selectedPlatforms = selectedPlatforms.filter(
+                        (p) => p !== platform
+                    );
+                }
+
+                const platformError = document.getElementById("platform-error");
+                if (selectedPlatforms.length > 0) {
+                    platformError.textContent = "";
+                    platformError.style.display = "none";
+                }
+            }
         });
     }
 
@@ -210,6 +235,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         element.addEventListener("drop", (e) => {
             const files = e.dataTransfer.files;
             callback(files);
+
+            // Programmatically update the file input field for screenshots
+            if (element.id === "screenshots-upload-container") {
+                const screenshotInput = document.getElementById("screenshots");
+                const dataTransfer = new DataTransfer();
+                Array.from(files).forEach((file) =>
+                    dataTransfer.items.add(file)
+                );
+                screenshotInput.files = dataTransfer.files;
+            }
         });
     }
 
@@ -227,6 +262,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Store file for later upload
         coverImageFile = file;
+
+        // Programmatically update the file input field
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        document.getElementById("cover-image").files = dataTransfer.files;
 
         // Show preview
         const reader = new FileReader();
@@ -347,16 +387,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     function validateStep(step) {
         let isValid = true;
 
-        // Clear previous error messages and ensure they're visible
         document
             .querySelectorAll(`.form-step[data-step="${step}"] .error-message`)
             .forEach((el) => {
                 el.textContent = "";
-                // Remove display:none if it exists
                 el.style.display = "block";
             });
 
-        // Step 1: Basic Info
         if (step === 1) {
             const title = document.getElementById("game-title").value.trim();
             const description = document
@@ -377,6 +414,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                     "#game-description + .error-message"
                 );
                 errorEl.textContent = "Game description is required";
+                errorEl.style.display = "block";
+                isValid = false;
+            }
+
+            if (selectedPlatforms.length === 0) {
+                const errorEl = document.getElementById("platform-error");
+                errorEl.textContent = "At least one platform must be selected";
                 errorEl.style.display = "block";
                 isValid = false;
             }
@@ -415,16 +459,16 @@ document.addEventListener("DOMContentLoaded", async function () {
      * Populates the review step with form data
      */
     function populateReviewStep() {
-        // Get form values
         const title = document.getElementById("game-title").value;
         const description = document.getElementById("game-description").value;
         const releaseDate = document.getElementById("release-date").value;
         const price = document.getElementById("game-price").value;
 
-        // Update preview
         document.getElementById("preview-title").textContent = title;
         document.getElementById("preview-description").textContent =
             description;
+        document.getElementById("preview-platforms").textContent =
+            selectedPlatforms.join(", ") || "Not specified";
         document.getElementById("preview-release-date").textContent =
             releaseDate
                 ? new Date(releaseDate).toLocaleDateString()
@@ -476,28 +520,27 @@ document.addEventListener("DOMContentLoaded", async function () {
                 return;
             }
 
-            // Show loading state
             const submitBtn = document.querySelector(".btn-submit");
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.innerHTML =
                 '<i class="fa fa-spinner fa-spin"></i> Submitting...';
             submitBtn.disabled = true;
 
-            // Show full page loading spinner
             document.getElementById("loading").classList.remove("hidden");
 
             try {
-                // Get current user session
                 const {
                     data: { session },
                 } = await supabase.auth.getSession();
 
                 if (!session) {
                     showToast("You must be logged in to list a game", "error");
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    document.getElementById("loading").classList.add("hidden");
                     return;
                 }
 
-                // Get form data
                 const title = document.getElementById("game-title").value;
                 const description =
                     document.getElementById("game-description").value;
@@ -506,14 +549,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const price = parseFloat(
                     document.getElementById("game-price").value
                 );
+                const platformsToSubmit = [...selectedPlatforms];
 
-                // 1. Upload cover image to storage
                 const coverImagePath = await uploadFile(
                     coverImageFile,
                     "covers"
                 );
 
-                // 2. Create game listing in database
                 const { data: gameListing, error: gameError } = await supabase
                     .from("game_listings")
                     .insert([
@@ -524,6 +566,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             release_date: releaseDate,
                             cover_image: coverImagePath,
                             price: price,
+                            platforms: platformsToSubmit,
                         },
                     ])
                     .select()
@@ -531,7 +574,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 if (gameError) throw gameError;
 
-                // 3. Upload screenshots and create screenshot records
                 if (screenshotFiles.length > 0) {
                     const screenshotUploads = await Promise.all(
                         screenshotFiles.map(async (file) => {
@@ -547,7 +589,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                         })
                     );
 
-                    // Insert screenshot records
                     const { error: screenshotsError } = await supabase
                         .from("game_screenshots")
                         .insert(screenshotUploads);
@@ -555,16 +596,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                     if (screenshotsError) throw screenshotsError;
                 }
 
-                // Show success message and reset form
                 showSuccessMessage();
             } catch (error) {
                 console.error("Error submitting game listing:", error);
                 showToast(
-                    "Failed to submit your game listing. Please try again.",
+                    `Failed to submit your game listing: ${error.message || "Please try again."}`,
                     "error"
                 );
             } finally {
-                // Restore button state and hide loading spinner
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
                 document.getElementById("loading").classList.add("hidden");
@@ -653,8 +692,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         form.reset();
         coverImageFile = null;
         screenshotFiles = [];
+        selectedPlatforms = [];
 
-        // Add null checks before setting innerHTML
+        document.querySelectorAll(".platform-btn.selected").forEach((btn) => {
+            btn.classList.remove("selected");
+        });
+        const platformError = document.getElementById("platform-error");
+        if (platformError) {
+            platformError.textContent = "";
+            platformError.style.display = "none";
+        }
+
         const coverPreview = document.getElementById("cover-preview");
         if (coverPreview) coverPreview.innerHTML = "";
 

@@ -43,8 +43,8 @@ async function initializeMarketplace() {
  */
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("DOMContentLoaded event fired."); // Log
-    const loadingSpinner = document.getElementById('loading');
-    if (loadingSpinner) loadingSpinner.classList.remove('hidden'); // Show loading spinner
+    const loadingSpinner = document.getElementById("loading");
+    if (loadingSpinner) loadingSpinner.classList.remove("hidden"); // Show loading spinner
 
     // Check authentication first
     const isAuthenticated = await initializeMarketplace();
@@ -52,8 +52,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // If not authenticated, stop further execution for marketplace features.
     // checkAuth should handle showing the modal.
     if (!isAuthenticated) {
-        console.log("User not authenticated. Stopping marketplace initialization."); // Log
-        if (loadingSpinner) loadingSpinner.classList.add('hidden'); // Hide loading spinner
+        console.log(
+            "User not authenticated. Stopping marketplace initialization."
+        ); // Log
+        if (loadingSpinner) loadingSpinner.classList.add("hidden"); // Hide loading spinner
         return; // Stop execution here
     }
 
@@ -93,15 +95,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.showGameDetails = showGameDetails;
     window.handleFilterSelection = handleFilterSelection;
 
-    window.handleSignOut = async function() {
+    window.handleSignOut = async function () {
         try {
-            await signOut(); 
+            await signOut();
         } catch (error) {
-            console.error('Error signing out:', error);
-            alert('Failed to sign out. Please try again.');
+            console.error("Error signing out:", error);
+            alert("Failed to sign out. Please try again.");
         }
     };
 
     // Hide loading spinner after setup
-    if (loadingSpinner) loadingSpinner.classList.add('hidden');
+    if (loadingSpinner) loadingSpinner.classList.add("hidden");
 });
