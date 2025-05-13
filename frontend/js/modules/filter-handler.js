@@ -1,6 +1,7 @@
 import { createFilterParams } from "../services/FilterService.js";
 import { loadGames } from "../services/GameService.js";
 import { addItemToCart } from "./cart-handler.js";
+import { initializeCommunityGames } from "./community-games.js";
 
 let currentFilter = { timeframe: "Popular in 2025" };
 let currentPage = 1;
@@ -21,6 +22,13 @@ export function handleFilterSelection(filterType, filterValue) {
         currentSectionHeader.textContent = filterValue;
     }
 
+    // Special case for Community Games
+    if (filterType === "timeframe" && filterValue === "Community Games") {
+        // Call the community games initializer
+        initializeCommunityGames();
+        return;
+    }
+
     // Create filter parameters using the service
     const filterParams = createFilterParams(filterType, filterValue);
 
@@ -33,7 +41,6 @@ export function handleFilterSelection(filterType, filterValue) {
     // Show/hide the sort dropdown based on filter type
     toggleSortDropdownVisibility(filterValue);
 
-    // Load games with the specified filters using the GameDisplayService
     // Use full-screen loader for filter changes
     loadGames(filterParams, 12, true, addItemToCart);
 }

@@ -197,6 +197,7 @@
 }
 
 .cart-summary {
+    display: none;
     position: fixed;
     bottom: 0;
     right: 0;

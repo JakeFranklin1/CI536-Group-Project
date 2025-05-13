@@ -46,45 +46,71 @@
     </div>
 
     <!-- Edit Listing Modal -->
-    <div id="edit-listing-modal" class="modal hidden">
-        <div class="modal-content edit-listing-content">
+    <div id="edit-listing-modal" class="edit-listing-modal hidden">
+        <div class="edit-listing-content">
             <button class="close-modal">&times;</button>
             <h2>Edit Game Listing</h2>
-            <form id="edit-listing-form">
+
+            <form id="edit-listing-form" class="edit-listing-form">
                 <input type="hidden" id="edit-listing-id">
 
                 <div class="form-group">
                     <label for="edit-title">Game Title</label>
                     <input type="text" id="edit-title" name="title" required>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="edit-description">Description</label>
                     <textarea id="edit-description" name="description" rows="4"></textarea>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="edit-price">Price (£)</label>
                     <input type="number" id="edit-price" name="price" min="0.01" step="0.01" required>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="edit-release-date">Release Date</label>
                     <input type="date" id="edit-release-date" name="release_date">
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Platform(s)<span class="required">*</span></label>
+                    <div class="platform-selection-container" id="edit-platform-selection">
+                        <button type="button" class="platform-btn" data-platform="PC">PC</button>
+                        <button type="button" class="platform-btn" data-platform="PlayStation">PlayStation</button>
+                        <button type="button" class="platform-btn" data-platform="Xbox">Xbox</button>
+                        <button type="button" class="platform-btn" data-platform="Nintendo">Nintendo</button>
+                        <button type="button" class="platform-btn" data-platform="Android">Android</button>
+                        <button type="button" class="platform-btn" data-platform="Apple">Apple</button>
+                    </div>
+                    <div class="error-message" id="edit-platform-error"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Cover Image</label>
-                    <div class="edit-cover-preview" id="edit-cover-preview"></div>
-                    <input type="file" id="edit-cover-image" name="cover_image" accept="image/*" title="Select a cover image">
+                    <div class="image-preview-container" id="edit-cover-preview"></div>
+                    <div class="image-upload-container">
+                        <input type="file" id="edit-cover-image" name="cover_image" accept="image/*"
+                            title="Upload a cover image for the game">
+                    </div>
                     <p class="form-tip">Current cover image will be kept if no new image is selected</p>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-group">
                     <label>Screenshots (Max 5)</label>
-                    <div class="edit-screenshots-preview" id="edit-screenshots-preview"></div>
-                    <input type="file" id="edit-screenshots" name="screenshots" accept="image/*" multiple title="Select up to 5 images">
+                    <div class="image-preview-container" id="edit-screenshots-preview"></div>
+                    <div class="image-upload-container">
+                        <input type="file" id="edit-screenshots" name="screenshots" accept="image/*" multiple
+                            title="Upload up to 5 screenshots for the game">
+                    </div>
                     <p class="form-tip">Current screenshots will be kept if no new images are selected</p>
+                    <div class="error-message"></div>
                 </div>
 
                 <div class="form-actions">
@@ -106,8 +132,6 @@
             </div>
         </div>
     </div>
-    <!-- Side cart -->
-
 
     <!-- Header Content -->
     <header class="main-header">
@@ -144,63 +168,16 @@
         </div>
 
         <div class="cart-items">
-
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Example Game</div>
-                    <div class="cart-item-info">
-                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
-                            class="cart-item-image">
-                        <div>
-                            <div class="cart-item-platform">PlayStation 5</div>
-                            <div class="cart-item-price">£59.99</div>
-                            <div class="cart-item-quantity">
-                                <label>Qty:</label>
-                                <div class="quantity-controls">
-                                    <button class="quantity-decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-increment">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="cart-remove" title="Remove item">
-                    <i class="fa fa-times"></i>
-                </button>
+            <div class="empty-cart">
+                <i class="fa fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
             </div>
-
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">Example Game</div>
-                    <div class="cart-item-info">
-                        <img src="../assets/images/cp2077_game-thumbnail.webp" alt="Cyberpunk 2077"
-                            class="cart-item-image">
-                        <div>
-                            <div class="cart-item-platform">PlayStation 5</div>
-                            <div class="cart-item-price">£59.99</div>
-                            <div class="cart-item-quantity">
-                                <label>Qty:</label>
-                                <div class="quantity-controls">
-                                    <button class="quantity-decrement">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-increment">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="cart-remove" title="Remove item">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-
         </div>
 
         <div class="cart-summary">
             <div class="cart-total">
                 <span>Total:</span>
-                <span id="total-cost">$129.98</span>
+                <span id="total-cost">£0.00</span>
             </div>
             <button class="checkout-btn">Checkout</button>
         </div>
@@ -247,11 +224,10 @@
                                     </button>
                                 </li>
                                 <li>
-                                    <a href="" onclick="handleSignOut()">
+                                    <button type="button" onclick="handleSignOut()">
                                         <span class="icon-container"><i class="fa fa-sign-out"></i></span>
                                         Sign Out
-                                    </a>
-                                </li>
+                                    </button>
                             </ul>
                         </div>
                         <div class="filter-section">
@@ -264,7 +240,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <button type="button" onclick="handleFilterSelection('timeframe', 'Community Games')">
+                                    <button type="button"
+                                        onclick="handleFilterSelection('timeframe', 'Community Games')">
                                         <span class="icon-container"><i class="fa fa-users"></i></span>
                                         Community Games
                                     </button>
@@ -389,7 +366,7 @@
                         </div>
                     </nav>
                 </aside>
-                
+
                 <main class="main-content full-width">
                     <div class="back-button-container">
                         <a href="marketplace.html" class="back-to-marketplace">
@@ -417,7 +394,7 @@
                         <i class="fa fa-gamepad"></i>
                         <h2>You haven't listed any games yet</h2>
                         <p>Start selling your games to the community!</p>
-                        <a href="list-game.html" class="btn-primary">
+                        <a href="list-game.html" class="list-new-btn">
                             <i class="fa fa-plus"></i> List Your First Game
                         </a>
                     </div>
@@ -443,8 +420,8 @@
                     </div>
 
                     <div class="add-game-container">
-                        <a href="list-game.html" class="btn-primary">
-                            <i class="fa fa-plus"></i> Add New Game
+                        <a href="list-game.html" class="btn-primary add-game-btn">
+                            <i class="fa fa-plus"></i> Add Game
                         </a>
                     </div>
                 </main>
