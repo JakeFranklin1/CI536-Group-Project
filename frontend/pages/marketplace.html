@@ -20,7 +20,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="../styles/marketplace-main.css" />
-    <link rel="stylesheet" href="../styles/components/full-cart.css">
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -144,6 +144,7 @@
                 <span class="line line3"></span>
             </div>
         </button>
+
         <aside class="side-nav">
             <nav class="side-nav-content">
 
@@ -151,7 +152,7 @@
                     <h3>Settings</h3>
                     <ul>
                         <li>
-                            <a href="">
+                            <a href="account.html">
                                 <span class="icon-container"><i class="fa fa-user"></i></span>
                                 Profile
                             </a>
@@ -176,24 +177,23 @@
                         </li>
                     </ul>
                 </div>
-
                 <div class="filter-section">
                     <h3>Community</h3>
                     <ul>
                         <li>
-                            <a href="sell.html">
-                                <span class="icon-container"><i class="fa fa-tag"></i></span>
+                            <a href="list-game.html">
+                                <span class="icon-container"><i class="fa fa-plus"></i></span>
                                 List a Game
                             </a>
                         </li>
                         <li>
-                            <button type="button">
-                                <span class="icon-container"><i class="fa fa-clock-o"></i></span>
-                                Recently Added
+                            <button type="button" onclick="handleFilterSelection('timeframe', 'Community Games')">
+                                <span class="icon-container"><i class="fa fa-users"></i></span>
+                                Community Games
                             </button>
                         </li>
                         <li>
-                            <a href="sell.html">
+                            <a href="manage-listings.html">
                                 <span class="icon-container"><i class="fa fa-list"></i></span>
                                 Manage Listings
                             </a>
@@ -346,6 +346,7 @@
             <div class="games-grid">
             </div>
         </main>
+
         <!-- Footer Section -->
         <footer class="marketplace-footer">
             <div class="footer-container">
@@ -432,7 +433,9 @@
     <script type="module" src="../js/components/SideCart.js"></script>
     <script type="module" src="../js/marketplace.js"></script>
     <script type="module" src="../js/utils/dropdown.js"></script>
-        <script type="module" src="../js/modules/community-games.js"></script>
+    <script type="module" src="../js/modules/community-games.js"></script>
+    <script type="module" src="../js/components/FullCart.js"></script>
+    <script type="module" src="../js/components/checkout-processor.js"></script>
 </body>
 
 </html>

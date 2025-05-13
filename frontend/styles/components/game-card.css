@@ -84,6 +84,9 @@
     cursor: pointer;
     position: relative;
     transition: color 0.2s ease;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .add-to-cart::after {

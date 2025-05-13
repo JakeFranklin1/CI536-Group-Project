@@ -136,8 +136,7 @@ function addToCartDirectly(gameTitle, gamePrice, gameImage) {
     }
 
     cartItemsContainer?.insertAdjacentHTML("beforeend", cartItemHTML);
-    updateCartTotal();
-    updateCartCount();
+    updateCartTotal(); // This will also save to localStorage via the updated function
 
     // Show toast notification
     showToast(`${gameTitle} added to cart`, "success");

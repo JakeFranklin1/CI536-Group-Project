@@ -1,15 +1,34 @@
 // Allows for database access
 import supabase from "./supabase-client.js";
+import { showToast } from "./utils/toast.js";
 
 // Makes sure page is loaded
 document.addEventListener("DOMContentLoaded", () => {
     const checkoutBtn = document.querySelector(".checkout-btn");
 
-    // Listen out for checkout button click
-    checkoutBtn.addEventListener("click", async () => {
-        const buttonText = checkoutBtn.textContent.trim();
-        if (buttonText == "Complete Purchase") {
-            // Define userID
+    if (!checkoutBtn) {
+        console.warn("Checkout button not found.");
+        return;
+    }
+
+    checkoutBtn.addEventListener("click", async (e) => {
+        // Only process checkout when in fullscreen cart mode
+        const sideCart = document.querySelector(".side-cart");
+        if (!sideCart || !sideCart.classList.contains("fullscreen-cart")) {
+            return; // Let the FullCart.js handle transitioning to fullscreen
+        }
+
+        // Prevent default to avoid conflicts
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Show loading state
+        checkoutBtn.textContent = "Processing...";
+        checkoutBtn.disabled = true;
+
+        try {
+            // Defines relevant variables
+            const orderId = crypto.randomUUID();
             const {
                 data: { user },
                 error: error1,
@@ -19,69 +38,105 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (error1) {
                 console.error("Error getting user:", error1.message);
+                throw new Error("Authentication error");
             } else if (!user) {
                 console.warn("No user found. User may not be logged in.");
+                throw new Error("Please log in to complete your purchase");
             } else {
                 userId = user.id;
             }
 
-            // Define cartTotal
-            const totalElement = document.getElementById("total-cost");
-            const totalText = totalElement.textContent.trim();
-            const numericTotal = parseFloat(
-                totalText.replace(/[^0-9.-]+/g, "")
+            // Get actual cart total from DOM
+            const totalElement = document.querySelector(
+                ".cart-total span:last-child"
             );
+            let cartTotal = 0;
+            if (totalElement) {
+                cartTotal = parseFloat(
+                    totalElement.textContent.replace("£", "")
+                );
+            }
 
-            const cartTotal = numericTotal;
-
-            // Define orderDate
             const orderDate = new Date().toISOString().split("T")[0];
 
-            // Get user's balance from the database
-            const { data: userData, error: balanceError } = await supabase
-                .from("users")
-                .select("balance")
-                .eq("id", userId)
-                .single();
-
-            if (balanceError) {
-                console.error("Error fetching balance:", balanceError.message);
-                alert(
-                    "There was an issue checking your balance. Please try again."
-                );
-                return;
-            }
-
-            if (userData.balance < cartTotal) {
-                alert(
-                    "Insufficient balance. Please top up your account and try again."
-                );
-                return;
-            }
-
-            // Inserts order into 'orders' table in database using variables
+            // Inserts order into 'orders' table in database
             const { data, error2 } = await supabase.from("orders").insert([
                 {
+                    order_id: orderId,
                     user_id: userId,
                     order_date: orderDate,
-                    total_price: numericTotal,
+                    total_price: cartTotal,
                 },
             ]);
 
             if (error2) {
                 console.error("Error inserting order:", error2);
-                alert(
+                throw new Error(
                     "There was an issue with your checkout. Please try again."
                 );
-                return;
-            } else {
-                alert("Checkout successful! Your order is being processed.");
-                // Close cart if checkout successful
-                const closeCartBtn = document.getElementById("close-cart-btn");
-                if (closeCartBtn) {
-                    closeCartBtn.click();
-                }
             }
+
+            // Success - clear cart and show success message
+            const cartItems = document.querySelector(".cart-items");
+            if (cartItems) {
+                cartItems.innerHTML = `
+                    <div class="checkout-success">
+                        <i class="fa fa-check-circle"></i>
+                        <h3>Order Successful!</h3>
+                        <p>Your order #${orderId.substring(0, 8)} is being processed.</p>
+                        <button id="continue-shopping" class="continue-shopping-btn">Continue Shopping</button>
+                    </div>
+                `;
+
+                // Add event listener to continue shopping button
+                document
+                    .getElementById("continue-shopping")
+                    .addEventListener("click", () => {
+                        // Close the cart
+                        document.querySelector(".side-cart").style.width = "0";
+                        document
+                            .querySelector(".cart-overlay")
+                            .classList.remove("active", "fullscreen-overlay");
+                        document.body.style.overflow = "";
+
+                        // Reset the cart
+                        setTimeout(() => {
+                            cartItems.innerHTML = `
+                            <div class="empty-cart">
+                                <i class="fa fa-shopping-cart"></i>
+                                <p>Your cart is empty</p>
+                            </div>
+                        `;
+                            document.querySelector(
+                                ".cart-summary"
+                            ).style.display = "none";
+                        }, 300);
+                    });
+            }
+
+            // Hide checkout button
+            document.querySelector(".cart-summary").style.display = "none";
+
+            // Show toast
+            if (typeof showToast === "function") {
+                showToast("Order placed successfully!", "success");
+            }
+        } catch (error) {
+            console.error("Checkout error:", error);
+
+            // Show error in UI
+            if (typeof showToast === "function") {
+                showToast(
+                    error.message || "Checkout failed. Please try again.",
+                    "error"
+                );
+            } else {
+                alert(error.message || "Checkout failed. Please try again.");
+            }
+
+            // Reset button
+            checkoutBtn.disabled = false;
+            checkoutBtn.textContent = "Complete Purchase";
         }
     });
 });
