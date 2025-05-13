@@ -70,7 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/pages/update-password.html`,
+                redirectTo:
+                    "https://ci536-gamestore.netlify.app/pages/update-password.html",
             });
 
             if (error) {
