@@ -207,6 +207,9 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .add-to-cart-btn:hover {

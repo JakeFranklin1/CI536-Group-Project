@@ -74,7 +74,8 @@
                 </button>
             </form>
             <p class="form-footer">
-                Already have an account? <a href="pages/login.html">Log in.</a>
+                Already have an account?
+                <a href="pages/login.html" id="login-link">Log in.</a>
             </p>
         </div>
 
@@ -108,6 +109,20 @@
             await checkAuthAndRedirect("./pages/marketplace.html");
         });
     </script>
+
+    <script type="module">
+        import supabase from "./js/supabase-client.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const loginLink = document.getElementById("login-link");
+
+        loginLink.addEventListener("click", async (e) => {
+            e.preventDefault();
+            await supabase.auth.signOut();
+            window.location.href = loginLink.href; 
+        });
+    });
+</script>
 </body>
 
 </html>

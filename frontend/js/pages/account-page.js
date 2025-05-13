@@ -84,9 +84,9 @@ function updateProfileUI(userData) {
     }
 
     // Set balance
-    const formattedBalance = new Intl.NumberFormat("en-US", {
+    const formattedBalance = new Intl.NumberFormat("en-GB", {
         style: "currency",
-        currency: "USD",
+        currency: "GBP",
     }).format(userData.balance || 0);
     document.getElementById("user-balance").textContent = formattedBalance;
 
@@ -221,8 +221,130 @@ function setupEventListeners(userData, currentUser) {
 
     // Add funds button
     const addFundsBtn = document.getElementById("add-funds-btn");
+    const addFundsModal = document.getElementById("add-funds-modal");
+    const closeFundsModal = document.getElementById("close-funds-modal");
+    const addFundsForm = document.getElementById("add-funds-form");
+    const amountButtons = document.querySelectorAll(".amount-option");
+    const customAmountInput = document.getElementById("custom-amount");
+
+    // Show modal when Add Funds button is clicked
     addFundsBtn.addEventListener("click", () => {
-        showToast("This is here for demonstrative purposes", "info");
+        addFundsModal.classList.add("active");
+    });
+
+    // Close modal when X is clicked
+    closeFundsModal.addEventListener("click", () => {
+        addFundsModal.classList.remove("active");
+    });
+
+    // Close modal when clicking outside of it
+    window.addEventListener("click", (event) => {
+        if (event.target === addFundsModal) {
+            addFundsModal.classList.remove("active");
+        }
+    });
+
+    // Handle amount selection buttons
+    amountButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            // Remove selection from all buttons
+            amountButtons.forEach((btn) => btn.classList.remove("selected"));
+
+            // Add selection to clicked button
+            button.classList.add("selected");
+
+            // Clear custom amount
+            customAmountInput.value = "";
+        });
+    });
+
+    // Clear button selection when custom amount is entered
+    customAmountInput.addEventListener("input", () => {
+        amountButtons.forEach((btn) => btn.classList.remove("selected"));
+    });
+
+    // Handle form submission
+    addFundsForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Get selected amount
+        let amount = 0;
+        const selectedButton = document.querySelector(
+            ".amount-option.selected"
+        );
+
+        if (selectedButton) {
+            amount = parseFloat(selectedButton.dataset.amount);
+        } else if (customAmountInput.value) {
+            amount = parseFloat(customAmountInput.value);
+        }
+
+        // Validate amount
+        if (amount <= 0 || amount > 1000) {
+            showToast(
+                "Please enter a valid amount between £1 and £1000",
+                "error"
+            );
+            return;
+        }
+
+        // Show loading state
+        const submitBtn = document.getElementById("submit-funds");
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = "Processing...";
+        submitBtn.disabled = true;
+
+        try {
+            // Get current balance
+            const { data: userData, error: fetchError } = await supabase
+                .from("users")
+                .select("balance")
+                .eq("id", currentUser.id)
+                .single();
+
+            if (fetchError) throw fetchError;
+
+            // Calculate new balance
+            const currentBalance = userData.balance || 0;
+            const newBalance = currentBalance + amount;
+
+            // Update balance in database
+            const { error: updateError } = await supabase
+                .from("users")
+                .update({ balance: newBalance })
+                .eq("id", currentUser.id);
+
+            if (updateError) throw updateError;
+
+            // Update UI
+            const formattedBalance = new Intl.NumberFormat("en-GB", {
+                style: "currency",
+                currency: "GBP",
+            }).format(newBalance);
+
+            document.getElementById("user-balance").textContent =
+                formattedBalance;
+
+            // Close modal
+            addFundsModal.classList.remove("active");
+
+            // Reset form
+            addFundsForm.reset();
+            amountButtons.forEach((btn) => btn.classList.remove("selected"));
+
+            // Show success message
+            showToast(
+                `Successfully added £${amount.toFixed(2)} to your account`,
+                "success"
+            );
+        } catch (error) {
+            console.error("Error adding funds:", error);
+            showToast("Failed to add funds to your account", "error");
+        } finally {
+            // Reset button state
+            submitBtn.textContent = originalBtnText;
+            submitBtn.disabled = false;
+        }
     });
 
     // Photo button
