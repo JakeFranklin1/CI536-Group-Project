@@ -182,132 +182,127 @@
             <button class="checkout-btn">Checkout</button>
         </div>
     </div>
+    <div class="page-layout">
+        <div id="wrapper">
 
-    <div id="wrapper">
+            <!-- Hamburger menu for mobile -->
+            <button class="hamburger-menu" aria-label="Toggle navigation menu">
+                <div class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </div>
+            </button>
 
-        <div class="page-layout">
+            <!-- Side Navigation -->
+            <aside class="side-nav">
+                <nav class="side-nav-content">
 
-
-            <div class="page-layout">
-                <!-- Hamburger menu for mobile -->
-                <button class="hamburger-menu" aria-label="Toggle navigation menu">
-                    <div class="hamburger-lines">
-                        <span class="line line1"></span>
-                        <span class="line line2"></span>
-                        <span class="line line3"></span>
+                    <div class="filter-section">
+                        <h3>Settings</h3>
+                        <ul>
+                            <li>
+                                <a href="account.html">
+                                    <span class="icon-container"><i class="fa fa-user"></i></span>
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="about.html">
+                                    <span class="icon-container"><i class="fa fa-info-circle"></i></span>
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <button type="button">
+                                    <span class="icon-container"><i class="fa fa-sun-o"></i></span>
+                                    Light Theme
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" onclick="handleSignOut()">
+                                    <span class="icon-container"><i class="fa fa-sign-out"></i></span>
+                                    Sign Out
+                                </button>
+                        </ul>
                     </div>
-                </button>
-
-                <!-- Side Navigation -->
-                <aside class="side-nav">
-                    <nav class="side-nav-content">
-
-                        <div class="filter-section">
-                            <h3>Settings</h3>
-                            <ul>
-                                <li>
-                                    <a href="account.html">
-                                        <span class="icon-container"><i class="fa fa-user"></i></span>
-                                        Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="about.html">
-                                        <span class="icon-container"><i class="fa fa-info-circle"></i></span>
-                                        About
-                                    </a>
-                                </li>
-                                <li>
-                                    <button type="button">
-                                        <span class="icon-container"><i class="fa fa-sun-o"></i></span>
-                                        Light Theme
-                                    </button>
-                                </li>
-                                <li>
-                                    <button type="button" onclick="handleSignOut()">
-                                        <span class="icon-container"><i class="fa fa-sign-out"></i></span>
-                                        Sign Out
-                                    </button>
-                            </ul>
-                        </div>
-                        <div class="filter-section">
-                            <h3>Community</h3>
-                            <ul>
-                                <li>
-                                    <a href="list-game.html">
-                                        <span class="icon-container"><i class="fa fa-plus"></i></span>
-                                        List a Game
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="manage-listings.html">
-                                        <span class="icon-container"><i class="fa fa-list"></i></span>
-                                        Manage Listings
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </nav>
-                </aside>
-
-                <main class="main-content full-width">
-                    <div class="back-button-container">
-                        <a href="marketplace.html" class="back-to-marketplace">
-                            <i class="fa fa-arrow-left"></i> Back to Marketplace
-                        </a>
+                    <div class="filter-section">
+                        <h3>Community</h3>
+                        <ul>
+                            <li>
+                                <a href="list-game.html">
+                                    <span class="icon-container"><i class="fa fa-plus"></i></span>
+                                    List a Game
+                                </a>
+                            </li>
+                            <li>
+                                <a href="manage-listings.html">
+                                    <span class="icon-container"><i class="fa fa-list"></i></span>
+                                    Manage Listings
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
-                    <h1 id="listings-page-header">Manage Your Listings</h1>
+                </nav>
+            </aside>
 
-                    <div class="listings-header">
-                        <div class="listings-stats">
-                            <div class="stat-box">
-                                <span class="stat-value" id="total-listings">0</span>
-                                <span class="stat-label">Total Listings</span>
-                            </div>
-                            <div class="stat-box">
-                                <span class="stat-value" id="active-listings">0</span>
-                                <span class="stat-label">Active Listings</span>
-                            </div>
+            <main class="main-content full-width">
+                <div class="back-button-container">
+                    <a href="marketplace.html" class="back-to-marketplace">
+                        <i class="fa fa-arrow-left"></i> Back to Marketplace
+                    </a>
+                </div>
+
+                <h1 id="listings-page-header">Manage Your Listings</h1>
+
+                <div class="listings-header">
+                    <div class="listings-stats">
+                        <div class="stat-box">
+                            <span class="stat-value" id="total-listings">0</span>
+                            <span class="stat-label">Total Listings</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value" id="active-listings">0</span>
+                            <span class="stat-label">Active Listings</span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- No listings message (shown when user has no listings) -->
-                    <div id="no-listings-message" class="no-listings-message hidden">
-                        <i class="fa fa-gamepad"></i>
-                        <h2>You haven't listed any games yet</h2>
-                        <p>Start selling your games to the community!</p>
-                        <a href="list-game.html" class="list-new-btn"> List Your First Game</a>
-                    </div>
+                <!-- No listings message (shown when user has no listings) -->
+                <div id="no-listings-message" class="no-listings-message hidden">
+                    <i class="fa fa-gamepad"></i>
+                    <h2>You haven't listed any games yet</h2>
+                    <p>Start selling your games to the community!</p>
+                    <a href="list-game.html" class="list-new-btn"> List Your First Game</a>
+                </div>
 
-                    <!-- Listings table -->
-                    <div class="listings-container">
-                        <div class="listings-table-wrapper">
-                            <table class="listings-table">
-                                <thead>
-                                    <tr>
-                                        <th>Cover</th>
-                                        <th>Game Details</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="listings-table-body">
-                                    <!-- Listings will be loaded here dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
+                <!-- Listings table -->
+                <div class="listings-container">
+                    <div class="listings-table-wrapper">
+                        <table class="listings-table">
+                            <thead>
+                                <tr>
+                                    <th>Cover</th>
+                                    <th>Game Details</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listings-table-body">
+                                <!-- Listings will be loaded here dynamically -->
+                            </tbody>
+                        </table>
                     </div>
+                </div>
 
-                    <div class="add-game-container">
-                        <a href="list-game.html" class="btn-primary add-game-btn">
-                            <i class="fa fa-plus"></i> Add Game
-                        </a>
-                    </div>
-                </main>
-            </div>
+                <div class="add-game-container">
+                    <a href="list-game.html" class="btn-primary add-game-btn">
+                        <i class="fa fa-plus"></i> Add Game
+                    </a>
+                </div>
+            </main>
         </div>
 
         <!-- Footer Section -->

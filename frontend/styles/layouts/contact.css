@@ -1,13 +1,17 @@
 /* Contact form specific styles */
+#contact-section {
+    border: 1px solid #3e3e3e;
+}
+
 .contact-form {
     margin-top: 30px;
     margin-bottom: 40px;
-    box-sizing: border-box; /* Ensure consistent box-sizing */
+    box-sizing: border-box;
 }
 
 .form-group {
     margin-bottom: 24px;
-    box-sizing: border-box; /* Ensure consistent box-sizing */
+    box-sizing: border-box;
 }
 
 .form-group label {
@@ -26,7 +30,7 @@
     border-radius: 6px;
     color: #fff;
     font-family: "Raleway", sans-serif;
-    box-sizing: border-box; /* Ensure consistent box-sizing */
+    box-sizing: border-box;
 }
 
 .form-control:focus {
@@ -71,7 +75,7 @@ textarea.form-control {
     padding: 25px;
     background-color: #252525;
     border-radius: 8px;
-    box-sizing: border-box; /* Ensure consistent box-sizing */
+    box-sizing: border-box;
 }
 
 .contact-info h3 {

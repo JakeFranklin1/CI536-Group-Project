@@ -198,6 +198,7 @@ body.modal-open {
     background-color: #1a1a1a;
     border-radius: 8px;
     margin: 2rem 0;
+    border: 1px solid #3e3e3e;
 }
 
 .no-listings-message i {
