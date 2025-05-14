@@ -370,27 +370,6 @@ input:checked + .slider:before {
     color: white; /* White on hover */
 }
 
-/* Toast Notifications */
-#toast-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.toast {
-    min-width: 250px;
-    margin-bottom: 10px;
-    background-color: #333;
-    color: white;
-    padding: 16px;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    animation: toastIn 0.3s;
-}
-
 /* Maintain existing animations and media queries */
 
 @keyframes modalFadeIn {
@@ -401,55 +380,6 @@ input:checked + .slider:before {
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-/* Toast Notifications */
-#toast-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.toast {
-    min-width: 250px;
-    margin-bottom: 10px;
-    background-color: #333;
-    color: white;
-    padding: 16px;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    animation: toastIn 0.3s;
-}
-
-.toast-success {
-    background-color: #4caf50;
-}
-
-.toast-error {
-    background-color: #f44336;
-}
-
-.toast-info {
-    background-color: var(--accent-color);
-}
-
-.toast-icon {
-    margin-right: 12px;
-    font-size: 1.2rem;
-}
-
-@keyframes toastIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
     }
 }
 
