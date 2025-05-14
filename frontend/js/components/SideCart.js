@@ -56,7 +56,6 @@ function loadCartFromLocalStorage() {
                         <div class="cart-item-info">
                             <img src="${item.image}" alt="${item.title}" class="cart-item-image">
                             <div>
-                                <div class="cart-item-platform">Platform</div>
                                 <div class="cart-item-price">${item.price}</div>
                                 <div class="cart-item-quantity">
                                     <label>Qty:</label>
