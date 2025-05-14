@@ -1,4 +1,4 @@
-import { initializeMobileMenu } from "../js/modules/ui-initialiser.js";
+import { initializeMobileMenu } from "../modules/ui-initialiser.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Initialize mobile menu functionality
