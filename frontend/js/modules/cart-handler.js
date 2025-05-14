@@ -109,7 +109,6 @@ function addToCartDirectly(gameTitle, gamePrice, gameImage) {
                 <div class="cart-item-info">
                     <img src="${escapeHTML(gameImage)}" alt="${escapeHTML(gameTitle)}" class="cart-item-image">
                     <div>
-                        <div class="cart-item-platform">Platform</div>
                         <div class="cart-item-price">${escapeHTML(gamePrice)}</div>
                         <div class="cart-item-quantity">
                             <label>Qty:</label>
