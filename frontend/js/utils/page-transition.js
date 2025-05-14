@@ -1,3 +1,5 @@
+import { handleBrandClick } from "../modules/ui-initialiser.js";
+
 /**
  * @file page-transition.js
  * @description This file handles page transitions by adding fade-in and fade-out effects to the body element.
@@ -16,6 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
      * @description A list of all anchor elements (`<a>`) in the document.
      */
     const links = document.querySelectorAll("a");
+
+    const brandContainer = document.querySelector(".brand-container");
+    if (brandContainer) {
+        brandContainer.addEventListener("click", handleBrandClick);
+    }
 
     /**
      * @function

@@ -162,10 +162,22 @@ export function setSelectedNavItem() {
  * Handles clicks on the brand container
  */
 export function handleBrandClick() {
-    if (window.location.pathname.endsWith("marketplace.html")) {
-        showToast("You are already on the marketplace page.");
-    } else {
-        window.location.href = "marketplace.html";
+    const excludedPages = [
+        "index.html",
+        "login.html",
+        "reset-password.html",
+        "update-password.html",
+    ];
+
+    const currentPage = window.location.pathname.split("/").pop();
+
+    // Only execute if the current page is not in the excluded list
+    if (!excludedPages.includes(currentPage)) {
+        if (window.location.pathname.endsWith("marketplace.html")) {
+            showToast("You are already on the marketplace page.");
+        } else {
+            window.location.href = "marketplace.html";
+        }
     }
 }
 

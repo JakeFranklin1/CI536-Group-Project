@@ -393,14 +393,14 @@ body.modal-open {
     background: #444;
 }
 
-.close-modal {
+.manage-listings-close-modal {
     position: absolute;
     top: 24px;
     right: 24px;
     background: none;
     border: none;
     color: #fff;
-    font-size: 24px;
+    font-size: 40px;
     cursor: pointer;
     width: 32px;
     height: 32px;
@@ -411,7 +411,7 @@ body.modal-open {
     transition: background-color 0.2s;
 }
 
-.close-modal:hover {
+.manage-listings-close-modal:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -639,7 +639,9 @@ body.modal-open {
 
     .stat-box {
         flex: 1 1 calc(50% - 0.5rem); /* Two boxes per row with spacing */
-        max-width: calc(50% - 0.5rem); /* Ensure they fit within the container */
+        max-width: calc(
+            50% - 0.5rem
+        ); /* Ensure they fit within the container */
         box-sizing: border-box;
     }
 
