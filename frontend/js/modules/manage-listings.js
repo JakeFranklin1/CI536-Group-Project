@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Close edit modal buttons
         const closeEditButtons = document.querySelectorAll(
-            ".close-modal, .close-edit-modal"
+            ".manage-listings-close-modal, .close-edit-modal"
         );
         closeEditButtons.forEach((button) => {
             button.addEventListener("click", closeEditModal);
