@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Meta's -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Agreement - GameStore</title>
+    <meta name="description" content="GameStore's refund and return policy information" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="../../assets/favicons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/favicons/favicon.svg" />
+    <link rel="shortcut icon" href="../../assets/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="GameStore" />
+    <link rel="manifest" href="../../assets/favicons/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../styles/marketplace-main.css" />
+    <link rel="stylesheet" href="../../styles/layouts/special-pages.css" />
+    <link rel="stylesheet" href="../../styles/layouts/about.css" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body class="special-page">
+    <div class="loading hidden" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header Content -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="brand-container">
+                <div class="brand-content">
+                    <img src="../../assets/icons/LOGO.svg" alt="GameStore Logo" class="logo" />
+                    <span class="brand-name">GameStore</span>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Search for games..." />
+                <button class="search-btn" type="button" title="Search for games">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+
+            <div class="cart-container">
+                <button id="open-cart-btn" class="cart-btn" type="button" title="View cart">
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Side cart -->
+    <div class="side-cart">
+        <div class="side-cart-header">
+            <button type="button" id="close-cart-btn" class="closebtn">&times;</button>
+            <h3>Shopping Cart</h3>
+        </div>
+
+        <div class="cart-items">
+            <div class="empty-cart">
+                <i class="fa fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="total-cost">£0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <div class="page-layout">
+        <!-- Hamburger menu for mobile -->
+        <button class="hamburger-menu" aria-label="Toggle navigation menu">
+            <div class="hamburger-lines">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+                <span class="line line3"></span>
+            </div>
+        </button>
+
+        <aside class="side-nav">
+            <nav class="side-nav-content">
+                <div class="filter-section">
+                    <h3>Settings</h3>
+                    <ul>
+                        <li>
+                            <a href="../account.html">
+                                <span class="icon-container"><i class="fa fa-user"></i></span>
+                                Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../about.html">
+                                <span class="icon-container"><i class="fa fa-info-circle"></i></span>
+                                About
+                            </a>
+                        </li>
+                        <li>
+                            <button type="button">
+                                <span class="icon-container"><i class="fa fa-sun-o"></i></span>
+                                Light Theme
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" onclick="handleSignOut()">
+                                <span class="icon-container"><i class="fa fa-sign-out"></i></span>
+                                Sign Out
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <h3>Community</h3>
+                    <ul>
+                        <li>
+                            <a href="../list-game.html">
+                                <span class="icon-container"><i class="fa fa-plus"></i></span>
+                                List a Game
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../manage-listings.html">
+                                <span class="icon-container"><i class="fa fa-list"></i></span>
+                                Manage Listings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <main id="about-main" class="main-content full-width">
+            <div class="back-button-container">
+                <a href="../marketplace.html" class="back-to-marketplace">
+                    <i class="fa fa-arrow-left"></i> Back to Marketplace
+                </a>
+            </div>
+
+            <div class="about-section">
+                <h1>GameStore User Agreement</h1>
+
+                <!-- Last Updated Date -->
+                <p><strong>Last Updated:</strong> 04/03/2025</p>
+
+                <!-- Section 1: Introduction -->
+                <h2>1. Introduction</h2>
+                <p>
+                    This User Agreement governs your use of the GameStore Gaming Marketplace ("GameStore", "we", "our",
+                    or "us").
+                    By accessing or using our website, services, and tools (collectively, the "Services"), you agree to
+                    comply with
+                    these terms. If you do not agree, please do not use our Services.
+                </p>
+
+                <!-- Section 2: About GameStore -->
+                <h2>2. About GameStore</h2>
+                <p>
+                    GameStore is an online marketplace that allows users to buy, sell, and trade gaming-related items.
+                    We do
+                    not own, inspect, or guarantee any items listed by users, and we are not a party to any
+                    transactions.
+                    The contract for sales is strictly between the buyer and seller.
+                </p>
+
+                <!-- Section 3: Using GameStore -->
+                <h2>3. Using GameStore</h2>
+                <p>When using our Services, you agree not to:</p>
+                <ul>
+                    <li><span class="feature-emoji">🔹</span> <strong>Prohibited Items</strong> – List or sell
+                        prohibited, counterfeit, or illegal items.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Misleading Content</strong> – Post misleading,
+                        false, or defamatory content.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Automated Access</strong> – Use bots, scrapers, or
+                        automated means to access our site.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Price Manipulation</strong> – Attempt to
+                        manipulate pricing or interfere with other users' transactions.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Fraudulent Behavior</strong> – Engage in
+                        fraudulent or abusive behaviour.</li>
+                </ul>
+                <p>
+                    We reserve the right to suspend or terminate accounts violating these terms.
+                </p>
+
+                <!-- Section 4: Buying and Selling -->
+                <h2>4. Buying and Selling</h2>
+                <ul>
+                    <li><span class="feature-emoji">🔹</span> <strong>Seller Responsibility</strong> – Sellers are
+                        responsible for providing accurate descriptions and fulfilling transactions.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Buyer Diligence</strong> – Buyers must carefully
+                        review listings before making a purchase.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Payment Methods</strong> – Payments must be
+                        completed using GameStore-approved methods.</li>
+                </ul>
+
+                <!-- Section 5: Fees -->
+                <h2>5. Fees</h2>
+                <p>
+                    Certain listing and transaction fees may apply. Any changes to fees will be communicated in advance.
+                    Sellers are responsible for any applicable taxes related to their transactions.
+                </p>
+
+                <!-- Section 6: Content and Intellectual Property -->
+                <h2>6. Content and Intellectual Property</h2>
+                <ul>
+                    <li><span class="feature-emoji">🔹</span> <strong>License Grant</strong> – By posting content on
+                        GameStore, you grant us a non-exclusive license to use and display it.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Restrictions</strong> – You may not copy, modify,
+                        or distribute GameStore's branding, trademarks, or software.</li>
+                </ul>
+
+                <!-- Section 7: Data Protection and Privacy -->
+                <h2>7. Data Protection and Privacy</h2>
+                <p>
+                    Your data is handled in accordance with our User Privacy Notice. We implement security measures to
+                    protect
+                    user data, but we are not responsible for breaches caused by third parties.
+                </p>
+
+                <!-- Section 8: Liability -->
+                <h2>8. Liability</h2>
+                <p>GameStore is not responsible for:</p>
+                <ul>
+                    <li><span class="feature-emoji">🔹</span> <strong>User Transactions</strong> – Transactions between
+                        buyers and sellers.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>Third-Party Issues</strong> – Delays,
+                        interruptions, or security issues caused by third parties.</li>
+                    <li><span class="feature-emoji">🔹</span> <strong>User Misconduct</strong> – Losses due to user
+                        misconduct or policy violations.</li>
+                </ul>
+
+                <!-- Section 9: Dispute Resolution -->
+                <h2>9. Dispute Resolution</h2>
+                <p>
+                    We encourage users to resolve disputes directly. If a resolution cannot be reached, users may
+                    escalate disputes
+                    through GameStore's Support Team.
+                </p>
+
+                <!-- Section 10: Changes to This Agreement -->
+                <h2>10. Changes to This Agreement</h2>
+                <p>
+                    We may update this Agreement at any time. Continued use of GameStore after changes take effect
+                    constitutes
+                    acceptance of the updated terms.
+                </p>
+
+                <!-- Section 11: Contact Us -->
+                <h2>11. Contact Us</h2>
+                <p>For any questions, contact <a href="mailto:info@gamestore.com">info@gamestore.com</a>.</p>
+
+                <div style="text-align: center; margin-top: 2em;">
+                    <a href="../marketplace.html" class="go-back">BACK TO MARKETPLACE</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="marketplace-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>GameStore</h4>
+                <ul>
+                    <li><a href="../about.html">About Us</a></li>
+                    <li><a href="">Careers</a></li>
+                    <li><a href="">Press</a></li>
+                    <li><a href="">Blog</a></li>
+                    <li><a href="">Store Locations</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="">Help Center</a></li>
+                    <li><a href="">Contact Us</a></li>
+                    <li><a href="refunds.html">Return Policy</a></li>
+                    <li><a href="">Order Status</a></li>
+                    <li><a href="">Trade-In Program</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="">Terms of Service</a></li>
+                    <li><a href="">Privacy Policy</a></li>
+                    <li><a href="">Cookie Policy</a></li>
+                    <li><a href="">EULA</a></li>
+                    <li><a href="">Accessibility</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Payment Methods</h4>
+                <div class="payment-icons">
+                    <i class="fa fa-cc-visa" aria-hidden="true"></i>
+                    <i class="fa fa-cc-mastercard" aria-hidden="true"></i>
+                    <i class="fa fa-cc-amex" aria-hidden="true"></i>
+                    <i class="fa fa-cc-paypal" aria-hidden="true"></i>
+                    <i class="fa fa-apple" aria-hidden="true"></i>
+                    <i class="fa fa-google" aria-hidden="true"></i>
+                </div>
+
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="" title="Facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="" title="Instagram"><i class="fa fa-instagram"></i></a>
+                    <a href="" title="YouTube"><i class="fa fa-youtube-play"></i></a>
+                    <a href="" title="Discord"><i class="fa fa-comments"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="platform-icons-footer">
+                <img src="../../assets/icons/windows.svg" alt="Windows" title="Windows">
+                <img src="../../assets/icons/playstation.svg" alt="PlayStation" title="PlayStation">
+                <img src="../../assets/icons/xbox.svg" alt="Xbox" title="Xbox">
+                <img src="../../assets/icons/nintendo.svg" alt="Nintendo" title="Nintendo">
+                <img src="../../assets/icons/android.svg" alt="Android" title="Android">
+                <img src="../../assets/icons/apple.svg" alt="Apple" title="Apple">
+            </div>
+            <p class="copyright">
+                &copy; 2025 GameStore. All rights reserved. All trademarks are property of their respective owners
+                in the UK and other countries.
+                Games and cover images are for illustrative purposes only and may not represent actual gameplay. The
+                games displayed on this website cannot be purchased, and all prices are randomly generated.
+            </p>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script type="module" src="../../js/utils/page-transition.js"></script>
+    <script type="module" src="../../js/components/SideCart.js"></script>
+    <script type="module" src="../../js/components/FullCart.js"></script>
+    <script type="module" src="../../js/components/checkout-processor.js"></script>
+
+    <script type="module">
+        import { initializeMobileMenu } from "../../js/modules/ui-initialiser.js";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize mobile menu functionality
+            initializeMobileMenu();
+        });
+    </script>
+</body>
+
+</html>
