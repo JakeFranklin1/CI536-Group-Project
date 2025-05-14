@@ -5,8 +5,8 @@
     <!-- Meta's -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About - GameStore</title>
-    <meta name="description" content="Learn about the GameStore project and our team" />
+    <title>Contact Us - GameStore</title>
+    <meta name="description" content="Contact the GameStore team for support, feedback or inquiries" />
     <meta name="theme-color" content="#000000" />
 
     <!-- Favicons -->
@@ -21,11 +21,13 @@
     <link rel="stylesheet" href="../styles/marketplace-main.css" />
     <link rel="stylesheet" href="../styles/layouts/special-pages.css" />
     <link rel="stylesheet" href="../styles/layouts/about.css" />
+    <link rel="stylesheet" href="../styles/layouts/contact.css" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
 </head>
 
 <body class="special-page">
@@ -95,7 +97,6 @@
 
         <aside class="side-nav">
             <nav class="side-nav-content">
-
                 <div class="filter-section">
                     <h3>Settings</h3>
                     <ul>
@@ -153,85 +154,94 @@
             </div>
 
             <div class="about-section">
-                <h1>About GameStore – Our Group Project 🎮</h1>
+                <h1>Contact Us</h1>
 
                 <p>
-                    Welcome to <strong>GameStore</strong>, our group project for the Integrated Group Project module
-                    (CI536). We set out to create an online gaming marketplace that offers a seamless, secure, and
-                    engaging experience for gamers.
+                    Have a question, feedback, or need assistance? Our team at <strong>GameStore</strong> is here to
+                    help!
+                    Fill out the form below and we'll get back to you as soon as possible.
                 </p>
 
-                <h2>Our Vision</h2>
-                <p>
-                    GameStore is designed to connect buyers and sellers in a dynamic marketplace, making it easier than
-                    ever to discover, buy, and sell games. Our platform provides a user-friendly interface, secure
-                    transactions, and a smart search system to enhance the gaming commerce experience.
-                </p>
-
-                <h2>Key Features</h2>
-                <ul>
-                    <li><span class="feature-emoji">🔹</span> <strong>User Registration & Profiles</strong> – Quick and
-                        easy sign-up for a personalised experience.</li>
-                    <li><span class="feature-emoji">🔹</span> <strong>Advanced Game Search & Filtering</strong> – Find
-                        the perfect game with intelligent search features.</li>
-                    <li><span class="feature-emoji">🔹</span> <strong>Secure Buying & Selling</strong> – Hassle-free
-                        transactions with a smooth checkout process.</li>
-                    <li><span class="feature-emoji">🔹</span> <strong>Seller Dashboard</strong> – Simple tools to list
-                        and manage game sales.</li>
-                    <li><span class="feature-emoji">🔹</span> <strong>Trusted Payment System</strong> – Ensuring safety
-                        for both buyers and sellers.</li>
-                </ul>
-
-                <h2>Our Development Process</h2>
-                <p>
-                    We followed an agile development approach, working collaboratively to research, design, and
-                    implement GameStore. Our team focused on user experience, security, and functionality, applying key
-                    software development principles throughout the project.
-                </p>
-
-                <h2>Meet Our Team</h2>
-                <div class="team-section">
-                    <div class="team-member">
-                        <div class="team-avatar" style="background-color: #6b00ff;">JF</div>
-                        <div class="team-name">Jake Franklin</div>
-                        <div class="team-role">Frontend Developer & Design Lead</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-avatar" style="background-color: #00a3ff;">WF</div>
-                        <div class="team-name">Will Flint</div>
-                        <div class="team-role">Backend Developer & Database Management</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-avatar" style="background-color: #ff5e00;">HL</div>
-                        <div class="team-name">Harry Larkin</div>
-                        <div class="team-role">Backend Developer</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-avatar" style="background-color: #ff0033;">SF</div>
-                        <div class="team-name">Spencer Freestone</div>
-                        <div class="team-role">Database Management</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-avatar" style="background-color: #00ba6c;">ET</div>
-                        <div class="team-name">Elizabeth Tipper</div>
-                        <div class="team-role">Project Manager</div>
-                    </div>
+                <div id="success-message" class="success-message">
+                    <i class="fa fa-check-circle"></i>
+                    <p>Thank you for your message! We'll get back to you shortly.</p>
                 </div>
 
-                <div class="video-container-about">
-                    <h2>📽️ Watch our Task Scenario video below to see GameStore in action!</h2>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/M1pX1RWzO6c?si=JglOAXT830Ys2OjF"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-type">Type of Inquiry</label>
+                        <select id="inquiry-type" name="inquiry-type" class="form-control" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="account">Account Issues</option>
+                            <option value="payments">Payment Problems</option>
+                            <option value="refunds">Refunds & Returns</option>
+                            <option value="feedback">Feedback & Suggestions</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" class="form-control" rows="6" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </div>
+                </form>
+
+                <div class="contact-info">
+                    <h3>Other Ways to Reach Us</h3>
+
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <div>
+                            <strong>Email:</strong>
+                            <p>support@gamestore.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div>
+                            <strong>Phone:</strong>
+                            <p>+44 (0) 800 123 4567</p>
+                            <p>Monday to Friday: 9am - 6pm GMT</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fa fa-map-marker"></i>
+                        </div>
+                        <div>
+                            <strong>Address:</strong>
+                            <p>GameStore Ltd.<br>123 Gaming Street<br>Brighton, BN1 1AA<br>United Kingdom</p>
+                        </div>
+                    </div>
                 </div>
-
-                <p>
-                    GameStore is more than just a project—it's a practical solution for the gaming community. We're
-                    proud of what we've built and excited to showcase our work. 🚀
-                </p>
-
-                <p>Thank you for exploring GameStore!</p>
 
                 <div style="text-align: center; margin-top: 2em;">
                     <a href="marketplace.html" class="go-back">BACK TO MARKETPLACE</a>
@@ -326,15 +336,7 @@
     <script type="module" src="../js/components/FullCart.js"></script>
     <script type="module" src="../js/components/checkout-processor.js"></script>
     <script type="module" src="../js/utils/footer-links.js"></script>
-
-    <script type="module">
-        import { initializeMobileMenu } from "../js/modules/ui-initialiser.js";
-
-        document.addEventListener("DOMContentLoaded", () => {
-            // Initialize mobile menu functionality
-            initializeMobileMenu();
-        });
-    </script>
+    <script type="module" src="../js/pages/contact.js"></script>
 </body>
 
 </html>

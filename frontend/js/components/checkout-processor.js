@@ -81,6 +81,33 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const userId = user.id;
+
+            // Fetch user balance from Supabase
+            const { data: userData, error: balanceError } = await supabase
+                .from("users")
+                .select("balance")
+                .eq("id", userId)
+                .single();
+
+            if (balanceError || !userData) {
+                throw new Error(
+                    balanceError
+                        ? balanceError.message
+                        : "Unable to retrieve your account balance"
+                );
+            }
+
+            const userBalance = userData.balance || 0;
+
+            // Check if user has enough balance
+            if (userBalance < cartTotal) {
+                throw new Error(
+                    `Insufficient balance. Your current balance is £${userBalance.toFixed(
+                        2
+                    )}, but the total is £${cartTotal.toFixed(2)}.`
+                );
+            }
+
             const orderId = crypto.randomUUID();
             const orderDate = new Date().toISOString().split("T")[0];
 
@@ -97,6 +124,19 @@ document.addEventListener("DOMContentLoaded", function () {
             if (orderError) {
                 throw new Error(
                     "There was an issue with your checkout. Please try again."
+                );
+            }
+
+            // Deduct the total price from the user's balance
+            const newBalance = userBalance - cartTotal;
+            const { error: updateBalanceError } = await supabase
+                .from("users")
+                .update({ balance: newBalance })
+                .eq("id", userId);
+
+            if (updateBalanceError) {
+                throw new Error(
+                    "Failed to update your account balance. Please contact support."
                 );
             }
 

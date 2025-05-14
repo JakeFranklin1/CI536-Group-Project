@@ -215,7 +215,7 @@ function setupEventListeners(userData, currentUser) {
             showToast("Preferences updated successfully", "success");
         } catch (error) {
             console.error("Error updating preferences:", error);
-            showToast("Failed to update preferences", "error");
+            showToast("These are here for demonstrative purposes.", "info");
         }
     });
 

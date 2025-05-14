@@ -82,7 +82,7 @@
 
 .go-back {
     display: inline-block;
-    background-color: #2ecc71;
+    background-color: #14a751;
     color: white;
     padding: 12px 24px;
     border-radius: 30px;
@@ -269,12 +269,5 @@
 
     .video-container-about h2 {
         font-size: 16px;
-    }
-
-    /* Make back button more visible */
-    .back-to-marketplace {
-        width: 100%;
-        justify-content: center;
-        margin-bottom: 10px;
     }
 }

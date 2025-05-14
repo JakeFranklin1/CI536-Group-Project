@@ -30,14 +30,17 @@
     margin-bottom: 10px;
 }
 
-.footer-column ul li a {
+.footer-column ul li a,
+.demo-link {
     color: #aaaaaa;
     text-decoration: none;
     transition: color 0.2s ease;
     font-size: 14px;
+    cursor: pointer;
 }
 
-.footer-column ul li a:hover {
+.footer-column ul li a:hover,
+.demo-link:hover {
     color: white;
 }
 
