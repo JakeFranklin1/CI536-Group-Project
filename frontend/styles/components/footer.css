@@ -30,7 +30,8 @@
     margin-bottom: 10px;
 }
 
-.footer-column ul li a, .demo-link {
+.footer-column ul li a,
+.demo-link {
     color: #aaaaaa;
     text-decoration: none;
     transition: color 0.2s ease;
@@ -38,7 +39,8 @@
     cursor: pointer;
 }
 
-.footer-column ul li a:hover, .demo-link:hover {
+.footer-column ul li a:hover,
+.demo-link:hover {
     color: white;
 }
 
