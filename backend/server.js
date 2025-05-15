@@ -9,19 +9,14 @@ const express = require("express"); // Express framework for building web applic
 const cors = require("cors"); // Middleware to enable Cross-Origin Resource Sharing
 const path = require("path"); // Module to handle and transform file paths
 const gamesRouter = require("./routes/games"); // Router for handling game-related API routes
-
-// const { createClient } = require("@supabase/supabase-js"); // Supabase client for authentication - not needed for now
-// Initialize Supabase client - not needed for now
-// const supabaseUrl = process.env.SUPABASE_URL;
-// const supabaseKey = process.env.SUPABASE_ANON_KEY;
-// const supabase = createClient(supabaseUrl, supabaseKey);
+const axios = require('axios'); // Added for keep-alive functionality
 
 // Configure environment variables
 dotenv.config(); // Load environment variables from .env file
 
 // Create Express application instance
 const app = express();
-const PORT = process.env.PORT || 10000; // Set the port to the value from environment variables or default to 3000
+const PORT = process.env.PORT || 10000; // Set the port to the value from environment variables or default to 10000
 
 // Middleware Setup
 app.use(
@@ -42,6 +37,11 @@ app.use(express.static(path.join(__dirname, "../frontend"))); // Serve static fi
 
 // Route Configuration
 app.use("/api/games", gamesRouter); // Use gamesRouter for routes starting with /api/games
+
+// Add a health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).send('Server is healthy');
+});
 
 /**
  * Error Handling Middleware
@@ -83,7 +83,44 @@ const server = app.listen(PORT, "0.0.0.0", () => {
             : `http://localhost:${PORT}`
     }
     `);
+
+    // Start the keep-alive functionality in all environments
+    startKeepAlive();
 });
+
+/**
+ * Keep-Alive Functionality
+ * Prevents Render from spinning down the service due to inactivity
+ * by sending periodic requests to the application
+ */
+function startKeepAlive() {
+    // Use the appropriate URL based on environment
+    const baseUrl = process.env.NODE_ENV === "production"
+        ? 'https://gamestore-backend-9v90.onrender.com'
+        : `http://localhost:${PORT}`;
+    const url = `${baseUrl}/health`;
+    const interval = 600000; // 10 minutes in milliseconds
+
+    function pingServer() {
+        console.log(`[Keep-Alive] Pinging server at ${new Date().toISOString()}`);
+
+        axios.get(url)
+            .then(response => {
+                console.log(`[Keep-Alive] Pinged at ${new Date().toISOString()}: Status Code ${response.status}`);
+            })
+            .catch(error => {
+                console.error(`[Keep-Alive] Error pinging at ${new Date().toISOString()}:`, error.message);
+            });
+    }
+
+    // Initial ping when server starts
+    pingServer();
+
+    // Schedule regular pings
+    setInterval(pingServer, interval);
+
+    console.log(`[Keep-Alive] Service started. Pinging ${url} every ${interval/1000} seconds.`);
+}
 
 /**
  * Handle EADDRINUSE error
