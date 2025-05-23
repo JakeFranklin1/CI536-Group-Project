@@ -1,3 +1,7 @@
+# SHOWCASE VIDEO
+
+[https://www.youtube.com/watch?v=rILoSXavVL4](https://www.youtube.com/watch?v=rILoSXavVL4)
+
 # Tools Currently Being Used
 
 - [Render](https://render.com/) - Hosts the backend
